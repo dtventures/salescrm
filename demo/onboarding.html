@@ -1,0 +1,422 @@
+<title>Trellis Onboarding</title>
+<meta name="description" content="Clickable mockup of Trellis onboarding: connect Google, choose history, confirm accounts, add the website, set how Trellis acts.">
+<style>
+:root{
+  --bg:#FFFFFF; --bg-2:#F4F5F7; --bg-3:#ECEDF0;
+  --ink:#111113; --ink-2:#5F6068; --ink-3:#9B9CA4; --line:#E7E8EC;
+  --accent:#1A5CFF; --accent-ink:#FFFFFF; --accent-soft:#EAF0FF;
+  --good:#1F8F4A; --good-soft:#E3F4EA; --bad:#D1322D; --caution:#B86E00;
+  --shadow:0 2px 6px rgba(17,17,19,.04),0 18px 48px rgba(17,17,19,.10);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B0B0C; --bg-2:#161618; --bg-3:#1F1F22;
+    --ink:#F3F3F5; --ink-2:#A3A4AC; --ink-3:#6C6D75; --line:#242428;
+    --accent:#4C8DFF; --accent-ink:#FFFFFF; --accent-soft:#16233F;
+    --good:#4CC27A; --good-soft:#12301F; --bad:#FF6961; --caution:#F0A640;
+    --shadow:0 2px 6px rgba(0,0,0,.4),0 18px 48px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B0B0C; --bg-2:#161618; --bg-3:#1F1F22;
+  --ink:#F3F3F5; --ink-2:#A3A4AC; --ink-3:#6C6D75; --line:#242428;
+  --accent:#4C8DFF; --accent-ink:#FFFFFF; --accent-soft:#16233F;
+  --good:#4CC27A; --good-soft:#12301F; --bad:#FF6961; --caution:#F0A640;
+  --shadow:0 2px 6px rgba(0,0,0,.4),0 18px 48px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+p{margin:0}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:600;text-wrap:balance}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.028em}
+h3{font-size:17px;letter-spacing:-.012em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+.muted{color:var(--ink-2)}
+.faint{color:var(--ink-3)}
+.label{font-size:13px;font-weight:500;color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+
+/* Frame */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-inline:24px}
+.top-in{max-width:1040px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mark{font:600 17px/1 var(--display);letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.mark i{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.steps{display:flex;gap:6px;align-items:center}
+.steps button{width:28px;height:4px;border-radius:2px;background:var(--bg-3)}
+.steps button.on{background:var(--ink)}
+.steps button.cur{background:var(--accent)}
+.steps button:hover{background:var(--ink-3)}
+.step-count{font-size:13px;color:var(--ink-3);white-space:nowrap;min-width:72px;text-align:right}
+.stage{padding-inline:24px;padding-block:56px 120px}
+.panel{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:32px;animation:enter .35s cubic-bezier(.2,.8,.2,1)}
+.panel.wide{max-width:680px}
+@keyframes enter{from{transform:translateY(8px)}}
+.intro{display:flex;flex-direction:column;gap:12px}
+.intro .sub{font-size:19px;color:var(--ink-2);line-height:1.5}
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-top:8px}
+.nav .right{display:flex;align-items:center;gap:20px;margin-left:auto}
+
+/* Controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:44px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:500;white-space:nowrap;background:var(--bg-2);color:var(--ink)}
+.btn:hover{background:var(--bg-3)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.big{height:52px;padding:0 28px;font-size:16px}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.quiet{color:var(--ink-2);font-size:15px;font-weight:500}
+.quiet:hover{color:var(--ink)}
+.back{color:var(--accent);font-size:15px;display:inline-flex;align-items:center;gap:4px}
+.list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.li .ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--bg-2);color:var(--ink-2)}
+.li .ic.ok{background:var(--good-soft);color:var(--good)}
+.li .ic.no{background:var(--bg-2);color:var(--ink-3)}
+.li b{font-weight:600;display:block}
+.li span{color:var(--ink-2);font-size:14px}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:14px;align-items:start;text-align:left;padding:18px;border-radius:16px;border:1.5px solid var(--line)}
+.choice:hover{border-color:var(--ink-3)}
+.choice[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.choice:disabled{opacity:.55;cursor:not-allowed}
+.choice:disabled:hover{border-color:var(--line)}
+.radio{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink-3);margin-top:1px;display:grid;place-items:center}
+.choice[aria-checked="true"] .radio{border-color:var(--accent)}
+.choice[aria-checked="true"] .radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.choice b{display:block;font-weight:600}
+.choice span{font-size:14px;color:var(--ink-2)}
+.tag{font-size:12px;font-weight:500;color:var(--accent);white-space:nowrap}
+.tag.faint{color:var(--ink-3)}
+.toggle-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.toggle-row b{display:block;font-weight:500}
+.toggle-row span{font-size:14px;color:var(--ink-2)}
+.switch{width:46px;height:28px;border-radius:999px;background:var(--bg-3);position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--good)}
+.switch[aria-checked="true"]::after{transform:translateX(18px)}
+.seg{display:inline-flex;background:var(--bg-2);border-radius:999px;padding:3px;gap:2px}
+.seg button{padding:6px 14px;border-radius:999px;font-size:13px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.note{font-size:14px;color:var(--ink-3);line-height:1.5}
+
+/* Welcome */
+.hero-mark{width:56px;height:56px;border-radius:16px;background:var(--accent);display:grid;place-items:center}
+.promise-list{display:flex;flex-direction:column;gap:14px;font-size:17px}
+.promise-list div{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px}
+.promise-list svg{margin-top:4px}
+.google{background:var(--ink);color:var(--bg)}
+.google:hover{background:var(--ink);filter:none;opacity:.9}
+
+/* Consent sim */
+.handoff{border-radius:18px;background:var(--bg-2);padding:24px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid var(--bg-3);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Import */
+.meter{height:6px;border-radius:3px;background:var(--bg-3);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .3s linear}
+.counts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.counts .v{font:300 36px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-bottom:6px}
+.counts .l{font-size:13px;color:var(--ink-3)}
+.feed{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line);min-height:120px}
+.feed div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;animation:enter .3s ease-out}
+.feed div span:last-child{color:var(--ink-3);white-space:nowrap}
+
+/* Accounts */
+.acct{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.acct b{font-weight:600}
+.acct .why{font-size:13px;color:var(--ink-3);grid-column:1}
+.acct.ignored b{color:var(--ink-3)}
+.tally{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:14px;color:var(--ink-2)}
+.tally b{color:var(--ink);font-weight:600}
+
+/* Website */
+.code{position:relative;background:var(--bg-2);border-radius:14px;padding:16px 16px 16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.code code{font:13px/1.6 var(--mono);color:var(--ink-2);overflow-wrap:anywhere}
+.copy{font-size:13px;font-weight:500;color:var(--accent);padding:2px 6px;border-radius:6px}
+.copy:hover{background:var(--accent-soft)}
+.verify{display:flex;align-items:center;gap:10px;font-size:15px}
+.verify .ok{color:var(--good);font-weight:500}
+.field{display:flex;align-items:center;gap:10px;background:var(--bg-2);border-radius:12px;padding:0 14px;border:1.5px solid transparent}
+.field:focus-within{border-color:var(--accent);background:var(--bg)}
+.field input{flex:1;min-width:0;border:0;background:none;outline:none;padding:13px 0}
+.field span{color:var(--ink-3)}
+
+/* Ready */
+.preview{border-radius:20px;background:var(--bg-2);padding:8px}
+.preview-row{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:14px;padding:14px;border-radius:14px;align-items:start}
+.preview-row:first-child{background:var(--bg);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.preview-row .c{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink-3);margin-top:1px}
+.preview-row b{display:block;font-weight:600}
+.preview-row span{font-size:14px;color:var(--ink-2)}
+.preview-row .due{font-size:12px;font-weight:500;color:var(--ink-3);white-space:nowrap;margin-top:3px}
+.preview-row .due.warn{color:var(--caution)}
+.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;font-size:14px}
+.summary div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.summary div span:first-child{color:var(--ink-3)}
+.summary button{color:var(--accent);font-size:13px;font-weight:500}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 18px;box-shadow:var(--shadow);font-size:14px;animation:enter .3s ease-out;max-width:calc(100% - 32px);text-align:center}
+
+@media (max-width:640px){
+  .top,.stage{padding-inline:16px}
+  .stage{padding-block:32px 96px}
+  h1{font-size:32px}
+  .intro .sub{font-size:17px}
+  .steps button{width:14px}
+  .counts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .summary{grid-template-columns:1fr}
+  .acct{grid-template-columns:1fr}
+  .acct .why{grid-row:2}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <span class="mark"><i></i>Trellis</span>
+    <nav class="steps" id="steps" aria-label="Onboarding steps"></nav>
+    <span class="step-count" id="stepCount"></span>
+  </div>
+</header>
+<main class="stage" id="stage"></main>
+<div id="toastRoot" aria-live="polite"></div>
+
+<script>
+const DEMO_URL = 'https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj';
+const ICON = {
+  check: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="m3 7.3 2.6 2.6L11 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  no: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 3 6 6M9 3 3 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  back: '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m7.5 2.5-3.5 3.5 3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  dot: '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="4" fill="var(--accent)"/></svg>'
+};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const STEPS = ['welcome', 'connect', 'history', 'import', 'accounts', 'website', 'actions', 'ready'];
+const S = {
+  step: 0, connecting: false, connected: false,
+  lookback: '12', skipInternal: true, skipPersonal: true, skipNewsletters: true,
+  imported: false, progress: 0,
+  accounts: [
+    { name: 'Acme Logistics', why: 'You sent a proposal 6 days ago · 38 emails, 2 meetings', type: 'Prospect' },
+    { name: 'Brightline Labs', why: 'Order form and MSA thread · 52 emails', type: 'Prospect' },
+    { name: 'Northwind Clinics', why: 'Discovery call 12 days ago · 9 emails', type: 'Prospect' },
+    { name: 'Halden Freight', why: 'Proposal in May, then went quiet · 27 emails', type: 'Prospect' },
+    { name: 'Pinecrest Foods', why: 'Invoices and a renewal thread · 64 emails', type: 'Customer' },
+    { name: 'Ledgerly', why: 'Billing receipts only · 14 emails', type: 'Ignore' },
+    { name: 'Summit Coworking', why: 'Membership and building notices · 11 emails', type: 'Ignore' }
+  ],
+  site: 'trellisfleet.example', siteVerified: false, verifying: false, consent: 'eu', clicks: true, opens: false,
+  mode: 'draft', digest: true, live: true
+};
+
+/* ---------- Steps ---------- */
+function welcome(){
+  return `<div class="panel">
+    <div class="hero-mark"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><circle cx="13" cy="13" r="5" fill="var(--accent-ink)"/><circle cx="13" cy="13" r="10.5" stroke="var(--accent-ink)" stroke-opacity=".5" stroke-width="1.5"/></svg></div>
+    <div class="intro"><h1>Your sales memory, built from work you already do.</h1><p class="sub">Connect your inbox and Trellis builds every relationship for you. No data entry. About three minutes.</p></div>
+    <div class="promise-list">
+      <div>${ICON.dot}<span>Every email, meeting, and site visit on one timeline.</span></div>
+      <div>${ICON.dot}<span>A short list each morning of who needs you, and why.</span></div>
+      <div>${ICON.dot}<span>Drafts ready to send. Nothing goes out without you.</span></div>
+    </div>
+    <div class="nav"><button class="btn primary big" data-act="next" type="button">Get started</button><span class="note">Works with Google Workspace.</span></div>
+  </div>`;
+}
+function connect(){
+  const can = [
+    ['Read your email', 'To build each relationship’s timeline and find promises you made.'],
+    ['Read your calendar', 'To know who you met, when, and who attended.'],
+    ['Create drafts in Gmail', 'So you can review and send from your own address.']
+  ];
+  const never = [
+    ['Send email by itself', 'Every message waits for you. You can’t turn this off during beta.'],
+    ['Train AI models on your data', 'Your data is used only to serve you.'],
+    ['Share data with other customers', 'Each workspace is fully separate.']
+  ];
+  const body = S.connecting ? `<div class="handoff"><div class="spinner" role="status" aria-label="Waiting for Google"></div><b>Finish in the Google window</b><p class="muted">Google will ask you to approve these permissions. This mockup continues on its own in a moment.</p></div>`
+    : S.connected ? `<div class="handoff"><b style="color:var(--good)">Connected as jordan@trellisfleet.example</b><p class="muted">Gmail and Google Calendar are linked. You can disconnect anytime in Sources, and your existing data stays unless you ask us to delete it.</p></div>` : '';
+  return `<div class="panel">
+    <div class="intro"><h1>Connect Google.</h1><p class="sub">Here’s exactly what Trellis will do with access, and what it will never do.</p></div>
+    <div><p class="label" style="margin-bottom:6px">Trellis can</p><div class="list">${can.map(([b, s]) => `<div class="li"><span class="ic ok">${ICON.check}</span><div><b>${b}</b><span>${s}</span></div></div>`).join('')}</div></div>
+    <div><p class="label" style="margin-bottom:6px">Trellis never</p><div class="list">${never.map(([b, s]) => `<div class="li"><span class="ic no">${ICON.no}</span><div><b>${b}</b><span>${s}</span></div></div>`).join('')}</div></div>
+    ${body}
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button>
+      <div class="right">${S.connected ? '<button class="btn primary" data-act="next" type="button">Continue</button>' : `<button class="btn google" data-act="connect" type="button" ${S.connecting ? 'disabled' : ''}>Continue with Google</button>`}</div></div>
+  </div>`;
+}
+function historyStep(){
+  const opts = [['3', '3 months', 'Fastest. Good if your deals are short.'], ['12', '1 year', 'Covers most sales cycles.', 'Recommended'], ['24', '2 years', 'Best for long enterprise cycles. Takes longer.']];
+  const toggles = [['skipInternal', 'Skip people at your company', 'Colleagues at trellisfleet.example stay out of your accounts.'], ['skipPersonal', 'Skip personal contacts', 'Family and friends on gmail.com, icloud.com and similar are left out.'], ['skipNewsletters', 'Skip newsletters and receipts', 'Bulk mail never becomes a contact.']];
+  return `<div class="panel">
+    <div class="intro"><h1>How far back?</h1><p class="sub">Trellis reads your history once, then keeps up in real time.</p></div>
+    <div class="choices" role="radiogroup" aria-label="History">${opts.map(([v, t, s, tag]) => `<button class="choice" role="radio" aria-checked="${S.lookback === v}" data-act="lookback" data-v="${v}" type="button"><span class="radio"></span><span><b>${t}</b><span>${s}</span></span>${tag ? `<span class="tag">${tag}</span>` : '<span></span>'}</button>`).join('')}</div>
+    <div>${toggles.map(([k, b, s]) => `<div class="toggle-row"><div><b>${b}</b><span>${s}</span></div><button class="switch" role="switch" aria-checked="${S[k]}" aria-label="${b}" data-act="toggle" data-k="${k}" type="button"></button></div>`).join('')}</div>
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button><div class="right"><button class="btn primary" data-act="next" type="button">Start import</button></div></div>
+  </div>`;
+}
+const FOUND = [['Acme Logistics', 'Priya Raman, Marcus Lee'], ['Brightline Labs', 'Tomás Duarte, Lena Fischer'], ['Pinecrest Foods', '4 people'], ['Northwind Clinics', 'Aisha Karim'], ['Halden Freight', 'Ben Okafor'], ['Ledgerly', 'billing only'], ['Summit Coworking', 'notices only']];
+function importStep(){
+  const p = S.progress, scale = { '3': .3, '12': 1, '24': 1.8 }[S.lookback];
+  const n = (t) => Math.round(t * scale * p / 100).toLocaleString('en-US');
+  const shown = FOUND.slice(0, Math.ceil(FOUND.length * p / 100));
+  return `<div class="panel wide">
+    <div class="intro"><h1>${p >= 100 ? 'Your history is in.' : 'Reading your history…'}</h1><p class="sub">${p >= 100 ? 'Everything is indexed and searchable. From now on, new email arrives within a minute.' : 'You can close this tab. We’ll email you when it’s done.'}</p></div>
+    <div><div class="meter" role="progressbar" aria-valuenow="${Math.round(p)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p}%"></i></div>
+      <p class="note" style="margin-top:8px">${p >= 100 ? `Done · ${S.lookback === '3' ? '3 months' : S.lookback === '12' ? '1 year' : '2 years'} imported` : `${Math.round(p)}% · saved as it goes, so nothing is lost if you disconnect`}</p></div>
+    <div class="counts">
+      <div><div class="v">${n(9402)}</div><div class="l">emails read</div></div>
+      <div><div class="v">${n(318)}</div><div class="l">meetings</div></div>
+      <div><div class="v">${n(214)}</div><div class="l">people</div></div>
+      <div><div class="v">${n(63)}</div><div class="l">companies</div></div>
+    </div>
+    <div><p class="label" style="margin-bottom:6px">Found so far</p><div class="feed">${shown.map(([a, w]) => `<div><span>${esc(a)}</span><span>${esc(w)}</span></div>`).join('')}</div></div>
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button><div class="right"><button class="btn primary" data-act="next" type="button" ${p < 100 ? 'disabled' : ''}>Review accounts</button></div></div>
+  </div>`;
+}
+function accounts(){
+  const c = t => S.accounts.filter(a => a.type === t).length;
+  return `<div class="panel wide">
+    <div class="intro"><h1>Is this right?</h1><p class="sub">Trellis sorted your top companies. Fix anything that looks off. It learns from your changes.</p></div>
+    <div class="tally"><span><b>${c('Prospect')}</b> ${c('Prospect') === 1 ? 'prospect' : 'prospects'}</span><span><b>${c('Customer')}</b> ${c('Customer') === 1 ? 'customer' : 'customers'}</span><span><b>${c('Ignore')}</b> hidden</span><span class="faint">+ 56 more sorted the same way</span></div>
+    <div style="border-top:1px solid var(--line)">${S.accounts.map((a, i) => `<div class="acct ${a.type === 'Ignore' ? 'ignored' : ''}"><div><b>${esc(a.name)}</b></div>
+      <div class="seg" role="group" aria-label="${esc(a.name)} type">${['Prospect', 'Customer', 'Ignore'].map(t => `<button type="button" data-act="type" data-i="${i}" data-t="${t}" aria-pressed="${a.type === t}">${t === 'Ignore' ? 'Hide' : t}</button>`).join('')}</div>
+      <span class="why">${esc(a.why)}</span></div>`).join('')}</div>
+    <p class="note">Hidden companies aren’t deleted. They just stay out of your list and never trigger suggestions.</p>
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button><div class="right"><button class="btn primary" data-act="next" type="button">Looks right</button></div></div>
+  </div>`;
+}
+function website(){
+  const snippet = `<script src="https://cdn.trellis.example/t.js" data-site="site_7Q2K" async><\/script>`;
+  const consent = [['eu', 'Ask in the EU and UK', 'Visitors there are only tracked after they agree. Others are tracked by default.', 'Recommended'], ['all', 'Ask everyone', 'Strictest. Fewer visits will be linked to people.'], ['off', 'Anonymous only', 'Count visits, never link them to a person.']];
+  return `<div class="panel">
+    <div class="intro"><h1>Add your website.</h1><p class="sub">See when a prospect reads your pricing or security page after you email them. Optional, but it’s where most signals come from.</p></div>
+    <div><label class="label" for="site" style="display:block;margin-bottom:8px">Your site</label><div class="field"><span>https://</span><input id="site" value="${esc(S.site)}" autocomplete="off"></div></div>
+    <div><p class="label" style="margin-bottom:8px">Paste this before &lt;/head&gt;, or send it to whoever runs your site</p>
+      <div class="code"><code id="snippet">${esc(snippet)}</code><button class="copy" data-act="copy" type="button">Copy</button></div></div>
+    <div class="verify">${S.siteVerified ? `<span class="ok">${ICON.check} Installed. First visit received 4 seconds ago.</span>` : S.verifying ? '<div class="spinner"></div><span class="muted">Looking for the snippet…</span>' : `<button class="btn" data-act="verify" type="button">Check installation</button>`}</div>
+    <div><p class="label" style="margin-bottom:8px">Privacy</p><div class="choices" role="radiogroup" aria-label="Consent">${consent.map(([v, t, s, tag]) => `<button class="choice" role="radio" aria-checked="${S.consent === v}" data-act="consent" data-v="${v}" type="button"><span class="radio"></span><span><b>${t}</b><span>${s}</span></span>${tag ? `<span class="tag">${tag}</span>` : '<span></span>'}</button>`).join('')}</div></div>
+    <div>
+      <div class="toggle-row"><div><b>Track link clicks in your emails</b><span>Links you send are signed so a click ties the visit to that person.</span></div><button class="switch" role="switch" aria-checked="${S.clicks}" aria-label="Track link clicks" data-act="toggle" data-k="clicks" type="button"></button></div>
+      <div class="toggle-row"><div><b>Track email opens</b><span>Off by default. Scanners and privacy proxies fake opens, so they never count toward signals.</span></div><button class="switch" role="switch" aria-checked="${S.opens}" aria-label="Track email opens" data-act="toggle" data-k="opens" type="button"></button></div>
+    </div>
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button><div class="right"><button class="quiet" data-act="next" type="button">Do this later</button><button class="btn primary" data-act="next" type="button" ${S.siteVerified ? '' : 'disabled'}>Continue</button></div></div>
+  </div>`;
+}
+function actions(){
+  const modes = [
+    ['draft', 'Write drafts for me. I send.', 'Trellis prepares the email and you approve it. Every send is logged.', 'Recommended'],
+    ['tell', 'Just tell me.', 'You get the to-do and the reasons. No drafts.'],
+    ['auto', 'Send on its own.', 'Not available in beta. Will require an admin, a tested rule, and all safety checks.', 'Off in beta']
+  ];
+  return `<div class="panel">
+    <div class="intro"><h1>How should Trellis help?</h1><p class="sub">You can change this anytime. Do-not-contact, consent, and frequency limits always apply.</p></div>
+    <div class="choices" role="radiogroup" aria-label="Mode">${modes.map(([v, t, s, tag]) => `<button class="choice" role="radio" aria-checked="${S.mode === v}" data-act="mode" data-v="${v}" type="button" ${v === 'auto' ? 'disabled' : ''}><span class="radio"></span><span><b>${t}</b><span>${s}</span></span>${tag ? `<span class="tag ${v === 'auto' ? 'faint' : ''}">${tag}</span>` : '<span></span>'}</button>`).join('')}</div>
+    <div>
+      <div class="toggle-row"><div><b>Morning list at 8:30</b><span>Your to-dos for the day, by email and in the app.</span></div><button class="switch" role="switch" aria-checked="${S.digest}" aria-label="Morning list" data-act="toggle" data-k="digest" type="button"></button></div>
+      <div class="toggle-row"><div><b>Live alerts for strong signals</b><span>At most 3 a day. Never between 7 pm and 8 am.</span></div><button class="switch" role="switch" aria-checked="${S.live}" aria-label="Live alerts" data-act="toggle" data-k="live" type="button"></button></div>
+    </div>
+    <div class="nav"><button class="back" data-act="prev" type="button">${ICON.back} Back</button><div class="right"><button class="btn primary" data-act="next" type="button">Finish</button></div></div>
+  </div>`;
+}
+function ready(){
+  const lb = { '3': '3 months', '12': '1 year', '24': '2 years' }[S.lookback];
+  const c = t => S.accounts.filter(a => a.type === t).length;
+  return `<div class="panel">
+    <div class="intro"><h1>You’re set. Here’s your first list.</h1><p class="sub">Trellis found 5 things to do, including 2 promises from your meeting notes.</p></div>
+    <div class="preview">
+      <div class="preview-row"><span class="c"></span><div><b>Send Priya the go-live plan</b><span>Acme Logistics · You promised this yesterday.</span></div><span class="due warn">Promised</span></div>
+      <div class="preview-row"><span class="c"></span><div><b>Send Tomás the MSA in Word</b><span>Brightline Labs · Asked for a redline 42 minutes ago.</span></div><span class="due">Draft ready</span></div>
+      <div class="preview-row"><span class="c"></span><div><b>Send Marcus the SOC 2 report</b><span>Acme Logistics · You promised this yesterday.</span></div><span class="due warn">Promised</span></div>
+    </div>
+    <div class="nav" style="padding-top:0"><a class="btn primary big" href="${DEMO_URL}" target="_blank" rel="noopener">Open Trellis</a><button class="quiet" data-act="restart" type="button">Replay onboarding</button></div>
+    <div><p class="label" style="margin-bottom:6px">Your setup</p><div class="summary">
+      <div><span>History</span><span>${lb} <button data-act="goto" data-s="2" type="button">Change</button></span></div>
+      <div><span>Accounts</span><span>${c('Prospect')} prospects, ${c('Customer')} ${c('Customer') === 1 ? 'customer' : 'customers'} <button data-act="goto" data-s="4" type="button">Change</button></span></div>
+      <div><span>Website</span><span>${S.siteVerified ? 'Connected' : 'Not yet'} <button data-act="goto" data-s="5" type="button">${S.siteVerified ? 'Change' : 'Add'}</button></span></div>
+      <div><span>Emails</span><span>${S.mode === 'draft' ? 'Drafts, you send' : 'Tell me only'} <button data-act="goto" data-s="6" type="button">Change</button></span></div>
+    </div></div>
+  </div>`;
+}
+
+/* ---------- Render ---------- */
+const VIEWS = [welcome, connect, historyStep, importStep, accounts, website, actions, ready];
+function render(focus){
+  document.getElementById('stage').innerHTML = VIEWS[S.step]();
+  document.getElementById('steps').innerHTML = STEPS.map((k, i) => `<button type="button" data-act="goto" data-s="${i}" class="${i < S.step ? 'on' : i === S.step ? 'cur' : ''}" aria-label="Step ${i + 1}: ${k}" ${i === S.step ? 'aria-current="step"' : ''}></button>`).join('');
+  document.getElementById('stepCount').textContent = `${S.step + 1} of ${STEPS.length}`;
+  if (focus) { const h = document.querySelector('#stage h1'); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }
+}
+function go(i){
+  S.step = Math.max(0, Math.min(STEPS.length - 1, i));
+  try { history.replaceState(null, '', '#' + STEPS[S.step]); } catch (e) {}
+  if (STEPS[S.step] === 'import' && !S.imported) runImport();
+  render(true); window.scrollTo(0, 0);
+}
+let importTimer = null;
+function runImport(){
+  S.imported = true; S.progress = 0; clearInterval(importTimer);
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { S.progress = 100; return; }
+  importTimer = setInterval(() => {
+    S.progress = Math.min(100, S.progress + 2.5 + Math.random() * 3);
+    if (STEPS[S.step] === 'import') render();
+    if (S.progress >= 100) clearInterval(importTimer);
+  }, 120);
+}
+function toast(msg){
+  const r = document.getElementById('toastRoot'); r.innerHTML = `<div class="toast">${esc(msg)}</div>`;
+  setTimeout(() => { r.innerHTML = ''; }, 2600);
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]'); if (!t || t.disabled) return;
+  const a = t.dataset.act;
+  switch (a){
+    case 'next': go(S.step + 1); break;
+    case 'prev': go(S.step - 1); break;
+    case 'goto': go(+t.dataset.s); break;
+    case 'connect':
+      S.connecting = true; render();
+      setTimeout(() => { S.connecting = false; S.connected = true; render(); }, 1600);
+      break;
+    case 'lookback': S.lookback = t.dataset.v; S.imported = false; render(); break;
+    case 'toggle': S[t.dataset.k] = !S[t.dataset.k]; render(); break;
+    case 'type': S.accounts[+t.dataset.i].type = t.dataset.t; render(); break;
+    case 'consent': S.consent = t.dataset.v; render(); break;
+    case 'mode': S.mode = t.dataset.v; render(); break;
+    case 'verify':
+      S.site = (document.getElementById('site').value || S.site).trim();
+      S.verifying = true; render();
+      setTimeout(() => { S.verifying = false; S.siteVerified = true; render(); }, 1400);
+      break;
+    case 'copy': {
+      const text = document.getElementById('snippet').textContent;
+      const done = () => toast('Snippet copied.');
+      try {
+        navigator.clipboard.writeText(text).then(done, () => { selectSnippet(); toast('Press Ctrl+C or ⌘C to copy.'); });
+      } catch (err) { selectSnippet(); toast('Press Ctrl+C or ⌘C to copy.'); }
+      break;
+    }
+    case 'restart':
+      Object.assign(S, { connecting: false, connected: false, imported: false, progress: 0, siteVerified: false, verifying: false });
+      go(0); break;
+  }
+});
+function selectSnippet(){ const r = document.createRange(); r.selectNodeContents(document.getElementById('snippet')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+document.addEventListener('input', e => { if (e.target.id === 'site') S.site = e.target.value; });
+
+const start = STEPS.indexOf(location.hash.slice(1));
+S.step = start > 0 ? start : 0;
+if (STEPS[S.step] === 'import') runImport();
+if (S.step > 1) S.connected = true;
+render();
+</script>

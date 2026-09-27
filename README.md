@@ -17,7 +17,9 @@ Product discovery and design-partner validation. No production code yet (only th
 
 [`demo/index.html`](demo/index.html) is a single-file demo of the core loop on sample data (hosted: https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj). It covers the intent queue with explainable scores, account timelines with cited rolling memory, cited Q&A, draft approval with policy checks, rules in test mode, connector health, and the audit log. Press **Simulate live event** to watch a tracked-link click become a new signal.
 
-The file has no build step and no backend. It is written as an artifact page with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
+[`demo/onboarding.html`](demo/onboarding.html) is a clickable mockup of first-run onboarding (hosted: https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga): connect Google with a plain list of what Trellis can and never does, choose the history window, watch the import, confirm how companies were sorted, add the website snippet and consent mode, and choose how Trellis acts. It ends on the first to-do list and links to the demo.
+
+Both files have no build step and no backend. They are written as an artifact page with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 
 ## Documents
 
