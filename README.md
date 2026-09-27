@@ -13,6 +13,12 @@ Gmail + web SDK  --> person + account --> timeline + cited Q&A --> alert + draft
 
 Product discovery and design-partner validation. No code yet; the next step is **Stage 0 — Foundation** (tenant authentication, canonical event schema, connector framework, audit model, design-partner dataset). The exit evidence for that stage is passing replay and deletion tests.
 
+## Clickable demo
+
+[`demo/index.html`](demo/index.html) is a single-file demo of the core loop on sample data (hosted: https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj). It covers the intent queue with explainable scores, account timelines with cited rolling memory, cited Q&A, draft approval with policy checks, rules in test mode, connector health, and the audit log. Press **Simulate live event** to watch a tracked-link click become a new signal.
+
+The file has no build step and no backend. It is written as an artifact page with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
+
 ## Documents
 
 - [Product requirements document (v0.1)](docs/prd/revenue-memory-intent-platform.md)
