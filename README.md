@@ -11,7 +11,7 @@ Gmail + web SDK  --> person + account --> timeline + cited Q&A --> alert + draft
 
 ## Status
 
-Product discovery and design-partner validation. No code yet; the next step is **Stage 0 — Foundation** (tenant authentication, canonical event schema, connector framework, audit model, design-partner dataset). The exit evidence for that stage is passing replay and deletion tests.
+Product discovery and design-partner validation. No production code yet (only the clickable demo below); the next step is **Stage 0 — Foundation** (tenant authentication, canonical event schema, connector framework, audit model, design-partner dataset). The exit evidence for that stage is passing replay and deletion tests.
 
 ## Clickable demo
 
