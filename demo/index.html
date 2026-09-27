@@ -140,6 +140,39 @@ h3{font-size:17px;line-height:1.3;letter-spacing:-.012em}
 .disclose svg{transition:transform .2s}
 .disclose[aria-expanded="true"] svg{transform:rotate(90deg)}
 
+.todo{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:14px;align-items:start;padding:14px;border-radius:14px}
+.todo:hover{background:var(--bg-2)}
+.todo.sel{background:var(--bg-2)}
+.todo.new{animation:glow 2s ease-out}
+.check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink-3);display:grid;place-items:center;color:var(--accent-ink);margin-top:1px;flex:none}
+.check:hover{border-color:var(--accent)}
+.check.on{background:var(--ink-3);border-color:var(--ink-3)}
+.check.fyi{border-color:var(--line);color:var(--ink-3);font:600 12px/1 var(--display);font-style:italic}
+.todo-main{text-align:left;display:flex;flex-direction:column;gap:3px;min-width:0}
+.todo .tt{font-weight:600;line-height:1.35}
+.todo .ts{font-size:14px;color:var(--ink-2);line-height:1.45}
+.todo.done .tt{color:var(--ink-3);text-decoration:line-through;font-weight:500}
+.todo.done .ts{color:var(--ink-3)}
+.due{font-size:12px;font-weight:500;color:var(--ink-3);white-space:nowrap;margin-top:3px}
+.due.warn{color:var(--caution)}
+.due.live{color:var(--accent)}
+.promise{margin:0;padding:4px 0 4px 18px;border-left:2px solid var(--caution)}
+.promise p{font:400 19px/1.5 var(--display);letter-spacing:-.012em}
+.promise cite{display:block;font-style:normal;font-size:13px;color:var(--ink-3);margin-top:6px}
+.whynow{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.whynow li{font-size:16px;line-height:1.5;padding-left:18px;position:relative}
+.whynow li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--ink-3)}
+.whynow li.live::before{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.card{background:var(--bg-2);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.card-note{font-size:16px;line-height:1.55;color:var(--ink-2);max-width:52ch}
+.draft-meta{display:flex;flex-direction:column;gap:4px;font-size:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.draft-meta .faint{display:inline-block;width:64px}
+.draft-body{font-size:15px;line-height:1.6;white-space:pre-wrap;color:var(--ink-2);max-height:9.6em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+.foot{border-top:1px solid var(--line);padding-top:16px}
+.foot .disclose{font-weight:400;font-size:13px;color:var(--ink-3);text-align:left}
+.detail{gap:28px}
+.detail h2{font-size:36px}
+
 /* Account */
 .back{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:15px;margin-bottom:20px}
 .acct-sub{font-size:19px;color:var(--ink-2);margin-top:10px}
@@ -590,18 +623,9 @@ const ANSWERS = {
 };
 
 let D = structuredClone(INITIAL);
-const S = { view: 'queue', acct: 'acme', sig: 's1', filter: 'all', dismissing: null, simulated: false, testing: {}, thread: [], newIds: new Set(), showWhy: true, showChecks: false, evList: [], evIdx: 0 };
+const S = { view: 'queue', acct: 'acme', sig: 's1', filter: 'all', dismissing: null, simulated: false, testing: {}, thread: [], newIds: new Set(), showWhy: false, showChecks: false, evList: [], evIdx: 0 };
 
 /* ---------- Copy ---------- */
-const LINES = {
-  s1: 'Revisited pricing twice after your proposal.',
-  s2: 'Asked for an MSA redline 42 minutes ago.',
-  s3: 'No reply in 8 business days.',
-  s4: 'Two visitors on pricing. No known person.',
-  s5: 'Back on pricing. On do-not-contact.',
-  s6: 'Reading your SOC 2 page right now.'
-};
-const VERB = { draft: 'Write email', task: 'Create task', notify: 'Notify owner' };
 const CONF_DOT = { 'Very high': 'var(--good)', 'High': 'var(--good)', 'Account only': 'var(--caution)' };
 
 /* ---------- Helpers ---------- */
@@ -638,58 +662,81 @@ function toggleMenu(force){
 }
 
 /* ---------- Today ---------- */
+const GROUPS = [['today', 'Today'], ['week', 'This week'], ['tasks', 'Your tasks'], ['fyi', 'Heads up'], ['done', 'Done']];
+const groupOf = s => s.status === 'open' ? s.due : s.status === 'task' ? 'tasks' : 'done';
+const rank = s => (s.live ? 1000 : 0) + (s.promise && s.status === 'open' ? 500 : 0) + s.strength;
+const byGroup = g => D.signals.filter(s => groupOf(s) === g).sort((a, b) => rank(b) - rank(a));
+const CHECK = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.5 6.2 2.3 2.3 4.7-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function dueTag(s){
+  if (s.status === 'task') return `<span class="due">Due ${esc(s.rec.due.toLowerCase())}</span>`;
+  if (s.status !== 'open') return `<span class="due faint">${{ done: 'Done', snoozed: 'Snoozed', dismissed: 'Dismissed' }[s.status]}</span>`;
+  if (s.live) return '<span class="due live">Live now</span>';
+  if (s.promise) return '<span class="due warn">Promised</span>';
+  if (s.draft && s.rec.kind === 'draft') return '<span class="due">Draft ready</span>';
+  return '';
+}
 function row(s){
   const a = D.accounts[s.acct], p = person(s.person);
-  const state = { done: 'Done', snoozed: 'Snoozed', dismissed: 'Dismissed' }[s.status];
-  return `<button class="row ${s.id === S.sig ? 'sel' : ''} ${s.status !== 'open' ? 'done' : ''} ${S.newIds.has(s.id) ? 'new' : ''}" data-act="sig" data-id="${s.id}" type="button">
-    <span class="n">${s.strength}</span>
-    <span><span class="who">${esc(p ? p.name : a.name)}<span>${state || rel(s.ago)}</span></span>
-    <span class="why">${p ? esc(a.name) + ' · ' : ''}${esc(LINES[s.id] || s.title)}</span></span>
-  </button>`;
+  const done = s.status === 'done' || s.status === 'dismissed' || s.status === 'snoozed';
+  const sub = (p ? p.name + ' · ' : '') + a.name + ' — ' + (s.live ? s.why[0].t : s.promise ? 'You promised this ' + s.promise.when + '.' : s.why[0].t);
+  return `<div class="todo ${s.id === S.sig ? 'sel' : ''} ${done ? 'done' : ''} ${S.newIds.has(s.id) ? 'new' : ''}">
+    ${s.due === 'fyi' && s.status === 'open' ? '<span class="check fyi" aria-hidden="true">i</span>'
+      : `<button class="check ${done ? 'on' : ''}" data-act="check" data-id="${s.id}" type="button" aria-label="${done ? 'Reopen' : 'Mark done'}: ${esc(s.action)}">${done ? CHECK : ''}</button>`}
+    <button class="todo-main" data-act="sig" data-id="${s.id}" type="button"><span class="tt">${esc(s.action)}</span><span class="ts">${esc(sub)}</span></button>
+    ${dueTag(s)}
+  </div>`;
 }
 function detail(s){
   const a = D.accounts[s.acct], p = person(s.person);
   const idConf = s.locked ? 'Account only' : p.conf, idMethod = s.locked ? 'company IP match' : p.method;
+  const order = s.promise ? [s.promise.ref] : []; s.why.forEach(w => w.c.forEach(r => { if (!order.includes(r)) order.push(r); }));
+  const num = r => order.indexOf(r) + 1;
+  const quiet = [
+    `<button class="quiet" data-act="snooze" data-id="${s.id}" type="button">Snooze</button>`,
+    `<button class="quiet" data-act="dismiss" data-id="${s.id}" type="button">Dismiss</button>`
+  ].join('');
   let act;
-  if (s.status !== 'open'){
-    act = `<div class="rec-block"><p class="outcome">${esc(s.result)}</p><div class="actions"><button class="btn" data-act="reopen" data-id="${s.id}" type="button">Reopen</button><a class="text-btn" href="#audit">See activity log</a></div></div>`;
-  } else {
-    const dnc = p && p.dnc;
-    const others = [
-      s.rec.kind !== 'draft' && !s.locked ? `<button class="quiet" data-act="draft" data-id="${s.id}" type="button">Write email</button>` : '',
-      s.rec.kind !== 'task' ? `<button class="quiet" data-act="task" data-id="${s.id}" type="button">Create task</button>` : '',
-      `<button class="quiet" data-act="snooze" data-id="${s.id}" type="button">Snooze</button>`,
-      `<button class="quiet" data-act="dismiss" data-id="${s.id}" type="button">Dismiss</button>`
-    ].join('');
-    act = `<div class="rec-block">
-      <p class="rec">${esc(s.rec.text)}</p>
-      ${s.locked ? `<p class="lock">${esc(s.locked)}</p>` : ''}
-      ${dnc ? `<p class="lock">${esc(p.name)} is on the do-not-contact list, so email is blocked.</p>` : ''}
-      <div class="actions"><button class="btn primary" data-act="${s.rec.kind}" data-id="${s.id}" type="button">${VERB[s.rec.kind]}</button>${others}</div>
-      ${S.dismissing === s.id ? `<div class="reasons"><span class="label">Why dismiss?</span>${['Not relevant', 'Already handled', 'Wrong person', 'Bad timing'].map(r => `<button class="btn small" data-act="dismissReason" data-id="${s.id}" data-reason="${r}" type="button">${r}</button>`).join('')}</div>` : ''}
+  if (s.status === 'task'){
+    act = `<div class="card"><p class="card-note">In your tasks · due ${esc(s.rec.due.toLowerCase())}</p><div class="actions"><button class="btn primary" data-act="check" data-id="${s.id}" type="button">Mark complete</button></div></div>`;
+  } else if (s.status !== 'open'){
+    act = `<div class="card"><p class="outcome">${esc(s.result)}</p><div class="actions"><button class="btn" data-act="reopen" data-id="${s.id}" type="button">Reopen</button><a class="text-btn" href="#audit">See activity log</a></div></div>`;
+  } else if (s.rec.kind === 'draft'){
+    const dp = person(s.draft.to);
+    act = `<div class="card draft">
+      <div class="draft-meta"><span><span class="faint">To</span> ${esc(dp.name)}</span><span><span class="faint">Subject</span> ${esc(s.draft.subject)}</span></div>
+      <p class="draft-body">${esc(s.draft.body)}</p>
+      <div class="actions"><button class="btn primary" data-act="draft" data-id="${s.id}" type="button">Review and send</button><button class="quiet" data-act="saveDraft" data-id="${s.id}" type="button">Save to Gmail drafts</button>${quiet}</div>
     </div>`;
+  } else if (s.rec.kind === 'task'){
+    act = `<div class="card"><p class="card-note">${esc(s.rec.text)}</p><div class="actions"><button class="btn primary" data-act="task" data-id="${s.id}" type="button">Add to my tasks</button>${quiet}</div></div>`;
+  } else {
+    act = `<div class="card"><p class="card-note">${esc(s.rec.text)}</p><div class="actions"><button class="btn primary" data-act="ack" data-id="${s.id}" type="button">Got it</button></div></div>`;
   }
+  const reasons = S.dismissing === s.id ? `<div class="reasons"><span class="label">Why dismiss?</span>${['Not relevant', 'Already handled', 'Wrong person', 'Bad timing'].map(r => `<button class="btn small" data-act="dismissReason" data-id="${s.id}" data-reason="${r}" type="button">${r}</button>`).join('')}</div>` : '';
   const why = s.components.map(c => `<button class="why-row ${c.x ? 'x' : ''}" data-act="ev" data-refs="${c.ev.join(',')}" data-ref="${c.ev[0]}" type="button"><span class="lbl">${esc(c.l)}</span><span class="pts">${c.x ? '0' : '+' + c.p}</span><span class="chev">${CHEV}</span>${c.x ? `<small>${esc(c.x)}</small>` : ''}</button>`).join('');
   return `<div>
       <p class="ctx"><a href="#acct-${s.acct}">${esc(a.name)}</a>${p ? ' · ' + esc(p.name) + ', ' + esc(p.title) : ''}</p>
-      <h2>${esc(s.title)}</h2>
-      <div class="score"><b>${s.strength}</b><span>signal strength<br>${confText(idConf, idMethod)}</span></div>
+      <h2>${esc(s.action)}</h2>
     </div>
-    ${act}
-    <div>
-      <button class="disclose" data-act="toggleWhy" aria-expanded="${S.showWhy}" type="button">${CHEV} Why ${s.strength}?</button>
+    ${s.promise ? `<blockquote class="promise"><p>“${esc(s.promise.t)}”</p><cite>From ${esc(s.promise.src)}${cites([s.promise.ref], num)}</cite></blockquote>` : ''}
+    <div><p class="label" style="margin-bottom:10px">Why now</p><ul class="whynow">${s.why.map(w => `<li class="${w.live ? 'live' : ''}">${esc(w.t)}${cites(w.c, num)}</li>`).join('')}</ul></div>
+    ${act}${reasons}
+    <div class="foot">
+      <button class="disclose" data-act="toggleWhy" aria-expanded="${S.showWhy}" type="button">${CHEV} Signal strength ${s.strength} · ${confText(idConf, idMethod)}</button>
       ${S.showWhy ? `<div class="why-list" style="margin-top:12px">${why}</div>` : ''}
     </div>`;
 }
 function renderQueue(){
-  const open = openSignals(), done = D.signals.filter(s => s.status !== 'open');
-  if (!D.signals.find(s => s.id === S.sig)) S.sig = (open[0] || done[0] || {}).id;
+  if (!D.signals.find(s => s.id === S.sig)) S.sig = (byGroup('today')[0] || D.signals[0] || {}).id;
   const sel = D.signals.find(s => s.id === S.sig);
   const d = atOf(0);
-  const headline = open.length ? `${NUMWORD[open.length] || open.length} ${open.length === 1 ? 'signal needs' : 'signals need'} you.` : 'You’re all caught up.';
-  return `<section class="hero"><p class="date">${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()]}, ${d.getDate()} September</p><h1>${headline}</h1><p class="sub">Ranked by evidence. Every point traces to a real interaction.</p></section>
+  const todo = D.signals.filter(s => (s.status === 'open' && s.due !== 'fyi') || s.status === 'task');
+  const drafts = todo.filter(s => s.status === 'open' && s.rec.kind === 'draft').length;
+  const headline = todo.length ? `${NUMWORD[todo.length] || todo.length} ${todo.length === 1 ? 'thing' : 'things'} to do.` : 'You’re all caught up.';
+  const sub = drafts ? `${NUMWORD[drafts] || drafts} ${drafts === 1 ? 'email is' : 'emails are'} already written. Review, send, done.` : 'Nothing waiting on a draft.';
+  return `<section class="hero"><p class="date">${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()]}, ${d.getDate()} September</p><h1>${headline}</h1><p class="sub">${sub}</p></section>
   <div class="today">
-    <div class="list">${open.map(row).join('')}${done.length ? '<p class="group">Done</p>' + done.map(row).join('') : ''}</div>
+    <div class="list">${GROUPS.map(([g, l]) => { const items = byGroup(g); return items.length ? `<p class="group">${l}</p>${items.map(row).join('')}` : ''; }).join('')}</div>
     <section class="detail" id="detail" aria-live="polite">${sel ? detail(sel) : ''}</section>
   </div>`;
 }
@@ -745,6 +792,7 @@ function renderAccount(id){
       <ul class="tl">${tl || '<li class="empty">Nothing here yet.</li>'}</ul>
     </section>
     <aside>
+      ${(() => { const items = D.signals.filter(s => s.acct === id && (s.status === 'open' || s.status === 'task')); return items.length ? `<div class="sec-head"><h3>To do</h3></div><ul class="people acct-todo" style="margin-bottom:36px">${items.map(s => `<li><button class="text-btn" data-act="sig" data-id="${s.id}" type="button" style="text-align:left">${esc(s.action)}</button><div class="ds">${s.status === 'task' ? 'In your tasks' : s.promise ? 'Promised ' + s.promise.when : s.due === 'week' ? 'This week' : 'Today'}</div></li>`).join('')}</ul>` : ''; })()}
       <div class="sec-head"><h3>People</h3></div>
       ${people.length ? `<ul class="people">${people.map(p => `<li><div class="nm">${esc(p.name)}</div><div class="ds">${esc(p.title)} · ${esc(p.role)}</div><div class="id">${p.dnc ? '<span class="no">Do not contact</span>' : confText(p.conf, p.method)}</div></li>`).join('')}</ul>`
         : `<p class="muted">No one identified yet. Visits are matched to the company only. Trellis never guesses who someone is.</p>`}
@@ -938,39 +986,65 @@ function simulate(){
   toast('Marcus Lee just clicked your security link.');
   if (S.view === 'account' && S.acct === 'acme') render();
   setTimeout(() => {
-    D.signals.push({ id: 's6', acct: 'acme', person: 'marcus', kind: 'Buying signal', title: 'Security review started', strength: 71, ago: 0, status: 'open',
-      components: [
-        { l: 'Read the SOC 2 page for almost 3 minutes', p: 30, ev: ['m2'] },
-        { l: 'First click from Marcus, via the security email', p: 21, ev: ['m1'] },
-        { l: 'Asked for the SOC 2 report yesterday', p: 20, ev: ['e4#3'] },
-        { l: 'Earlier open of the same email', p: 0, ev: ['e6'], x: 'Opens don’t count. Scanners and privacy proxies trigger them.' }
-      ],
-      rec: { kind: 'draft', text: 'Send Marcus the SOC 2 report while he’s reading.' },
-      draft: { to: 'marcus', subject: 'SOC 2 Type II report for Acme’s review',
-        body: 'Hi Marcus,\n\nAs discussed in yesterday’s check-in, here is our SOC 2 Type II report (period ending 30 Jun 2026) and the completed security questionnaire.\n\nIf it helps, I can set up 30 minutes with our security lead for any follow-ups.\n\nJordan',
-        why: [['Marcus asking for the SOC 2 report', 'e4#3'], ['him reading the SOC 2 page right now', 'm2']] } });
+    const s = D.signals.find(x => x.id === 's7');
     D.accounts.acme.summary.push({ t: 'Marcus started the security review today and is reading the SOC 2 page.', c: ['m1', 'm2'] });
     D.accounts.acme.summaryAgo = 0;
-    S.newIds.add('s6');
-    toast('New signal from Acme.', 'Arrived 1 min 52 s after the click.');
+    if (s.status === 'open'){
+      s.live = true; s.ago = 0; s.strength = 86;
+      s.why.unshift({ t: 'He is reading your SOC 2 page right now.', c: ['m1', 'm2'], live: true });
+      s.components.unshift({ l: 'Reading the SOC 2 page right now', p: 22, ev: ['m2'] });
+      s.draft.body = s.draft.body.replace('As discussed', 'I saw the security review is underway. As discussed');
+      S.newIds.add('s7'); S.sig = 's7';
+      toast('Moved to the top: Send Marcus the SOC 2 report.', 'He’s reading your security page now.');
+    } else {
+      toast('Marcus is reading your SOC 2 page.', 'Added to the Acme timeline.');
+    }
     render();
   }, 1400);
 }
-function tidyCopy(){
-  // Shorter, plainer recommendation and exclusion copy for this design.
-  const r = { s1: 'Send Priya a short plan that shows go-live before quarter-end.', s2: 'Send Tomás the MSA in Word and loop in legal today.', s3: 'Give Aisha a one-page pilot plan for her board.', s4: 'Find a real contact at Corvid before reaching out.', s5: 'Let the owner know. Outreach stays off.' };
+function shapeItems(){
+  const opens = 'Opens don’t count. Scanners and privacy proxies trigger them.';
+  D.signals.push({ id: 's7', acct: 'acme', person: 'marcus', kind: 'Promise', title: 'SOC 2 report promised', strength: 64, ago: 1425, status: 'open',
+    components: [
+      { l: 'Open request from yesterday’s check-in', p: 30, ev: ['e4#3'] },
+      { l: 'Security review gates the proposal', p: 20, ev: ['e9'] },
+      { l: 'No reply to the questionnaire in 3 days', p: 14, ev: ['e7'] },
+      { l: 'Email opens', p: 0, ev: ['e6'], x: opens }
+    ],
+    rec: { kind: 'draft', text: '' },
+    draft: { to: 'marcus', subject: 'SOC 2 Type II report for Acme’s review',
+      body: 'Hi Marcus,\n\nAs discussed in yesterday’s check-in, here is our SOC 2 Type II report (period ending 30 Jun 2026) and the completed security questionnaire.\n\nIf it helps, I can set up 30 minutes with our security lead for any follow-ups.\n\nJordan',
+      why: [['Marcus’s request in yesterday’s check-in', 'e4#3']] } });
+  const X = {
+    s1: { action: 'Send Priya the go-live plan', due: 'today',
+      promise: { t: 'Next step: Jordan sends an implementation plan with dates.', ref: 'e4#4', src: 'yesterday’s check-in notes', when: 'yesterday' },
+      why: [{ t: 'She revisited pricing twice since your proposal.', c: ['e3', 'e1'] }, { t: 'She read the implementation guide 8 minutes ago.', c: ['e2'] }, { t: 'Her open question: can all 40 depots be live before 31 Dec?', c: ['e4#2'] }],
+      dwhy: [['Priya’s timing question in yesterday’s check-in', 'e4#2'], ['her reading the implementation guide this morning', 'e2'], ['your promise to send a plan with dates', 'e4#4']] },
+    s7: { action: 'Send Marcus the SOC 2 report', due: 'today',
+      promise: { t: 'Marcus: needs the SOC 2 Type II report before the security review starts.', ref: 'e4#3', src: 'yesterday’s check-in notes', when: 'yesterday' },
+      why: [{ t: 'The security review can’t start without it.', c: ['e4#3'] }, { t: 'No reply to your questionnaire in 3 days.', c: ['e7'] }, { t: 'It’s the last blocker on a $48,000 proposal.', c: ['e9'] }] },
+    s2: { action: 'Send Tomás the MSA in Word', due: 'today', kind: 'draft',
+      why: [{ t: 'He asked for an MSA redline 42 minutes ago.', c: ['b1'] }, { t: 'His legal team needs a Word version.', c: ['b4'] }, { t: 'The deal moved to negotiation this week.', c: ['b5'] }],
+      dwhy: [['Tomás’s MSA redline request', 'b1'], ['his ask for a Word version', 'b4']] },
+    s3: { action: 'Send Aisha a pilot plan for her board', due: 'week',
+      why: [{ t: 'No reply in 8 business days since your recap.', c: ['n1'] }, { t: 'Her board decides on the pilot in October.', c: ['n2#2'] }, { t: 'She is the only person you know there.', c: ['n2#1'] }],
+      dwhy: [['Aisha’s October board deadline', 'n2#2'], ['8 business days without a reply', 'n1']] },
+    s4: { action: 'Find a contact at Corvid Analytics', due: 'week', rec: { kind: 'task', text: 'Research Corvid and find the operations lead. Trellis won’t email anyone until a real person is identified.', task: 'Find a contact at Corvid Analytics', due: 'Friday' },
+      why: [{ t: 'Two people from Corvid viewed pricing today.', c: ['c1'] }, { t: 'They also read the telematics integration page.', c: ['c2'] }, { t: 'We only know the company, not who they are.', c: ['c1'] }] },
+    s5: { action: 'Ben Okafor is back on pricing', due: 'fyi', rec: { kind: 'ack', text: 'He’s on your do-not-contact list, so Trellis won’t draft outreach. Nothing to do unless he reaches out.' },
+      why: [{ t: 'He clicked an old email link and viewed pricing today.', c: ['h2', 'h1'] }, { t: 'Halden closed lost in August over a budget freeze.', c: ['h3'] }] }
+  };
   D.signals.forEach(s => {
-    if (r[s.id]) s.rec.text = r[s.id];
-    s.components.forEach(c => { if (c.x) c.x = 'Opens don’t count. Scanners and privacy proxies trigger them.'; });
+    const x = X[s.id]; if (!x) return;
+    Object.assign(s, { action: x.action, due: x.due, why: x.why, promise: x.promise || null });
+    if (x.rec) s.rec = x.rec;
+    if (x.kind) s.rec.kind = x.kind;
+    if (x.dwhy) s.draft.why = x.dwhy;
+    s.components.forEach(c => { if (c.x) c.x = opens; });
   });
-  const why = { s1: [['Priya’s timing question in yesterday’s check-in', 'e4#2'], ['her reading the implementation guide this morning', 'e2'], ['Marcus’s SOC 2 request', 'e4#3']],
-    s2: [['Tomás’s MSA redline request', 'b1'], ['his ask for a Word version', 'b4']],
-    s3: [['Aisha’s October board deadline', 'n2#2'], ['8 business days without a reply', 'n1']],
-    s5: [['Ben viewing pricing today', 'h1']] };
-  D.signals.forEach(s => { if (why[s.id]) s.draft.why = why[s.id]; });
-  if (D.signals.find(s => s.id === 's4')) D.signals.find(s => s.id === 's4').locked = 'We only know the company, not the person, so email is off.';
+  D.signals.find(s => s.id === 's4').locked = 'We only know the company, not the person, so email is off.';
 }
-tidyCopy();
+shapeItems();
 
 document.addEventListener('click', e => {
   const menu = document.getElementById('menu');
@@ -1010,13 +1084,19 @@ document.addEventListener('click', e => {
       closeLayers(); toast('Saved to Gmail drafts.'); render(); break;
     }
     case 'task': {
-      const task = s.rec.task || `Follow up: ${s.title}`, due = s.rec.due || 'Tomorrow';
-      finish(s, `Task added: ${task}. Due ${due.toLowerCase()}.`, { action: 'Task created', target: D.accounts[s.acct].name, outcome: 'Due ' + due.toLowerCase() });
-      toast('Task added.', task); render(); break;
+      finish(s, '', { action: 'Task created', target: D.accounts[s.acct].name, outcome: 'Due ' + s.rec.due.toLowerCase(), status: 'task' });
+      toast('Added to your tasks.', 'Due ' + s.rec.due.toLowerCase() + '.'); render(); break;
     }
-    case 'notify':
-      finish(s, `${ME.name} was notified. No one at ${D.accounts[s.acct].name} was contacted.`, { action: 'Owner notified', target: D.accounts[s.acct].name, policy: 'Passed (internal)', outcome: 'In-app and email alert' });
-      toast('Owner notified.'); render(); break;
+    case 'ack':
+      finish(s, 'Noted. No one at ' + D.accounts[s.acct].name + ' was contacted.', { action: 'Heads-up acknowledged', target: D.accounts[s.acct].name, policy: 'Passed (internal)', outcome: 'No outreach' });
+      render(); break;
+    case 'check':
+      if (s.status === 'open' || s.status === 'task'){
+        const wasTask = s.status === 'task';
+        finish(s, wasTask ? 'Task complete.' : 'Marked done. Handled outside Trellis.', { action: wasTask ? 'Task completed' : 'Marked done', target: D.accounts[s.acct].name, outcome: wasTask ? 'Completed' : 'Handled outside Trellis' });
+        toast('Done.', s.action);
+      } else { s.status = 'open'; s.result = ''; }
+      render(); break;
     case 'snooze':
       finish(s, 'Snoozed until tomorrow morning. It comes back sooner if something new happens.', { action: 'Signal snoozed', target: D.accounts[s.acct].name, outcome: 'Until tomorrow 09:00', status: 'snoozed' });
       render(); break;
@@ -1037,8 +1117,8 @@ document.addEventListener('click', e => {
     case 'keep': D.mergeOpen = false; toast('Kept separate.'); render(); break;
     case 'simulate': simulate(); break;
     case 'reset':
-      D = structuredClone(INITIAL); tidyCopy();
-      Object.assign(S, { sig: 's1', filter: 'all', dismissing: null, simulated: false, testing: {}, thread: [], newIds: new Set(), showWhy: true, showChecks: false });
+      D = structuredClone(INITIAL); shapeItems();
+      Object.assign(S, { sig: 's1', filter: 'all', dismissing: null, simulated: false, testing: {}, thread: [], newIds: new Set(), showWhy: false, showChecks: false });
       { const b = document.getElementById('simBtn'); b.disabled = false; b.innerHTML = 'Simulate<span>&nbsp;live event</span>'; }
       toggleMenu(false); seedThread(); closeLayers(); go('queue'); toast('Demo reset.'); break;
   }
