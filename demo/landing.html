@@ -107,7 +107,7 @@ sup.c + sup.c{margin-left:4px}
 .checks{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px}
 .checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px}
 .checks svg{margin-top:3px;color:var(--accent)}
-.fx{background:var(--bg-2);border-radius:22px;padding:32px}
+.fx{background:var(--bg-2);border-radius:22px;padding:28px}
 .mock{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px rgba(17,17,19,.04)}
 .mock .k{font-size:12px;font-weight:600;color:var(--ink-3);margin-bottom:10px}
 .tl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
@@ -241,6 +241,70 @@ sup.c + sup.c{margin-left:4px}
 .log:first-of-type{border-top:0;padding-top:0}
 .log .t{color:var(--ink-3);font-size:12.5px;font-variant-numeric:tabular-nums;padding-top:1px}
 .log span.bad{color:#C2352B}
+.win{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;text-align:left}
+.wb{padding:18px 20px 20px}
+.w-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.who{display:flex;gap:10px;align-items:center}
+.w-title{font:700 17px/1.25 var(--display);letter-spacing:-.02em}
+.w-sub{font-size:12.5px;color:var(--ink-3)}
+.w-sub b{color:var(--ink);font-weight:600}
+.av{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.badge{font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--bg-2);color:var(--ink-2);white-space:nowrap}
+.badge.good{color:var(--good)}
+.w-summary{background:var(--bg-2);border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.w-k{font-size:11px;font-weight:600;color:var(--ink-3);margin-bottom:3px}
+.w-foot{margin-top:12px;font-size:12px;color:var(--ink-3)}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.col{background:var(--bg-2);border-radius:10px;padding:8px}
+.col-h{display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;color:var(--ink-3);margin:2px 2px 8px}
+.col-h em{font-style:normal}
+.dc{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px;font-size:12px;display:flex;flex-direction:column;gap:2px}
+.dc b{font-size:13px}
+.dc span{color:var(--ink-2)}
+.dc .own{color:var(--ink-3);font-size:11px}
+.dc.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dc .auto{margin-top:6px;color:var(--accent);font-size:11px;font-weight:600;line-height:1.35}
+.jrow{display:grid;grid-template-columns:42px minmax(0,1fr) 40px;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.jrow .t,.jrow .dur{color:var(--ink-3);font-size:12px;font-variant-numeric:tabular-nums;padding-top:1px}
+.jrow .dur{text-align:right}
+.jrow b{font-weight:600}
+.itag{font-size:10.5px;font-weight:700;color:var(--c-web);margin-left:8px}
+.itag.ev2{color:var(--c-track)}
+.jbar{height:6px;border-radius:3px;background:var(--bg-3);margin-top:6px;overflow:hidden}
+.jbar i{display:block;height:100%;background:var(--c-web);border-radius:3px}
+.rank{display:grid;grid-template-columns:minmax(0,1fr) 90px 28px;gap:12px;align-items:center;padding:9px 10px;border-radius:10px;font-size:13.5px}
+.rank.sel{background:var(--bg-2)}
+.rank b{display:block;font-weight:600}
+.rank small{display:block;font-size:11.5px;color:var(--ink-3)}
+.rbar{height:6px;border-radius:3px;background:var(--bg-3);overflow:hidden}
+.rbar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.rn{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.breakdown{padding:4px 10px 10px 18px;border-left:2px solid var(--accent);margin:2px 0 6px 10px;font-size:12.5px}
+.breakdown .score{padding:6px 0;font-size:12.5px}
+.rk{display:grid;grid-template-columns:78px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px;align-items:start}
+.rk b{display:block;font-weight:600}
+.rk span:not(.rtag){display:block;color:var(--ink-2);font-size:12.5px}
+.rk .sug{color:var(--accent);font-weight:600;margin-top:3px}
+.qbox{display:flex;align-items:center;gap:10px;background:var(--bg-2);border-radius:10px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--ink)}
+.qbox svg{color:var(--ink-3);flex:none}
+.actg{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:12px}
+.td{padding:9px 10px;border-radius:9px;font-size:12px;color:var(--ink-2)}
+.td.sel{background:var(--bg-2)}
+.td b{display:block;font-size:13px;color:var(--ink);font-weight:600;margin-bottom:1px}
+.td em{font-style:normal;font-weight:600;color:var(--caution)}
+.cmp{border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12.5px}
+.cmp .subj{font-weight:600;font-size:13.5px;margin:6px 0 6px}
+.cmp .body{color:var(--ink-2);line-height:1.5}
+.cmp-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px}
+.cmp-foot .send{margin-top:0}
+.okline{font-size:11.5px;font-weight:600;color:var(--good)}
+.lg{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+.lg .t{color:var(--ink-3);font-size:12px;padding-top:1px}
+.lg b{display:block;font-weight:600}
+.lg span:not(.t):not(.st){display:block;color:var(--ink-2);font-size:12.5px}
+.st{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--bg-2);color:var(--ink-2)}
+.st.ok{color:var(--good)}
+.st.no{color:var(--caution);background:var(--caution-soft)}
 @media (max-width:1100px){
   .app3{grid-template-columns:minmax(0,1fr) 240px}
   .rail{display:none}
@@ -265,6 +329,8 @@ sup.c + sup.c{margin-left:4px}
   .steps{grid-template-columns:1fr}
   .modules{grid-template-columns:1fr}
   .team-grid{grid-template-columns:1fr}
+  .board,.actg{grid-template-columns:1fr}
+  .wb{padding:14px}
   .pipe{grid-template-columns:1fr}
   .ev{grid-template-columns:54px minmax(0,1fr)}
   .ev .ch{grid-column:2}
@@ -378,12 +444,17 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A live account summary that rewrites itself as new emails and notes arrive</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Priya Raman · Timeline</p>
-        <div class="tl"><span class="t">10:42</span><div><b>Viewed /pricing</b><span><em style="color:var(--c-web)">Website</em> · 3 min 12 s</span></div></div>
-        <div class="tl"><span class="t">10:37</span><div><b>Clicked “Implementation guide”</b><span><em style="color:var(--c-track)">Tracking</em> · from your proposal</span></div></div>
-        <div class="tl"><span class="t">Yesterday</span><div><b>Implementation check-in</b><span><em style="color:var(--c-meet)">Meeting</em> · notes attached</span></div></div>
-        <div class="tl"><span class="t">7 days ago</span><div><b>“Can you send pricing for 40 depots?”</b><span><em style="color:var(--c-email)">Email</em> · received</span></div></div>
+      <div class="fx"><div class="win" role="img" aria-label="Priya Raman's page: a live summary and a timeline mixing website, tracking, meeting and email events">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Priya Raman</span></div>
+        <div class="wb">
+          <div class="w-head"><div class="who"><span class="av">PR</span><div><p class="w-title">Priya Raman</p><p class="w-sub">VP Operations · Acme Logistics · Champion</p></div></div><span class="badge good">Very high confidence</span></div>
+          <div class="w-summary"><p class="w-k">Summary · updated 3 min ago</p><p>Owns the decision and wants all 40 depots live before quarter-end.<sup class="c">1</sup> Read pricing and the implementation guide this morning.<sup class="c">2</sup></p></div>
+          <div class="chips"><span class="on">All</span><span>Email</span><span>Meetings</span><span>Notes</span><span>Website</span></div>
+          <div class="ev"><span class="t">10:42</span><span class="ch" style="color:var(--c-web)">Website</span><div><b>Viewed /pricing</b><span>3 min 12 s · second visit this week</span></div></div>
+          <div class="ev"><span class="t">10:37</span><span class="ch" style="color:var(--c-track)">Tracking</span><div><b>Clicked “Implementation guide”</b><span>From your proposal email</span></div></div>
+          <div class="ev"><span class="t">Yesterday</span><span class="ch" style="color:var(--c-meet)">Meeting</span><div><b>Implementation check-in</b><span>30 min · notes attached</span></div></div>
+          <div class="ev"><span class="t">7 d ago</span><span class="ch" style="color:var(--c-email)">Email</span><div><b>“Can you send pricing for 40 depots?”</b><span>Received from Priya</span></div></div>
+        </div>
       </div></div>
     </div>
 
@@ -397,10 +468,17 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Import and export everything as CSV</li>
         </ul>
       </div>
-      <div class="fx"><div class="pipe">
-        <div><p class="k">Discovery <em>1</em></p><div class="deal-card"><b>Northwind Clinics</b><span>$18,500 · 20 Nov</span><small>Created from a calendar invite</small></div></div>
-        <div><p class="k">Proposal <em>1</em></p><div class="deal-card hot"><b>Acme Logistics</b><span>$48,000 · 30 Oct</span><small>Moved when the proposal was sent</small></div></div>
-        <div><p class="k">Negotiation <em>1</em></p><div class="deal-card"><b>Brightline Labs</b><span>$92,000 · 15 Oct</span><small>Moved after the MSA request</small></div></div>
+      <div class="fx"><div class="win" role="img" aria-label="Pipeline board with deals in Discovery, Proposal and Negotiation; Acme moved to Proposal automatically">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Pipeline</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">Pipeline</p><p class="w-sub">3 open deals · $158,500 total · $102,425 weighted</p></div><span class="badge">Q4</span></div>
+          <div class="board">
+            <div class="col"><p class="col-h">Discovery <em>$18.5k</em></p><div class="dc"><b>Northwind Clinics</b><span>$18,500 · 25%</span><span class="own">Closes 20 Nov</span></div></div>
+            <div class="col"><p class="col-h">Proposal <em>$48k</em></p><div class="dc hot"><b>Acme Logistics</b><span>$48,000 · 60%</span><span class="own">Closes 30 Oct</span><span class="auto">Auto-moved: proposal sent</span></div></div>
+            <div class="col"><p class="col-h">Negotiation <em>$92k</em></p><div class="dc"><b>Brightline Labs</b><span>$92,000 · 75%</span><span class="own">Closes 15 Oct</span></div></div>
+          </div>
+          <p class="w-foot">Won this quarter · Pinecrest Foods · $24,000</p>
+        </div>
       </div></div>
     </div>
 
@@ -415,15 +493,16 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email opens shown, never counted as intent</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Priya Raman · Journey this morning</p>
-        <ol class="journey">
-          <li><b>Opened your proposal email</b><span>09:58 · open, not counted</span></li>
-          <li><b>Clicked “Implementation guide”</b><span>10:37 · tracked link, identity confirmed</span></li>
-          <li><b>Read /guides/implementation</b><span>10:37 · 4 min 20 s</span></li>
-          <li class="hot"><b>Read /pricing</b><span>10:42 · 3 min 12 s · second visit this week</span></li>
-        </ol>
-        <p class="alert">Alert sent to you 1 min 52 s after the pricing visit</p>
+      <div class="fx"><div class="win" role="img" aria-label="Priya Raman's website visit: pages read with time on each, the campaign source and an alert">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Website · Priya Raman</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">Visit this morning</p><p class="w-sub">From your proposal email · campaign fleet-q4</p></div><span class="badge good">Known visitor</span></div>
+          <div class="jrow"><span class="t">10:37</span><div><b>/guides/implementation</b><span class="itag">High intent</span><div class="jbar"><i style="width:82%"></i></div></div><span class="dur">4:20</span></div>
+          <div class="jrow"><span class="t">10:41</span><div><b>/integrations/telematics</b><div class="jbar"><i style="width:16%"></i></div></div><span class="dur">0:48</span></div>
+          <div class="jrow"><span class="t">10:42</span><div><b>/pricing</b><span class="itag">High intent</span><div class="jbar"><i style="width:62%"></i></div></div><span class="dur">3:12</span></div>
+          <div class="jrow"><span class="t">10:45</span><div><b>Downloaded security overview</b><span class="itag ev2">Custom event</span></div><span class="dur"></span></div>
+          <p class="alert">Alert sent to Jordan 1 min 52 s after the pricing visit</p>
+        </div>
       </div></div>
     </div>
 
@@ -446,14 +525,21 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Identity confidence shown, so you know who really did it</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Pricing interest increased · Acme Logistics</p>
-        <div class="score"><span class="l">Two pricing-page views after the proposal</span><span class="p">+34</span></div>
-        <div class="score"><span class="l">Implementation guide click this morning</span><span class="p">+22</span></div>
-        <div class="score"><span class="l">No reply to the proposal in 4 business days</span><span class="p">+18</span></div>
-        <div class="score"><span class="l">Both known stakeholders active</span><span class="p">+8</span></div>
-        <div class="score x"><span class="l">Email opens</span><span class="p">0</span></div>
-        <div class="score-total"><span style="color:var(--ink-3);font-size:14px">Signal strength · very high identity confidence</span><b>82</b></div>
+      <div class="fx"><div class="win" role="img" aria-label="Accounts ranked by intent this week, with Acme Logistics expanded to show its score breakdown">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Intent</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">Who’s warming up</p><p class="w-sub">This week · ranked by real activity · opens excluded</p></div></div>
+          <div class="rank sel"><span><b>Acme Logistics</b><small>Priya Raman · pricing interest</small></span><span class="rbar"><i style="width:82%"></i></span><span class="rn">82</span></div>
+          <div class="breakdown">
+            <div class="score"><span class="l">Two pricing-page views after the proposal</span><span class="p">+34</span></div>
+            <div class="score"><span class="l">Implementation guide click</span><span class="p">+22</span></div>
+            <div class="score"><span class="l">No reply in 4 business days</span><span class="p">+18</span></div>
+            <div class="score x"><span class="l">Email opens</span><span class="p">0</span></div>
+          </div>
+          <div class="rank"><span><b>Brightline Labs</b><small>Tomás Duarte · contract review</small></span><span class="rbar"><i style="width:76%"></i></span><span class="rn">76</span></div>
+          <div class="rank"><span><b>Northwind Clinics</b><small>Aisha Karim · gone quiet</small></span><span class="rbar"><i style="width:58%"></i></span><span class="rn">58</span></div>
+          <div class="rank"><span><b>Corvid Analytics</b><small>Company only · pricing visits</small></span><span class="rbar"><i style="width:49%"></i></span><span class="rn">49</span></div>
+        </div>
       </div></div>
     </div>
 
@@ -467,12 +553,15 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Suggested next step for each flag</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Deals at risk · this week</p>
-        <div class="risk"><span class="rtag">Stalled</span><div><b>Northwind Clinics</b><span>No reply in 8 business days since the recap</span></div></div>
-        <div class="risk"><span class="rtag">Missing</span><div><b>Acme Logistics</b><span>No finance or procurement contact in any thread</span></div></div>
-        <div class="risk"><span class="rtag">Timeline</span><div><b>Brightline Labs</b><span>Closes 15 Oct, but legal review hasn’t started</span></div></div>
-        <div class="risk"><span class="rtag">Conflict</span><div><b>Halden Freight</b><span>Budget “frozen” in August, pricing visit today</span></div></div>
+      <div class="fx"><div class="win" role="img" aria-label="Deals at risk: four flagged deals, each with its evidence and a suggested next step">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Deals at risk</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">4 deals need attention</p><p class="w-sub">Updated as new activity arrives</p></div><span class="badge">Weekly review</span></div>
+          <div class="rk"><span class="rtag">Stalled</span><div><b>Northwind Clinics · $18,500</b><span>No reply in 8 business days since the recap</span><span class="sug">Suggested: send a one-page pilot plan for the board</span></div></div>
+          <div class="rk"><span class="rtag">Missing</span><div><b>Acme Logistics · $48,000</b><span>No finance or procurement contact in any thread</span><span class="sug">Suggested: ask Priya who signs off on budget</span></div></div>
+          <div class="rk"><span class="rtag">Timeline</span><div><b>Brightline Labs · $92,000</b><span>Closes 15 Oct, but legal review hasn’t started</span><span class="sug">Suggested: send the MSA in Word today</span></div></div>
+          <div class="rk"><span class="rtag">Conflict</span><div><b>Halden Freight · closed lost</b><span>Budget “frozen” in August, pricing visit today</span><span class="sug">On do-not-contact · owner notified only</span></div></div>
+        </div>
       </div></div>
     </div>
 
@@ -486,11 +575,16 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Only searches what you’re allowed to see</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock ans">
-        <p class="q">What did Acme say about timing and budget?</p>
-        <p>Acme wants to be live before quarter-end. Priya said so by email and again yesterday.<sup class="c">1</sup><sup class="c">2</sup></p>
-        <p class="gap"><b>Not enough evidence.</b> No one at Acme has stated a budget. The only figure is the $48,000 in your proposal.<sup class="c">3</sup></p>
-        <div class="srcs"><span><b>1</b>Re: pricing for 40 depots · 7 days ago</span><span><b>2</b>Notes: implementation check-in · line 2</span><span><b>3</b>Acme proposal · 6 days ago</span></div>
+      <div class="fx"><div class="win" role="img" aria-label="Ask screen: a question about Acme, an answer with numbered sources, and a note that no budget has been stated">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Ask</span></div>
+        <div class="wb ans">
+          <div class="qbox"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>What did Acme say about timing and budget?</div>
+          <p class="w-sub" style="margin:12px 0 10px">Acme Logistics · 13 sources checked</p>
+          <p>Acme wants to be live before quarter-end. Priya said so by email and again yesterday.<sup class="c">1</sup><sup class="c">2</sup></p>
+          <p class="gap"><b>Not enough evidence.</b> No one at Acme has stated a budget. The only figure is the $48,000 in your proposal.<sup class="c">3</sup></p>
+          <div class="srcs"><span><b>1</b>Re: pricing for 40 depots · 7 days ago</span><span><b>2</b>Notes: implementation check-in · line 2</span><span><b>3</b>Acme proposal · 6 days ago</span></div>
+          <div class="chips" style="margin:14px 0 0"><span>Pre-call brief</span><span>Handoff</span><span>Risk review</span><span>Weekly review</span></div>
+        </div>
       </div></div>
     </div>
 
@@ -504,13 +598,24 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent and do-not-contact checked on every email</li>
         </ul>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Today · 5 things to do</p>
-        <div class="tl"><span class="t" style="color:var(--caution)">Promised</span><div><b>Send Priya the go-live plan</b><span>Acme Logistics · draft ready</span></div></div>
-        <div class="tl"><span class="t" style="color:var(--caution)">Promised</span><div><b>Send Marcus the SOC 2 report</b><span>Acme Logistics · draft ready</span></div></div>
-        <div class="tl"><span class="t">Today</span><div><b>Send Tomás the MSA in Word</b><span>Brightline Labs · asked 42 min ago</span></div></div>
-        <ul class="policy"><li><span class="ok">✓</span><b>Identity</b> · very high confidence</li><li><span class="ok">✓</span><b>Consent</b> · existing relationship</li><li><span class="ok">✓</span><b>Do not contact</b> · not on the list</li></ul>
-        <span class="send" style="margin-top:14px">Review and send</span>
+      <div class="fx"><div class="win" role="img" aria-label="Today screen: three to-dos beside a drafted email to Priya with all checks passed and a Send button">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Today</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">Five things to do</p><p class="w-sub">Tuesday, 29 September</p></div></div>
+          <div class="actg">
+            <div>
+              <div class="td sel"><b>Send Priya the go-live plan</b><span>Acme · <em>Promised</em></span></div>
+              <div class="td"><b>Send Marcus the SOC 2 report</b><span>Acme · <em>Promised</em></span></div>
+              <div class="td"><b>Send Tomás the MSA in Word</b><span>Brightline · draft ready</span></div>
+            </div>
+            <div class="cmp">
+              <p class="w-sub">To <b>Priya Raman</b></p>
+              <p class="subj">Go-live plan before quarter-end</p>
+              <p class="body">Hi Priya, you asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec…</p>
+              <div class="cmp-foot"><span class="okline">✓ 5 of 5 checks passed</span><span class="send">Send</span></div>
+            </div>
+          </div>
+        </div>
       </div></div>
     </div>
   </section>
@@ -528,12 +633,15 @@ sup.c + sup.c{margin-left:4px}
         <div><h3>Activity log</h3><p>Every action is recorded with what triggered it, the checks it passed, who approved it and what happened. Export it anytime.</p></div>
         <div><h3>Connection health</h3><p>See each connection’s last sync, delay and errors, and reconnect in one click. Nothing is duplicated when data catches up.</p></div>
       </div>
-      <div class="fx"><div class="mock">
-        <p class="k">Activity log</p>
-        <div class="log"><span class="t">10:46</span><div><b>Email sent to Priya Raman</b><span>Approved by Jordan Ellis · 5 of 5 checks passed</span></div></div>
-        <div class="log"><span class="t">10:44</span><div><b>Task created: Send MSA to Tomás</b><span>From rule “Contract page activity” v1</span></div></div>
-        <div class="log"><span class="t">Yesterday</span><div><b>Draft blocked for Ben Okafor</b><span class="bad">Do-not-contact list · owner notified</span></div></div>
-        <div class="log"><span class="t">Yesterday</span><div><b>Google Calendar reconnected</b><span>3-hour gap caught up · no duplicates</span></div></div>
+      <div class="fx"><div class="win" role="img" aria-label="Activity log listing sent, created, blocked and reconnect events with their checks and who approved them">
+        <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Settings · Activity log</span></div>
+        <div class="wb">
+          <div class="w-head"><div><p class="w-title">Activity log</p><p class="w-sub">Every action, its trigger and who approved it</p></div><span class="badge">Export</span></div>
+          <div class="lg"><span class="t">10:46</span><div><b>Email sent to Priya Raman</b><span>Approved by Jordan Ellis</span></div><span class="st ok">Passed</span></div>
+          <div class="lg"><span class="t">10:44</span><div><b>Task: send MSA to Tomás</b><span>Rule “Contract page activity” v1</span></div><span class="st ok">Passed</span></div>
+          <div class="lg"><span class="t">Yesterday</span><div><b>Draft for Ben Okafor</b><span>Owner notified instead</span></div><span class="st no">Blocked</span></div>
+          <div class="lg"><span class="t">Yesterday</span><div><b>Google Calendar reconnected</b><span>3-hour gap caught up, no duplicates</span></div><span class="st">System</span></div>
+        </div>
       </div></div>
     </div>
   </section>
