@@ -21,6 +21,8 @@ Product discovery and design-partner validation. No production code yet (only th
 
 [`demo/landing.html`](demo/landing.html) is the marketing landing page (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD). It positions Trellis as one platform for email, CRM and pipeline, calendar, meeting notes, website journey and email tracking: a hero shot of an account timeline mixing every channel, the problem, the eight platform capabilities, how it works, feature rows (timeline, self-updating CRM, buyer journey), pipeline intelligence (intent ranking, deal risk), answers with sources, acting from one place, a teams section (roles, manager views, activity log, connection health), privacy, the design partner offer, FAQ and a mockup sign-up. Earlier streetwear and zine concepts are in git history.
 
+[`demo/landing-v2.html`](demo/landing-v2.html) is a second landing page told as outcomes, not features (hosted: https://claude.ai/artifact/MKkTnNbT8NU8LpEt7jXbUd): a Monday-morning before/after in the hero, "three things you'll stop doing" (searching, forgetting, guessing), an interactive "same day, before and after" with five moments (start of day, before a call, someone reading pricing, after the call, Friday pipeline review), how work feels for each persona, a peace-of-mind section, and a short FAQ. It makes no pricing claims and has no invented statistics or testimonials.
+
 All demo files have no build step and no backend. They are written as artifact pages with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 
 ## Hand-off
