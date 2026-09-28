@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus session: reference implementation</title>
+<!--
+  Focus session pattern (reference implementation).
+  Use case: daily email follow-ups, done in one sitting, one email at a time.
+  - Start screen: how many drafts are ready and a time estimate.
+  - Card: context + reasons + "When you send" preview on the left, the draft on the right.
+    Controls: Skip (S), Snooze (Z), Edit (E), Send & next (⌘/Ctrl + Enter), Exit (Esc).
+  - The queue is a snapshot taken at Start; items that arrive mid-session wait for the next one.
+  - Recap: what was sent, snoozed or skipped, with Undo / Do it now per item.
+  No dependencies. Swap QUEUE for your API data.
+-->
+<style>
+:root{
+  --bg:#F5F6F8; --card:#FFFFFF; --line:#E6E7EB; --ink:#111113; --ink-2:#585A63; --ink-3:#6E7079; --muted:#8E9099; --track:#DADCE1;
+  --accent:#1A5CFF; --good:#1F7A45; --good-soft:#E3F4EA; --warn:#9A5B00; --bad:#C2352B;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font)}
+button,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+kbd{font:500 11px/1 var(--font);color:var(--muted);margin-left:6px}
+.screen{min-height:100%;display:flex;flex-direction:column}
+.center{align-items:center;text-align:center;padding:72px 20px 40px}
+.hello{margin:0 0 8px;color:var(--ink-2);font-size:16px}
+h1{margin:0;font-size:52px;line-height:1.05;letter-spacing:-.035em}
+h1 .soft{color:var(--ink-2)}
+.preview{width:min(560px,100%);margin-top:40px;border-radius:20px;background:var(--card);padding:22px 26px;text-align:left;box-shadow:0 16px 40px rgba(17,17,19,.10)}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--warn)}
+.big{margin:6px 0 4px;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.sub{margin:0;color:var(--ink-2);font-size:14.5px}
+.primary{height:52px;padding:0 32px;border:0;border-radius:999px;background:var(--accent);color:#fff;font-size:16px;font-weight:600}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.pill{height:44px;padding:0 18px;border:0;border-radius:999px;background:var(--card);font-weight:600;font-size:14px}
+.bar{display:flex;align-items:center;gap:20px;height:72px;padding:0 48px}
+.link{border:0;background:none;padding:0;color:var(--ink-2);font-weight:600;font-size:14px}
+.segs{flex:1;display:flex;gap:6px}
+.segs span{flex:1;height:4px;border-radius:2px;background:var(--track)}
+.card{flex:1;margin:0 48px;border-radius:24px;background:var(--card);box-shadow:0 16px 48px rgba(17,17,19,.08);padding:30px 34px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:36px;min-height:0}
+.ctx{display:flex;flex-direction:column;gap:18px}
+.who{margin:0 0 6px;color:var(--ink-2);font-size:14px}
+h2{margin:0;font-size:30px;line-height:1.1;letter-spacing:-.03em}
+.promise{margin:0;padding-left:14px;border-left:2px solid var(--warn);font-size:15.5px}
+.why{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.effects{margin-top:auto;border-radius:14px;background:var(--bg);padding:16px 18px;font-size:13.5px;display:flex;flex-direction:column;gap:8px}
+.effects .label{margin:0;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.effects p{margin:0}
+.ok{font-weight:600;color:var(--good)}
+.blocked{font-weight:600;color:var(--bad)}
+.draft{border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:0}
+.field{display:flex;gap:10px;font-size:14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.field span:first-child{width:60px;color:var(--ink-3)}
+.field span:last-child{font-weight:600}
+.body{margin:0;font-size:15px;line-height:1.65;white-space:pre-line;overflow-y:auto}
+textarea{flex:1;min-height:240px;resize:none;border:1px solid var(--accent);border-radius:10px;padding:12px;font-size:15px;line-height:1.6}
+textarea:focus{outline:none}
+.controls{display:flex;align-items:center;gap:12px;height:96px;padding:0 48px}
+.controls .primary{margin-left:auto}
+.recap{width:min(720px,100%);margin-top:30px;border-radius:20px;background:var(--card);padding:6px 24px;box-shadow:0 12px 36px rgba(17,17,19,.06);text-align:left}
+.recap-row{display:flex;align-items:center;gap:14px;padding:14px 0}
+.recap-row + .recap-row{border-top:1px solid var(--line)}
+.recap-row .ic{width:18px;font-weight:700}
+.recap-row .t{margin:0;font-weight:600}
+.recap-row .n{margin:2px 0 0;font-size:13px;color:var(--ink-2)}
+.recap-row .a{margin-left:auto;border:0;background:none;padding:0;color:var(--accent);font-weight:600;font-size:13.5px}
+.done-mark{width:60px;height:60px;border-radius:50%;background:var(--good-soft);color:var(--good);font-size:28px;font-weight:700;display:grid;place-items:center;margin-bottom:18px}
+.dark{height:46px;padding:0 24px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;margin-top:26px}
+@media (max-width:860px){.card{grid-template-columns:1fr;margin:0 16px;padding:22px}.bar,.controls{padding:0 16px}h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ---------- Sample data: replace with your API (emails only) ---------- */
+const QUEUE = [
+  { id: 'priya', eyebrow: 'Promised yesterday', title: 'Send Priya the go-live plan', who: 'Acme Logistics · Priya Raman, VP Operations',
+    promise: '“Next step: Jordan sends an implementation plan with dates.” (yesterday’s check-in)',
+    why: ['Revisited pricing twice since your proposal', 'Read the implementation guide 8 minutes ago', 'Wants all 40 depots live before 31 Dec'],
+    to: 'Priya Raman', subject: 'Go-live plan before quarter-end',
+    body: 'Hi Priya,\n\nYou asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec, two weeks ahead of 31 Dec.\n\nI’ve attached the week-by-week plan.\n\nWould Thursday work for 20 minutes to confirm the start date?\n\nJordan',
+    effects: 'Sent from your Gmail → logged on Acme → promise marked done → back Friday if no reply',
+    checks: { passed: true, summary: 'All 5 checks passed' }, note: 'Back Friday if no reply' },
+  { id: 'marcus', eyebrow: 'Promised yesterday', title: 'Send Marcus the SOC 2 report', who: 'Acme Logistics · Marcus Lee, Security Lead',
+    promise: '“Marcus needs the SOC 2 Type II report before the security review starts.” (yesterday’s check-in)',
+    why: ['The security review can’t start without it', 'No reply to your questionnaire in 3 days', 'Last blocker on a $48,000 proposal'],
+    to: 'Marcus Lee', subject: 'SOC 2 Type II report for Acme’s review',
+    body: 'Hi Marcus,\n\nAs discussed in yesterday’s check-in, here is our SOC 2 Type II report and the completed security questionnaire.\n\nJordan',
+    effects: 'Sent from your Gmail → logged on Acme → promise marked done',
+    checks: { passed: true, summary: 'All 5 checks passed' }, note: 'Promise marked done' },
+  { id: 'tomas', eyebrow: 'Asked 42 minutes ago', title: 'Send Tomás the MSA in Word', who: 'Brightline Labs · Tomás Duarte, CFO', promise: '',
+    why: ['Asked for an MSA redline 42 minutes ago', 'His legal team needs a Word version', 'Deal moved to negotiation this week'],
+    to: 'Tomás Duarte', subject: 'MSA in Word for your legal team',
+    body: 'Hi Tomás,\n\nAttached is the MSA in Word so your counsel can redline it directly.\n\nJordan',
+    effects: 'Sent from your Gmail → logged on Brightline → deal note added',
+    checks: { passed: true, summary: 'All 5 checks passed' }, note: 'Deal note added' },
+  { id: 'aisha', eyebrow: 'Quiet for 8 business days', title: 'Send Aisha a pilot plan for her board', who: 'Northwind Clinics · Aisha Karim, COO', promise: '',
+    why: ['No reply in 8 business days since your recap', 'Her board decides in October', 'She is the only person you know there'],
+    to: 'Aisha Karim', subject: 'Pilot plan for your October board meeting',
+    body: 'Hi Aisha,\n\nYou mentioned the pilot decision goes to your board in October. Here is a one-page plan for a 3-clinic pilot.\n\nJordan',
+    effects: 'Sent from your Gmail → logged on Northwind → stall flag cleared',
+    checks: { passed: true, summary: 'All 5 checks passed' }, note: 'Stall flag cleared' }
+];
+const MINUTES_PER_EMAIL = 2;
+
+/* ---------- State ---------- */
+const state = { phase: 'start', queue: [], idx: 0, out: {}, drafts: {}, editing: false };
+// out[id]: 'sent' | 'snoozed' | 'skipped'
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const byId = id => QUEUE.find(x => x.id === id);
+const cur = () => byId(state.queue[state.idx]);
+
+/* ---------- Actions (replace bodies with API calls) ---------- */
+function start() {
+  state.queue = QUEUE.map(x => x.id); // snapshot: new items wait for the next session
+  state.idx = 0; state.out = {}; state.editing = false; state.phase = 'card';
+  render();
+}
+function mark(outcome) {
+  const it = cur();
+  if (outcome === 'sent' && !it.checks.passed) return;
+  state.out[it.id] = outcome; // a real send is queued with an undo window, then released
+  state.editing = false;
+  let n = state.queue.findIndex((q, i) => i > state.idx && !state.out[q]);
+  if (n < 0) n = state.queue.findIndex(q => !state.out[q]);
+  if (n < 0) state.phase = 'recap'; else state.idx = n;
+  render();
+}
+function reopen(i) { delete state.out[state.queue[i]]; state.idx = i; state.phase = 'card'; render(); }
+function exit() { state.phase = Object.keys(state.out).length ? 'recap' : 'start'; state.editing = false; render(); }
+
+/* ---------- Render ---------- */
+function viewStart() {
+  const n = QUEUE.length, first = QUEUE[0];
+  return `<div class="screen center">
+    <p class="hello">Good morning.</p>
+    <h1>${n} follow-ups ready.<br><span class="soft">About ${n * MINUTES_PER_EMAIL} minutes.</span></h1>
+    <div class="preview"><p class="eyebrow">First up · ${esc(first.eyebrow)}</p><p class="big">${esc(first.title)}</p><p class="sub">${esc(first.who)}</p></div>
+    <p style="margin-top:36px"><button class="primary" type="button" data-act="start">Start</button></p>
+  </div>`;
+}
+function viewCard() {
+  const it = cur();
+  const draft = state.drafts[it.id] ?? it.body;
+  const segs = state.queue.map((q, i) => {
+    const c = i === state.idx ? 'var(--accent)' : state.out[q] === 'sent' ? 'var(--good)' : state.out[q] ? 'var(--muted)' : 'var(--track)';
+    return `<span style="background:${c}"></span>`;
+  }).join('');
+  const left = state.queue.filter(q => !state.out[q]).length;
+  return `<div class="screen" style="height:100%">
+    <div class="bar"><button class="link" type="button" data-act="exit">✕ Exit<kbd>Esc</kbd></button><strong>Email follow-ups</strong><div class="segs">${segs}</div><span style="color:var(--ink-2);font-weight:600">${state.idx + 1} of ${state.queue.length}</span></div>
+    <div class="card">
+      <div class="ctx">
+        <div><p class="who">${esc(it.who)}</p><h2>${esc(it.title)}</h2></div>
+        ${it.promise ? `<p class="promise">${esc(it.promise)}</p>` : ''}
+        <ul class="why">${it.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+        <div class="effects"><p class="label">When you send</p><p>${esc(it.effects)}</p><p class="${it.checks.passed ? 'ok' : 'blocked'}">${it.checks.passed ? '✓' : '✕'} ${esc(it.checks.summary)}</p></div>
+      </div>
+      <div class="draft">
+        <div class="field"><span>To</span><span>${esc(it.to)}</span></div>
+        <div class="field"><span>Subject</span><span>${esc(it.subject)}</span></div>
+        ${state.editing ? `<textarea aria-label="Email draft" id="draft">${esc(draft)}</textarea>` : `<p class="body">${esc(draft)}</p>`}
+      </div>
+    </div>
+    <div class="controls">
+      <button class="pill" type="button" data-act="skipped">Skip<kbd>S</kbd></button>
+      <button class="pill" type="button" data-act="snoozed">Snooze<kbd>Z</kbd></button>
+      <button class="pill" type="button" data-act="edit">${state.editing ? 'Done editing' : 'Edit'}<kbd>E</kbd></button>
+      <button class="primary" type="button" data-act="sent" ${it.checks.passed ? '' : 'disabled'}>${left <= 1 ? 'Send & finish' : 'Send & next'}<kbd style="color:#DCE5FF">⌘ Enter</kbd></button>
+    </div>
+  </div>`;
+}
+function viewRecap() {
+  const count = k => Object.values(state.out).filter(v => v === k).length;
+  const parts = [];
+  if (count('sent')) parts.push(`${count('sent')} sent`);
+  if (count('snoozed')) parts.push(`${count('snoozed')} snoozed`);
+  if (count('skipped')) parts.push(`${count('skipped')} left on your list`);
+  const rows = state.queue.map((q, i) => {
+    const o = state.out[q], it = byId(q);
+    if (!o) return '';
+    const label = { sent: 'Sent: ', snoozed: 'Snoozed: ', skipped: 'Skipped: ' }[o] + it.title.replace(/^Send /, '');
+    const note = o === 'sent' ? it.note : o === 'snoozed' ? 'Back tomorrow at 9:00' : 'Still on today’s list';
+    return `<div class="recap-row"><span class="ic" style="color:${o === 'sent' ? 'var(--good)' : 'var(--muted)'}">${o === 'sent' ? '✓' : o === 'snoozed' ? '◷' : '→'}</span>
+      <div><p class="t">${esc(label)}</p><p class="n">${esc(note)}</p></div>
+      <button class="a" type="button" data-act="reopen" data-i="${i}">${o === 'skipped' ? 'Do it now' : 'Undo'}</button></div>`;
+  }).join('');
+  return `<div class="screen center">
+    <div class="done-mark">✓</div>
+    <h1 style="font-size:44px">Follow-ups done.</h1>
+    <p class="sub" style="font-size:17px;margin-top:6px">${parts.join(' · ') || 'Nothing sent'}</p>
+    <div class="recap">${rows}</div>
+    <button class="dark" type="button" data-act="restart">Start over</button>
+  </div>`;
+}
+function render() {
+  document.getElementById('app').innerHTML = state.phase === 'start' ? viewStart() : state.phase === 'card' ? viewCard() : viewRecap();
+  if (state.editing) document.getElementById('draft')?.focus();
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const a = b.dataset.act;
+  if (a === 'start' || a === 'restart') start();
+  else if (a === 'exit') exit();
+  else if (a === 'edit') { state.editing = !state.editing; render(); }
+  else if (a === 'reopen') reopen(+b.dataset.i);
+  else mark(a);
+});
+document.addEventListener('input', e => { if (e.target.id === 'draft') state.drafts[cur().id] = e.target.value; });
+document.addEventListener('keydown', e => {
+  if (state.phase !== 'card') return;
+  const typing = e.target.tagName === 'TEXTAREA';
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); mark('sent'); return; }
+  if (e.key === 'Escape') { if (typing) { state.editing = false; render(); } else exit(); return; }
+  if (typing) return;
+  const k = e.key.toLowerCase();
+  if (k === 's') mark('skipped');
+  else if (k === 'z') mark('snoozed');
+  else if (k === 'e') { e.preventDefault(); state.editing = true; render(); }
+});
+render();
+</script>
+</body>
+</html>

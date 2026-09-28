@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inline actions: reference implementation</title>
+<!--
+  Inline actions pattern (reference implementation).
+  Use case: triage a mixed daily list (emails, tasks) without leaving it.
+  - Click a row to expand it in place. One row is open at a time.
+  - The open row shows the editable draft and a "When you send" preview of every side effect.
+  - Acting (send, add task, snooze, mark done) collapses the row to a done state and opens the next open item.
+  - A toast offers Undo for 8 seconds.
+  No dependencies. State lives in `state`; `render()` redraws from it. Swap ITEMS for your API data.
+-->
+<style>
+:root{
+  --bg:#FFFFFF; --bg-2:#F5F6F8; --line:#E6E7EB; --line-2:#D5D8DF;
+  --ink:#111113; --ink-2:#585A63; --ink-3:#6E7079; --muted:#8E9099;
+  --accent:#1A5CFF; --accent-soft:#EBF1FF; --good:#1F7A45; --good-soft:#E3F4EA; --warn:#9A5B00; --bad:#C2352B;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font)}
+button,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.wrap{max-width:880px;margin:0 auto;padding:36px 20px 120px}
+.date{margin:0;color:var(--ink-3);font-size:14px}
+h1{margin:0 0 18px;font-size:38px;line-height:1.1;letter-spacing:-.03em}
+.list{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid #EEF0F3;border-radius:14px}
+.check{width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid var(--muted);background:none;padding:0}
+.check:hover{border-color:var(--accent)}
+.row-main{flex:1;min-width:0;display:flex;align-items:center;gap:14px;text-align:left;border:0;background:none;padding:0}
+.row-main .txt{flex:1;min-width:0}
+.title{display:block;font-weight:600}
+.sub{display:block;margin-top:2px;font-size:13.5px;color:var(--ink-2)}
+.tag{font-size:12px;font-weight:600;color:var(--ink-3);white-space:nowrap}
+.tag.promised{color:var(--warn)}
+.quiet{border:0;background:none;padding:6px 10px;border-radius:999px;color:var(--ink-2);font-size:13.5px;font-weight:500}
+.quiet:hover{background:var(--bg-2);color:var(--ink)}
+.card{margin:4px 0 8px;border:1px solid var(--line-2);border-radius:18px;box-shadow:0 12px 40px rgba(17,17,19,.08);padding:18px 20px;display:flex;flex-direction:column;gap:16px}
+.card .title{font-size:17px;font-weight:700}
+.ring{width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid var(--accent)}
+.promise{margin:0;padding-left:14px;border-left:2px solid var(--warn);font-size:14.5px}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px}
+.meta{margin:0 0 8px;font-size:13.5px;color:var(--ink-2)}
+.meta b{color:var(--ink);font-weight:600}
+textarea{width:100%;min-height:200px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:12px;background:#FBFBFC;line-height:1.6;font-size:14px}
+textarea:focus{outline:none;border-color:var(--accent)}
+.taskbox{border-radius:12px;background:var(--bg-2);padding:16px;font-size:14px}
+.label{margin:0;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.steps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:14px}
+.steps li{display:flex;gap:10px}
+.steps .n{width:20px;height:20px;flex:none;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700;display:grid;place-items:center}
+.checks{margin:10px 0 0;font-size:13px;font-weight:600;color:var(--good)}
+.checks.blocked{color:var(--bad)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:18px;padding-top:14px;border-top:1px solid var(--line)}
+.primary{height:40px;padding:0 22px;border:0;border-radius:999px;background:var(--accent);color:#fff;font-weight:600}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.hint{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+.done{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;background:var(--good-soft)}
+.done.grey{background:var(--bg-2)}
+.done .dot{width:22px;height:22px;flex:none;border-radius:50%;background:var(--good);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.done.grey .dot{background:var(--muted)}
+.done .title{color:var(--ink-2);text-decoration:line-through}
+.done .sub{color:var(--good);font-weight:500}
+.done.grey .sub{color:var(--ink-2)}
+.link{border:0;background:none;padding:0;color:var(--accent);font-weight:600}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);display:flex;align-items:center;gap:16px;padding:12px 14px 12px 20px;border-radius:14px;background:var(--ink);color:#fff;font-size:14px;box-shadow:0 12px 40px rgba(17,17,19,.25)}
+.toast .undo{height:32px;padding:0 14px;border:0;border-radius:999px;background:#fff;color:var(--ink);font-weight:600;font-size:13px}
+.toast .x{border:0;background:none;color:#A9ABB3;font-size:18px;padding:0 4px}
+.empty{padding:24px;border-radius:16px;background:var(--good-soft);color:var(--good);font-weight:600}
+@media (max-width:700px){.grid{grid-template-columns:1fr}.hint{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="date" id="date"></p>
+  <h1 id="headline"></h1>
+  <div class="list" id="list" aria-live="polite"></div>
+</div>
+<div id="toastRoot"></div>
+
+<script>
+/* ---------- Sample data: replace with your API ---------- */
+// kind: 'email' | 'task'. effects: what happens on the primary action, shown BEFORE acting.
+// checks: policy results from the server. If any fails, the primary action is disabled and the reason shown.
+const ITEMS = [
+  { id: 'priya', kind: 'email', tag: 'Promised', title: 'Send Priya the go-live plan',
+    sub: 'Acme Logistics · You promised this yesterday', who: 'Acme Logistics · Priya Raman, VP Operations',
+    promise: '“Next step: Jordan sends an implementation plan with dates.” (yesterday’s check-in)',
+    to: 'Priya Raman', subject: 'Go-live plan before quarter-end',
+    body: 'Hi Priya,\n\nYou asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec, two weeks ahead of 31 Dec.\n\nI’ve attached the week-by-week plan.\n\nWould Thursday work for 20 minutes to confirm the start date?\n\nJordan',
+    effects: ['Email goes to Priya from your Gmail', 'Logged on Acme’s timeline and the Fleet ops rollout deal', 'Your promise from the check-in is marked done', 'No reply by Friday? It comes back to your list'],
+    checks: { passed: true, summary: 'All 5 checks passed' },
+    doneLine: 'Sent · logged on Acme · promise done · back Friday if no reply' },
+  { id: 'marcus', kind: 'email', tag: 'Promised', title: 'Send Marcus the SOC 2 report',
+    sub: 'Acme Logistics · You promised this yesterday', who: 'Acme Logistics · Marcus Lee, Security Lead',
+    promise: '“Marcus needs the SOC 2 Type II report before the security review starts.” (yesterday’s check-in)',
+    to: 'Marcus Lee', subject: 'SOC 2 Type II report for Acme’s review',
+    body: 'Hi Marcus,\n\nAs discussed in yesterday’s check-in, here is our SOC 2 Type II report and the completed security questionnaire.\n\nJordan',
+    effects: ['Email and report go to Marcus from your Gmail', 'Logged on Acme’s timeline', 'Your promise from the check-in is marked done'],
+    checks: { passed: true, summary: 'All 5 checks passed' },
+    doneLine: 'Sent · logged on Acme · promise done' },
+  { id: 'tomas', kind: 'email', tag: 'Draft ready', title: 'Send Tomás the MSA in Word',
+    sub: 'Brightline Labs · Asked 42 minutes ago', who: 'Brightline Labs · Tomás Duarte, CFO', promise: '',
+    to: 'Tomás Duarte', subject: 'MSA in Word for your legal team',
+    body: 'Hi Tomás,\n\nAttached is the MSA in Word so your counsel can redline it directly.\n\nJordan',
+    effects: ['Email goes to Tomás from your Gmail', 'Logged on Brightline’s timeline and deal', 'No reply in 3 days? It comes back to your list'],
+    checks: { passed: true, summary: 'All 5 checks passed' },
+    doneLine: 'Sent · logged on Brightline' },
+  { id: 'ben', kind: 'email', tag: 'Blocked', title: 'Reply to Ben Okafor about pricing',
+    sub: 'Halden Freight · Viewed pricing today', who: 'Halden Freight · Ben Okafor', promise: '',
+    to: 'Ben Okafor', subject: 'Checking back in',
+    body: 'Hi Ben,\n\nI saw you were looking at pricing again. Happy to help.\n\nJordan',
+    effects: ['Nothing can be sent'],
+    checks: { passed: false, summary: 'Blocked: Ben is on the do-not-contact list' },
+    doneLine: '' },
+  { id: 'corvid', kind: 'task', tag: 'Task', title: 'Find a contact at Corvid Analytics',
+    sub: 'Corvid Analytics · Two visitors on pricing today', who: 'Corvid Analytics · company only', promise: '',
+    taskText: 'Research Corvid and find the operations lead. Due Friday, assigned to you.',
+    effects: ['Task added to your list, due Friday', 'Linked to Corvid Analytics', 'Nothing is sent: only the company is known'],
+    checks: { passed: true, summary: 'Internal only: nothing is sent' },
+    doneLine: 'Task added · due Friday' }
+];
+
+/* ---------- State ---------- */
+const UNDO_MS = 8000;
+const state = { expanded: ITEMS[0].id, status: {}, drafts: {}, toast: null };
+// status[id]: 'sent' | 'task' | 'snoozed' | 'done'
+let toastTimer = null;
+
+/* ---------- Actions (replace the bodies with API calls) ---------- */
+function act(id, outcome) {
+  const it = byId(id);
+  if (outcome !== 'snoozed' && outcome !== 'done' && !it.checks.passed) return;
+  state.status[id] = outcome;
+  // A real send should be queued server-side and released after UNDO_MS so Undo can cancel it.
+  const next = ITEMS.find(x => !state.status[x.id]);
+  state.expanded = next ? next.id : null;
+  const first = it.to ? it.to.split(' ')[0] : '';
+  const text = { sent: `Sent to ${first} from your Gmail.`, task: 'Task added, due Friday.', snoozed: 'Snoozed until tomorrow at 9:00.', done: 'Marked done. Nothing was sent.' }[outcome];
+  showToast(id, text);
+  render();
+}
+function undo(id) {
+  delete state.status[id];
+  state.expanded = id;
+  hideToast();
+  render();
+}
+function showToast(id, text) {
+  state.toast = { id, text };
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, UNDO_MS);
+}
+function hideToast() { state.toast = null; clearTimeout(toastTimer); renderToast(); }
+
+/* ---------- Render ---------- */
+const byId = id => ITEMS.find(x => x.id === id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const WORDS = ['You’re all caught up.', 'One thing to do.', 'Two things to do.', 'Three things to do.', 'Four things to do.', 'Five things to do.'];
+
+function rowCollapsed(it) {
+  return `<div class="row">
+    <button class="check" type="button" data-act="done" data-id="${it.id}" aria-label="Mark done without sending"></button>
+    <button class="row-main" type="button" data-act="expand" data-id="${it.id}" aria-expanded="false">
+      <span class="txt"><span class="title">${esc(it.title)}</span><span class="sub">${esc(it.sub)}</span></span>
+      <span class="tag ${it.tag === 'Promised' ? 'promised' : ''}">${esc(it.tag)}</span>
+    </button>
+    <button class="quiet" type="button" data-act="snoozed" data-id="${it.id}">Snooze</button>
+  </div>`;
+}
+function rowExpanded(it) {
+  const isEmail = it.kind === 'email';
+  const draft = state.drafts[it.id] ?? it.body ?? '';
+  const left = isEmail
+    ? `<p class="meta">To <b>${esc(it.to)}</b> · <b>${esc(it.subject)}</b></p>
+       <textarea aria-label="Email draft" data-draft="${it.id}">${esc(draft)}</textarea>`
+    : `<div class="taskbox">${esc(it.taskText)}</div>`;
+  return `<div class="card">
+    <div class="row-main" style="gap:14px">
+      <span class="ring"></span>
+      <button class="row-main" type="button" data-act="collapse" data-id="${it.id}" aria-expanded="true">
+        <span class="txt"><span class="title">${esc(it.title)}</span><span class="sub">${esc(it.who)}</span></span>
+        <span class="quiet">Collapse</span>
+      </button>
+    </div>
+    ${it.promise ? `<p class="promise">${esc(it.promise)}</p>` : ''}
+    <div class="grid">
+      <div>${left}</div>
+      <div>
+        <p class="label">${isEmail ? 'When you send' : 'When you add it'}</p>
+        <ol class="steps">${it.effects.map((e, n) => `<li><span class="n">${n + 1}</span><span>${esc(e)}</span></li>`).join('')}</ol>
+        <p class="checks ${it.checks.passed ? '' : 'blocked'}">${it.checks.passed ? '✓' : '✕'} ${esc(it.checks.summary)}</p>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="primary" type="button" data-act="${isEmail ? 'sent' : 'task'}" data-id="${it.id}" ${it.checks.passed ? '' : 'disabled'}>${isEmail ? 'Send' : 'Add task'}</button>
+      <button class="quiet" type="button" data-act="done" data-id="${it.id}">Mark done without sending</button>
+      <button class="quiet" type="button" data-act="snoozed" data-id="${it.id}">Snooze</button>
+      <span class="hint">${it.checks.passed ? '⌘ Enter to ' + (isEmail ? 'send' : 'add') + ' · Esc to collapse' : ''}</span>
+    </div>
+  </div>`;
+}
+function rowDone(it) {
+  const s = state.status[it.id];
+  const grey = s === 'snoozed' || s === 'done';
+  const line = s === 'snoozed' ? 'Snoozed until tomorrow at 9:00' : s === 'done' ? 'Marked done without sending' : it.doneLine;
+  return `<div class="done ${grey ? 'grey' : ''}">
+    <span class="dot">${s === 'snoozed' ? '◷' : '✓'}</span>
+    <div style="flex:1"><span class="title">${esc(it.title)}</span><span class="sub">${esc(line)}</span></div>
+    <button class="link" type="button" data-act="undo" data-id="${it.id}">Undo</button>
+  </div>`;
+}
+function render() {
+  const open = ITEMS.filter(x => !state.status[x.id]);
+  document.getElementById('date').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+  document.getElementById('headline').textContent = WORDS[open.length] || `${open.length} things to do.`;
+  document.getElementById('list').innerHTML = ITEMS.map(it =>
+    state.status[it.id] ? rowDone(it) : state.expanded === it.id ? rowExpanded(it) : rowCollapsed(it)
+  ).join('') + (open.length ? '' : '<div class="empty">Nothing left for today.</div>');
+  renderToast();
+}
+function renderToast() {
+  const t = state.toast;
+  document.getElementById('toastRoot').innerHTML = t ? `<div class="toast" role="status"><span>${esc(t.text)}</span>
+    <button class="undo" type="button" data-act="undo" data-id="${t.id}">Undo</button>
+    <button class="x" type="button" data-act="dismiss" aria-label="Dismiss">×</button></div>` : '';
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const { act: a, id } = b.dataset;
+  if (a === 'expand') { state.expanded = id; render(); document.querySelector('textarea[data-draft]')?.focus(); }
+  else if (a === 'collapse') { state.expanded = null; render(); }
+  else if (a === 'undo') undo(id);
+  else if (a === 'dismiss') hideToast();
+  else act(id, a);
+});
+document.addEventListener('input', e => {
+  const id = e.target.dataset.draft; if (id) state.drafts[id] = e.target.value;
+});
+document.addEventListener('keydown', e => {
+  const id = state.expanded; if (!id) return;
+  if (e.key === 'Escape') { state.expanded = null; render(); }
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); const it = byId(id); act(id, it.kind === 'email' ? 'sent' : 'task'); }
+});
+render();
+</script>
+</body>
+</html>
