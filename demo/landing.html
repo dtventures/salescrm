@@ -1,382 +1,450 @@
-<title>Trellis Zine 001</title>
-<meta name="description" content="Trellis as a photocopied skate zine: The Memory Issue.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap">
+<title>Trellis Sales Memory</title>
+<meta name="description" content="Landing page for Trellis, the sales memory that remembers every deal and writes your follow-ups.">
 <style>
-/* One committed look: photocopy paper, toner black, sticker pink and yellow. Not theme-switched on purpose. */
 :root{
-  --paper:#EDEDE8; --paper-2:#E2E2DB; --white:#FBFBF8; --toner:#121212; --pink:#FF3D9A; --yellow:#FFE331; --blue:#2C4BFF; --grey:#6A6A64;
-  --heavy:"Bowlby One","Archivo Black",Impact,"Arial Black",sans-serif;
-  --block:"Archivo Black","Arial Black",Impact,sans-serif;
-  --type:"Courier Prime","Courier New",Courier,monospace;
-  --marker:"Permanent Marker","Comic Sans MS","Chalkboard SE",cursive;
-  --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  --gut:clamp(16px,4vw,56px);
+  --bg:#FFFFFF; --bg-2:#F5F6F8; --bg-3:#ECEEF2; --card:#FFFFFF;
+  --ink:#111113; --ink-2:#585A63; --ink-3:#8E9099; --line:#E6E7EB;
+  --accent:#1A5CFF; --accent-ink:#FFFFFF; --accent-soft:#EBF1FF;
+  --good:#1F8F4A; --caution:#B86E00; --caution-soft:#FFF4DC;
+  --shadow:0 1px 2px rgba(17,17,19,.04),0 12px 40px rgba(17,17,19,.08);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0B0B0D; --bg-2:#141417; --bg-3:#1D1D21; --card:#151518;
+    --ink:#F2F2F4; --ink-2:#A4A5AD; --ink-3:#6E6F77; --line:#25252A;
+    --accent:#4C8DFF; --accent-ink:#FFFFFF; --accent-soft:#15213C;
+    --good:#4CC27A; --caution:#F0A640; --caution-soft:#33270F;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B0B0D; --bg-2:#141417; --bg-3:#1D1D21; --card:#151518;
+  --ink:#F2F2F4; --ink-2:#A4A5AD; --ink-3:#6E6F77; --line:#25252A;
+  --accent:#4C8DFF; --accent-ink:#FFFFFF; --accent-soft:#15213C;
+  --good:#4CC27A; --caution:#F0A640; --caution-soft:#33270F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 40px rgba(0,0,0,.5);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--toner);font:17px/1.55 var(--type)}
-a{color:inherit}
-button,input{font:inherit;color:inherit}
-button{cursor:pointer}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--font);letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
 p{margin:0}
-h1,h2,h3{margin:0;font-weight:400}
-:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
-.page{overflow-x:clip;position:relative}
-.wrap{padding-inline:var(--gut)}
-.halftone{background-image:radial-gradient(var(--toner) 1.1px,transparent 1.6px);background-size:7px 7px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:600;text-wrap:balance}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.container{max-width:1120px;margin:0 auto;padding-inline:24px}
+.section{padding-block:104px}
+.eyebrow{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:12px}
+.h2{font-size:clamp(32px,4vw,46px);line-height:1.1;letter-spacing:-.028em}
+.lead{font-size:19px;line-height:1.55;color:var(--ink-2);max-width:56ch}
+.center{text-align:center}
+.center .lead{margin-inline:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:600;white-space:nowrap;background:var(--bg-2);color:var(--ink);transition:filter .15s,background .15s}
+.btn:hover{background:var(--bg-3)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{height:36px;padding:0 16px;font-size:14px}
 
-/* Top strip */
-.strip{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-block:12px;border-bottom:3px solid var(--toner);font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.06em}
-.strip nav{display:flex;flex-wrap:wrap;gap:18px}
-.strip a{text-decoration:none}
-.strip a:hover{background:var(--yellow)}
+/* Nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);-webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:62px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:9px;font:700 18px/1 var(--display);letter-spacing:-.02em}
+.logo i{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.links{display:flex;gap:28px;font-size:15px;color:var(--ink-2)}
+.links a:hover{color:var(--ink)}
+.nav-cta{display:flex;align-items:center;gap:16px}
+.nav-cta .signin{font-size:15px;color:var(--ink-2)}
+.nav-cta .signin:hover{color:var(--ink)}
 
-/* Cover */
-.cover{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px var(--gut);padding-block:40px 88px}
-.cover::before{content:"";position:absolute;right:-6%;top:-40px;width:62%;height:120%;opacity:.13;pointer-events:none;-webkit-mask-image:radial-gradient(closest-side,#000 40%,transparent);mask-image:radial-gradient(closest-side,#000 40%,transparent);background-image:radial-gradient(var(--toner) 1.4px,transparent 2px);background-size:9px 9px}
-.issue{display:inline-block;background:var(--toner);color:var(--paper);font:700 13px/1 var(--type);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;transform:rotate(-2deg)}
-.ransom{display:flex;flex-wrap:nowrap;gap:4px;margin:22px 0 18px;line-height:1}
-.ransom span{display:inline-grid;place-items:center;min-width:.72em;padding:.06em .1em;font-size:clamp(40px,6.6vw,100px);box-shadow:3px 4px 0 rgba(0,0,0,.18)}
-.r1{font-family:var(--heavy);background:var(--toner);color:var(--paper);transform:rotate(-4deg)}
-.r2{font-family:var(--type);font-weight:700;background:var(--white);transform:rotate(3deg)}
-.r3{font-family:var(--block);background:var(--pink);color:var(--white);transform:rotate(-2deg)}
-.r4{font-family:var(--marker);background:var(--yellow);transform:rotate(5deg)}
-.r5{font-family:var(--heavy);background:var(--white);border:3px solid var(--toner);transform:rotate(-3deg)}
-.r6{font-family:var(--block);background:var(--blue);color:var(--white);transform:rotate(2deg)}
-.r7{font-family:var(--type);font-weight:700;font-style:italic;background:var(--paper-2);transform:rotate(-5deg)}
-.coverline{font:400 clamp(34px,4.6vw,64px)/.98 var(--heavy);text-transform:uppercase;letter-spacing:-.01em;max-width:13ch}
-.coverline mark{background:var(--yellow);padding:0 .08em;color:inherit}
-.dek{margin-top:22px;max-width:40ch;font-size:18px}
-.ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;align-items:center}
-.btn{display:inline-block;padding:14px 20px;background:var(--toner);color:var(--paper);font:400 18px/1 var(--heavy);text-transform:uppercase;text-decoration:none;border:3px solid var(--toner);box-shadow:5px 5px 0 var(--pink);transform:rotate(-1deg);transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:rotate(0) translate(-2px,-2px);box-shadow:7px 7px 0 var(--pink)}
-.btn.alt{background:var(--white);color:var(--toner);box-shadow:5px 5px 0 var(--toner)}
-.btn.alt:hover{box-shadow:7px 7px 0 var(--toner)}
+/* Hero */
+.hero{padding-block:88px 0;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;border-radius:999px;background:var(--bg-2);font-size:14px;color:var(--ink-2);margin-bottom:28px}
+.pill b{background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px}
+.hero h1{font-size:clamp(40px,6.2vw,72px);line-height:1.04;letter-spacing:-.035em;max-width:16ch;margin:0 auto}
+.hero h1 span{color:var(--accent)}
+.hero .lead{margin:24px auto 0;max-width:40em;font-size:20px}
+.hero-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
+.hero-note{margin-top:18px;font-size:14px;color:var(--ink-3)}
 
-/* Paper clippings */
-.clip{position:relative;background:var(--white);padding:22px;box-shadow:0 2px 0 rgba(0,0,0,.06),6px 8px 0 rgba(0,0,0,.12);font-family:var(--ui);font-size:14px;line-height:1.45}
-.clip::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:28px;margin-left:-55px;background:rgba(255,227,49,.72);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.1)}
-.clip.tl::before{left:18px;margin-left:0;transform:rotate(-18deg)}
-.clip .k{font:600 11px/1.2 var(--ui);color:#8A8A92;text-transform:uppercase;letter-spacing:.06em}
-.clip h4{margin:4px 0 12px;font:700 22px/1.15 var(--ui);letter-spacing:-.02em;color:#111}
-.todo{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid #E7E8EC;color:#111}
-.todo:first-of-type{border-top:0}
-.todo i{width:18px;height:18px;border-radius:50%;border:1.5px solid #9B9CA4;margin-top:1px}
-.todo b{display:block;font-weight:600}
-.todo span{color:#5F6068;font-size:13px}
-.todo em{font-style:normal;font-size:11px;font-weight:600;white-space:nowrap;color:#9B9CA4;margin-top:2px}
-.todo em.w{color:#B86E00}
-.sendbtn{display:inline-block;margin-top:12px;background:#1A5CFF;color:#fff;border-radius:999px;padding:8px 16px;font-weight:600;font-size:13px}
+/* Product shot */
+.shot{margin:72px auto 0;max-width:1040px;border-radius:16px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);overflow:hidden;text-align:left}
+.chrome{display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--bg-2)}
+.chrome i{width:10px;height:10px;border-radius:50%;background:var(--bg-3)}
+.chrome span{margin-left:12px;font-size:12px;color:var(--ink-3)}
+.app{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:0;min-height:420px}
+.app-list{padding:28px 20px;border-right:1px solid var(--line)}
+.app-list .date{font-size:13px;color:var(--ink-3)}
+.app-list h3{font-size:26px;letter-spacing:-.025em;margin:4px 0 18px}
+.grp{font-size:12px;font-weight:600;color:var(--ink-3);margin:14px 10px 4px}
+.todo{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:12px;padding:12px 10px;border-radius:12px;align-items:start}
+.todo.sel{background:var(--bg-2)}
+.todo i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--ink-3);margin-top:2px}
+.todo b{display:block;font-size:14.5px;font-weight:600}
+.todo span{font-size:13px;color:var(--ink-2)}
+.todo em{font-style:normal;font-size:11.5px;font-weight:600;color:var(--ink-3);white-space:nowrap;margin-top:3px}
+.todo em.w{color:var(--caution)}
+.app-detail{padding:28px 32px;display:flex;flex-direction:column;gap:18px}
+.app-detail .ctx{font-size:13px;color:var(--ink-2)}
+.app-detail h4{font:600 26px/1.15 var(--display);letter-spacing:-.025em;margin:0}
+.quote{border-left:2px solid var(--caution);padding-left:14px;font-size:15px;color:var(--ink)}
+.quote small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+.why{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.why li{padding-left:14px;position:relative}
+.why li::before{content:"";position:absolute;left:0;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--ink-3)}
+sup.c{color:var(--accent);font-weight:700;font-size:10px;margin-left:1px}
+sup.c + sup.c{margin-left:4px}
+.draft{background:var(--bg-2);border-radius:14px;padding:16px;font-size:13.5px}
+.draft .meta{color:var(--ink-3);padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.draft .meta b{color:var(--ink);font-weight:500}
+.draft p{color:var(--ink-2);line-height:1.55}
+.send{display:inline-flex;margin-top:12px;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}
 
-.note{position:absolute;font:400 22px/1.1 var(--marker);color:var(--pink);white-space:nowrap;pointer-events:none}
-.note svg{position:absolute;overflow:visible}
-.note path{fill:none;stroke:var(--pink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.sticker{position:absolute;display:grid;place-items:center;text-align:center;border-radius:50%;font:400 15px/1.05 var(--heavy);text-transform:uppercase;box-shadow:3px 4px 0 rgba(0,0,0,.2);padding:14px}
-.s-yellow{background:var(--yellow);color:var(--toner)}
-.s-pink{background:var(--pink);color:var(--white)}
-.s-black{background:var(--toner);color:var(--paper)}
-.s-blue{background:var(--blue);color:var(--white)}
+/* Problem */
+.problem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:56px}
+.problem h3{font-size:19px;letter-spacing:-.015em;margin-bottom:8px}
+.problem p{color:var(--ink-2)}
+.problem .n{font:600 13px/1 var(--display);color:var(--ink-3);margin-bottom:14px;display:block}
 
-.cover-art{position:relative;min-height:560px;align-self:start}
-.cover-art .clip{position:absolute;width:min(390px,92%);right:4%;top:24px;transform:rotate(2.5deg)}
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:56px;counter-reset:s}
+.step{background:var(--bg-2);border-radius:18px;padding:26px 22px}
+.step .num{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:14px;font-weight:700;margin-bottom:18px}
+.step h3{font-size:18px;margin-bottom:6px}
+.step p{font-size:15px;color:var(--ink-2)}
 
-/* Contents band */
-.contents{background:var(--toner);color:var(--paper);display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 40px;align-items:start;padding-block:28px}
-.contents h2{font:400 44px/.9 var(--heavy);text-transform:uppercase;color:var(--yellow);transform:rotate(-2deg)}
-.contents ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 28px}
-.contents a{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;text-decoration:none;font-size:16px}
-.contents a:hover span:last-child{background:var(--pink)}
-.contents a span:first-child{color:var(--yellow)}
+/* Feature rows */
+.feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:72px;align-items:center;padding-block:56px}
+.feature.flip .fx{order:-1}
+.feature h3{font-size:clamp(26px,3vw,34px);line-height:1.15;letter-spacing:-.025em;margin-bottom:14px}
+.feature .lead{font-size:17px}
+.checks{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px}
+.checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px}
+.checks svg{margin-top:3px;color:var(--accent)}
+.fx{background:var(--bg-2);border-radius:22px;padding:32px}
+.mock{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px rgba(17,17,19,.04)}
+.mock .k{font-size:12px;font-weight:600;color:var(--ink-3);margin-bottom:10px}
+.tl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.tl:first-of-type{border-top:0;padding-top:0}
+.tl .t{color:var(--ink-3);font-size:12.5px;font-variant-numeric:tabular-nums;padding-top:1px}
+.tl b{font-weight:600}
+.tl span{display:block;color:var(--ink-2);font-size:13px}
+.ans .q{font-weight:600;font-size:15px;margin-bottom:12px}
+.ans p{font-size:14.5px;margin-bottom:10px}
+.ans .gap{background:var(--caution-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.ans .gap b{color:var(--caution)}
+.srcs{border-top:1px solid var(--line);padding-top:10px;margin-top:4px;display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink-2)}
+.srcs span b{color:var(--accent);margin-right:6px}
+.score{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.score:first-of-type{border-top:0;padding-top:0}
+.score .p{font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.score.x{color:var(--ink-3)}
+.score.x .l{text-decoration:line-through}
+.score-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.score-total b{font:300 40px/1 var(--display);letter-spacing:-.03em}
+.policy{list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--ink-2)}
+.policy li b{color:var(--ink);font-weight:500}
+.ok{color:var(--good);font-weight:700;margin-right:6px}
 
-/* Spreads */
-.spread{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px var(--gut);align-items:center;padding-block:96px;border-bottom:3px dashed var(--toner)}
-.spread.flip .art{order:-1}
-.pg{font:700 13px/1 var(--type);letter-spacing:.12em;text-transform:uppercase;display:flex;gap:10px;align-items:center}
-.pg::after{content:"";flex:1;max-width:120px;border-top:2px solid var(--toner)}
-.spread h2{font:400 clamp(44px,6vw,92px)/.92 var(--heavy);text-transform:uppercase;margin:16px 0 22px;letter-spacing:-.01em}
-.spread h2 .hl{background:var(--pink);color:var(--white);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-.spread h2 .ul{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:.18em;text-underline-offset:.04em}
-.spread .copy p{max-width:44ch;margin-bottom:14px}
-.spread .copy p b{background:var(--yellow);font-weight:700}
-.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.facts span{border:2px solid var(--toner);padding:4px 10px;font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.04em;background:var(--white)}
-.art{position:relative;min-height:440px;display:flex;align-items:center;justify-content:center}
-.art .clip{width:min(430px,94%)}
+/* Trust */
+.trust{background:var(--bg-2)}
+.trust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:56px}
+.trust-grid div{background:var(--card);border-radius:18px;padding:26px}
+.trust-grid svg{color:var(--accent);margin-bottom:14px}
+.trust-grid h3{font-size:17px;margin-bottom:6px}
+.trust-grid p{font-size:15px;color:var(--ink-2)}
 
-.tl-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid #E7E8EC;color:#111}
-.tl-row:first-of-type{border-top:0}
-.tl-row .t{color:#9B9CA4;font-size:12px;font-variant-numeric:tabular-nums;padding-top:2px}
-.tl-row b{font-weight:600}
-.tl-row span{display:block;font-size:12.5px;color:#5F6068}
-.ans p{font-size:15.5px;line-height:1.6;color:#111;margin-bottom:10px}
-.ans sup{color:#1A5CFF;font-weight:700;font-size:10px;padding:0 1px}
-.ans .gap{background:#FFF3C4;padding:6px 8px;border-radius:6px;font-size:14px}
-.ans .gap b{color:#B86E00}
-.ans .q{font:700 17px/1.3 var(--ui);color:#111;margin-bottom:12px}
+/* Beta */
+.beta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.plan{border:1px solid var(--line);border-radius:22px;padding:36px;box-shadow:var(--shadow);background:var(--card)}
+.plan .tag{display:inline-block;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px}
+.plan .price{font:600 52px/1 var(--display);letter-spacing:-.03em;margin:18px 0 4px}
+.plan .price small{font-size:17px;font-weight:500;color:var(--ink-3);letter-spacing:0}
+.plan .after{font-size:14px;color:var(--ink-3);margin-bottom:22px}
+.plan .checks{margin:0 0 28px}
+.plan .btn{width:100%}
 
-/* House rules */
-.rules{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px var(--gut);padding-block:96px;align-items:start;border-bottom:3px dashed var(--toner)}
-.rules h2{font:400 clamp(52px,7vw,110px)/.9 var(--heavy);text-transform:uppercase}
-.rules .dek{max-width:32ch}
-.notebook{position:relative;background-color:var(--white);background-image:linear-gradient(90deg,transparent 58px,rgba(255,61,154,.5) 58px,rgba(255,61,154,.5) 60px,transparent 60px),repeating-linear-gradient(transparent 0 39px,rgba(44,75,255,.22) 39px 40px);padding:26px 26px 26px 78px;transform:rotate(-1deg);box-shadow:6px 8px 0 rgba(0,0,0,.12)}
-.notebook ol{margin:0;padding:0;list-style:none;counter-reset:r}
-.notebook li{counter-increment:r;font:400 22px/40px var(--marker);position:relative}
-.notebook li::before{content:counter(r) ".";position:absolute;left:-44px;color:var(--pink)}
-.notebook li small{font:400 15px/1.3 var(--type);color:var(--grey);display:block;margin:-6px 0 6px}
+/* FAQ */
+.faq{max-width:760px;margin:48px auto 0}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-size:17px;font-weight:600}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;font-weight:400;color:var(--ink-3);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 22px;color:var(--ink-2);max-width:62ch}
 
-/* Not in this issue */
-.notin{padding-block:80px;border-bottom:3px dashed var(--toner)}
-.notin h2{font:400 clamp(40px,5vw,72px)/.95 var(--heavy);text-transform:uppercase;margin-bottom:28px}
-.notin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.notin-grid div{background:var(--paper-2);padding:20px;position:relative}
-.notin-grid h3{font:400 26px/1.05 var(--block);text-transform:uppercase;position:relative;display:inline}
-.notin-grid h3::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:5px;background:var(--pink);transform:rotate(-2deg);border-radius:3px}
-.notin-grid p{margin-top:14px;font-size:15.5px}
-.notin-grid em{display:block;margin-top:12px;font:400 19px/1.1 var(--marker);font-style:normal;color:var(--pink)}
+/* Final CTA */
+.final{background:var(--ink);color:var(--bg);border-radius:28px;padding:72px 32px;text-align:center}
+.final h2{font-size:clamp(32px,4.4vw,52px);letter-spacing:-.03em;line-height:1.08}
+.final p{color:color-mix(in srgb,var(--bg) 70%,transparent);font-size:18px;margin:16px auto 0;max-width:46ch}
+.signup{display:flex;gap:10px;max-width:460px;margin:32px auto 0;flex-wrap:wrap;justify-content:center}
+.signup input{flex:1 1 240px;min-width:0;height:48px;border-radius:999px;border:1px solid color-mix(in srgb,var(--bg) 25%,transparent);background:color-mix(in srgb,var(--bg) 8%,transparent);color:var(--bg);padding:0 20px;outline:none}
+.signup input::placeholder{color:color-mix(in srgb,var(--bg) 50%,transparent)}
+.signup input:focus{border-color:var(--accent)}
+.signup .btn{height:48px}
+.form-msg{margin-top:14px;font-size:14px;color:color-mix(in srgb,var(--bg) 70%,transparent);min-height:1.5em}
 
-/* Coupon */
-.crew{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px var(--gut);padding-block:96px;align-items:center}
-.crew h2{font:400 clamp(56px,8vw,128px)/.88 var(--heavy);text-transform:uppercase}
-.crew h2 span{color:var(--pink)}
-.crew .dek{max-width:36ch}
-.coupon{position:relative;border:3px dashed var(--toner);padding:30px 26px 26px;background:var(--white)}
-.coupon .scissors{position:absolute;top:-17px;left:22px;background:var(--paper);padding:0 6px;font-size:22px;line-height:1}
-.coupon h3{font:400 30px/1 var(--heavy);text-transform:uppercase}
-.coupon .sub{font-size:14px;color:var(--grey);margin:6px 0 18px}
-.line{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:end;gap:10px;margin-bottom:16px}
-.line label{font:700 13px/1.2 var(--type);text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px}
-.line input{border:0;border-bottom:2px solid var(--toner);background:transparent;padding:6px 2px;font:400 22px/1.2 var(--marker);outline:none;min-width:0;color:var(--blue)}
-.line input:focus{border-bottom-color:var(--pink)}
-.boxes{display:flex;flex-wrap:wrap;gap:10px 18px;margin:4px 0 20px}
-.boxes button{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:0;font:700 15px/1 var(--type);text-transform:uppercase}
-.boxes button i{width:22px;height:22px;border:2.5px solid var(--toner);display:grid;place-items:center;font:400 20px/1 var(--marker);font-style:normal;color:var(--pink)}
-.err{font:400 17px/1.2 var(--marker);color:var(--pink);margin:-6px 0 12px}
-.stampd{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
-.stampd div{border:5px solid var(--pink);color:var(--pink);padding:10px 18px;transform:rotate(-12deg);text-align:center;background:rgba(251,251,248,.86)}
-.stampd b{display:block;font:400 44px/1 var(--heavy)}
-.stampd span{font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.08em}
-.coupon.sent{opacity:1}
-.coupon.sent form{opacity:.45}
+.foot{padding-block:48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:var(--ink-3)}
+.foot nav{display:flex;flex-wrap:wrap;gap:22px}
+.foot a:hover{color:var(--ink)}
 
-.back{background:var(--toner);color:var(--paper);padding-block:40px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px}
-.back .big{font:400 clamp(60px,12vw,180px)/.8 var(--heavy);text-transform:uppercase;letter-spacing:-.01em}
-.back .big span{color:var(--pink)}
-.back nav{display:flex;flex-direction:column;gap:6px;font-size:15px}
-.back nav a{text-decoration:none;border-bottom:2px solid var(--yellow);align-self:flex-start}
-
-@media (max-width:980px){
-  .cover,.spread,.rules,.crew{grid-template-columns:1fr}
-  .spread.flip .art{order:0}
-  .cover-art{min-height:540px}
-  .cover-art .clip{right:auto;left:50%;transform:translateX(-50%) rotate(2deg)}
-  .notin-grid{grid-template-columns:1fr}
-  .contents{grid-template-columns:1fr}
+@media (max-width:940px){
+  .links{display:none}
+  .app{grid-template-columns:1fr}
+  .app-detail{display:none}
+  .app-list{border-right:0}
+  .feature,.beta{grid-template-columns:1fr;gap:36px}
+  .feature.flip .fx{order:0}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trust-grid,.problem{grid-template-columns:1fr;gap:16px}
+  .problem{gap:32px}
 }
 @media (max-width:560px){
-  .note{font-size:17px}
-  .sticker{transform:scale(.85)}
-  .line{grid-template-columns:1fr}
-  .notebook{padding-left:64px}
-  .notebook{background-image:linear-gradient(90deg,transparent 44px,rgba(255,61,154,.5) 44px,rgba(255,61,154,.5) 46px,transparent 46px),repeating-linear-gradient(transparent 0 39px,rgba(44,75,255,.22) 39px 40px)}
-  .notebook li::before{left:-38px}
+  .container{padding-inline:16px}
+  .section{padding-block:72px}
+  .hero{padding-top:56px}
+  .hero .lead{font-size:18px}
+  .nav-cta .signin{display:none}
+  .steps{grid-template-columns:1fr}
+  .fx{padding:18px}
+  .plan{padding:26px}
+  .final{padding:56px 20px;border-radius:22px}
 }
 </style>
 
-<div class="page">
-  <header class="strip wrap">
-    <span>Trellis Zine · Issue 001 · Free</span>
-    <nav aria-label="Contents"><a href="#memory">Memory</a><a href="#receipts">Receipts</a><a href="#list">The list</a><a href="#rules">House rules</a><a href="#crew">Join</a></nav>
-  </header>
+<header class="nav">
+  <div class="container nav-in">
+    <a class="logo" href="#top"><i></i>Trellis</a>
+    <nav class="links" aria-label="Primary"><a href="#how">How it works</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a></nav>
+    <div class="nav-cta"><a class="signin" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Live demo</a><a class="btn primary sm" href="#join">Join the beta</a></div>
+  </div>
+</header>
 
-  <main>
-    <section class="cover wrap">
+<main id="top">
+  <section class="hero container">
+    <span class="pill"><b>Beta</b>Now accepting 20 design partners</span>
+    <h1>Know who to follow up with. <span>And what to say.</span></h1>
+    <p class="lead">Trellis reads your Gmail, calendar and website, remembers every deal, and gives you a short list each morning with the email already written. No data entry.</p>
+    <div class="hero-ctas"><a class="btn primary" href="#join">Join the beta</a><a class="btn" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the live demo →</a></div>
+    <p class="hero-note">Works with Google Workspace · Set up in about 3 minutes · Nothing sends without you</p>
+
+    <div class="shot" role="img" aria-label="Trellis Today screen showing five to-dos and a drafted email to Priya Raman">
+      <div class="chrome"><i></i><i></i><i></i><span>app.trellis · Today</span></div>
+      <div class="app">
+        <div class="app-list">
+          <p class="date">Tuesday, 29 September</p>
+          <h3>Five things to do.</h3>
+          <p class="grp">Today</p>
+          <div class="todo sel"><i></i><div><b>Send Priya the go-live plan</b><span>Acme Logistics · You promised this yesterday.</span></div><em class="w">Promised</em></div>
+          <div class="todo"><i></i><div><b>Send Marcus the SOC 2 report</b><span>Acme Logistics · You promised this yesterday.</span></div><em class="w">Promised</em></div>
+          <div class="todo"><i></i><div><b>Send Tomás the MSA in Word</b><span>Brightline Labs · Asked 42 minutes ago.</span></div><em>Draft ready</em></div>
+          <p class="grp">This week</p>
+          <div class="todo"><i></i><div><b>Send Aisha a pilot plan for her board</b><span>Northwind Clinics · No reply in 8 business days.</span></div><em>Draft ready</em></div>
+        </div>
+        <div class="app-detail">
+          <div><p class="ctx">Acme Logistics · Priya Raman, VP Operations</p><h4>Send Priya the go-live plan</h4></div>
+          <p class="quote">“Next step: Jordan sends an implementation plan with dates.”<small>From yesterday’s check-in notes</small></p>
+          <ul class="why"><li>She revisited pricing twice since your proposal.<sup class="c">1</sup><sup class="c">2</sup></li><li>She read the implementation guide 8 minutes ago.<sup class="c">3</sup></li></ul>
+          <div class="draft"><p class="meta">To <b>Priya Raman</b> · Subject <b>Go-live plan before quarter-end</b></p><p>Hi Priya, you asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec…</p><span class="send">Review and send</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="center">
+      <p class="eyebrow">The problem</p>
+      <h2 class="h2">Your CRM only knows what you type into it.</h2>
+      <p class="lead" style="margin-top:16px">And nobody types enough. The real story of each deal is spread across inboxes, notes and browser tabs.</p>
+    </div>
+    <div class="problem">
+      <div><span class="n">01</span><h3>Context goes missing</h3><p>What did they say about timing? Who else was on that call? The answer is buried in a thread from three weeks ago.</p></div>
+      <div><span class="n">02</span><h3>Signals arrive too late</h3><p>A prospect reads your pricing page twice and you find out next week, if at all.</p></div>
+      <div><span class="n">03</span><h3>Upkeep eats the day</h3><p>Logging calls and updating fields takes time away from the conversations that close deals.</p></div>
+    </div>
+  </section>
+
+  <section class="section container" id="how" style="padding-top:0">
+    <div class="center">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h2">Connect once. Trellis does the rest.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><h3>Connect</h3><p>Sign in with Google and add a snippet to your site. Trellis imports your history.</p></div>
+      <div class="step"><span class="num">2</span><h3>Remember</h3><p>Every email, meeting, note and visit is matched to the right person and company.</p></div>
+      <div class="step"><span class="num">3</span><h3>Understand</h3><p>Trellis spots promises, open questions and buying signals, each with its source.</p></div>
+      <div class="step"><span class="num">4</span><h3>Act</h3><p>Each morning you get a short list with drafts ready. You review and send.</p></div>
+    </div>
+  </section>
+
+  <section class="container" id="features">
+    <div class="center" style="margin-bottom:24px">
+      <p class="eyebrow">Features</p>
+      <h2 class="h2">Everything you need to follow up well.</h2>
+    </div>
+
+    <div class="feature">
       <div>
-        <span class="issue">Issue 001 · The Memory Issue</span>
-        <h1 class="ransom" aria-label="Trellis"><span class="r1">T</span><span class="r2">R</span><span class="r3">E</span><span class="r4">L</span><span class="r5">L</span><span class="r6">I</span><span class="r7">S</span></h1>
-        <p class="coverline">Your inbox remembers <mark>everything.</mark> Now you do too.</p>
-        <p class="dek">A sales tool for people who hate sales tools. It reads your email, calendar and site, remembers every deal, and hands you a short list each morning with the email already written.</p>
-        <div class="ctas"><a class="btn" href="#crew">Join the crew</a><a class="btn alt" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the demo</a></div>
+        <h3>A timeline that builds itself</h3>
+        <p class="lead">Emails, meetings, notes and website visits land on one timeline for every person and company. Contacts and accounts are created for you.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Gmail, Google Calendar and meeting notes</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Website visits tied to people through tracked links</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Handoffs without a briefing meeting</li>
+        </ul>
       </div>
-      <div class="cover-art" aria-label="Clipping of the Trellis to-do list with handwritten notes">
-        <div class="clip">
-          <p class="k">Tuesday, 29 September</p>
-          <h4>Five things to do.</h4>
-          <div class="todo"><i></i><div><b>Send Priya the go-live plan</b><span>Acme Logistics · you promised this yesterday</span></div><em class="w">Promised</em></div>
-          <div class="todo"><i></i><div><b>Send Tomás the MSA in Word</b><span>Brightline Labs · asked 42 min ago</span></div><em>Draft ready</em></div>
-          <div class="todo"><i></i><div><b>Send Marcus the SOC 2 report</b><span>Acme Logistics · he asked in yesterday’s call</span></div><em class="w">Promised</em></div>
-          <span class="sendbtn">Review and send</span>
-        </div>
-        <span class="note" style="left:0;top:-18px">you said you would!
-          <svg width="80" height="60" style="left:150px;top:18px" aria-hidden="true"><path d="M2 4 C 40 6, 62 20, 70 52 M58 44 L70 53 L76 40"/></svg></span>
-        <span class="note" style="left:2%;top:372px">already written ↗</span>
-        <span class="sticker s-pink" style="width:112px;height:112px;right:0;top:360px;transform:rotate(12deg)">No data entry</span>
-        <span class="sticker s-black" style="width:96px;height:96px;left:24%;top:420px;transform:rotate(-10deg)">100% cited</span>
-      </div>
-    </section>
+      <div class="fx"><div class="mock">
+        <p class="k">Acme Logistics · Timeline</p>
+        <div class="tl"><span class="t">10:42</span><div><b>Viewed /pricing</b><span>Priya Raman · 3 min 12 s</span></div></div>
+        <div class="tl"><span class="t">10:37</span><div><b>Clicked “Implementation guide”</b><span>From your proposal email</span></div></div>
+        <div class="tl"><span class="t">Yesterday</span><div><b>Notes: implementation check-in</b><span>“Can onboarding finish before quarter-end?”</span></div></div>
+        <div class="tl"><span class="t">6 days ago</span><div><b>Sent “Acme proposal”</b><span>To Priya Raman and Marcus Lee</span></div></div>
+      </div></div>
+    </div>
 
-    <section class="contents wrap" aria-label="In this issue">
-      <h2>Inside</h2>
-      <ol>
-        <li><a href="#memory"><span>p.02</span><span>Your inbox already knows</span></a></li>
-        <li><a href="#receipts"><span>p.04</span><span>Ask. Get receipts.</span></a></li>
-        <li><a href="#list"><span>p.06</span><span>Wake up to a list</span></a></li>
-        <li><a href="#rules"><span>p.08</span><span>House rules</span></a></li>
-        <li><a href="#notin"><span>p.09</span><span>Not in this issue</span></a></li>
-        <li><a href="#crew"><span>p.10</span><span>Clip the coupon</span></a></li>
-      </ol>
-    </section>
-
-    <section class="spread wrap" id="memory">
-      <div class="copy">
-        <span class="pg">p.02 · Memory</span>
-        <h2>Your inbox <span class="hl">already knows.</span></h2>
-        <p>Every email, meeting, note and pricing-page visit lands on one timeline, per person and per company. <b>Nobody types anything.</b></p>
-        <p>Your CRM fields fill themselves from what actually happened. If Trellis gets smarter next month, the history gets re-read, not re-entered.</p>
-        <div class="facts"><span>Gmail</span><span>Calendar</span><span>Meeting notes</span><span>Your website</span></div>
-      </div>
-      <div class="art">
-        <div class="clip tl" style="transform:rotate(-2deg)">
-          <p class="k">Acme Logistics · timeline</p>
-          <div class="tl-row"><span class="t">10:42</span><div><b>Viewed /pricing</b><span>Priya Raman · 3 min 12 s</span></div></div>
-          <div class="tl-row"><span class="t">10:37</span><div><b>Clicked “Implementation guide”</b><span>from your proposal email</span></div></div>
-          <div class="tl-row"><span class="t">Yesterday</span><div><b>Notes: implementation check-in</b><span>“Can onboarding finish before quarter-end?”</span></div></div>
-          <div class="tl-row"><span class="t">6 d ago</span><div><b>Sent “Acme proposal”</b><span>to Priya Raman, Marcus Lee</span></div></div>
-        </div>
-        <span class="note" style="right:0;top:6%">nobody typed this
-          <svg width="70" height="70" style="left:-30px;top:26px" aria-hidden="true"><path d="M60 4 C 40 20, 20 34, 6 60 M4 44 L6 61 L22 56"/></svg></span>
-        <span class="sticker s-yellow" style="width:104px;height:104px;left:0;bottom:6%;transform:rotate(-12deg)">Auto magic-ish</span>
-      </div>
-    </section>
-
-    <section class="spread wrap flip" id="receipts">
-      <div class="copy">
-        <span class="pg">p.04 · Receipts</span>
-        <h2>Ask. Get <span class="ul">receipts.</span></h2>
-        <p>Ask anything about any deal in plain English. Every sentence in the answer links to the exact email or note it came from.</p>
-        <p>And when the proof isn’t there, <b>it says so.</b> No guessing, no made-up budgets, no confident nonsense.</p>
-        <div class="facts"><span>Every claim cited</span><span>Admits gaps</span><span>Your data only</span></div>
-      </div>
-      <div class="art">
-        <div class="clip ans" style="transform:rotate(1.8deg)">
-          <p class="q">What did Acme say about timing and budget?</p>
-          <p>Acme wants to be live before quarter-end. Priya said so by email and again yesterday.<sup>1</sup><sup>2</sup></p>
-          <p class="gap"><b>Not enough evidence.</b> No one at Acme has stated a budget. The only figure is the $48,000 in your own proposal.<sup>3</sup></p>
-          <p>Marcus needs the SOC 2 report before the security review starts.<sup>4</sup></p>
-        </div>
-        <span class="note" style="left:0;top:4%">every line → a source
-          <svg width="90" height="60" style="left:170px;top:20px" aria-hidden="true"><path d="M2 6 C 40 4, 70 18, 84 50 M72 44 L84 52 L88 38"/></svg></span>
-        <span class="note" style="right:2%;bottom:4%">it admits it!</span>
-        <span class="sticker s-blue" style="width:100px;height:100px;right:-2%;top:10%;transform:rotate(14deg)">No cap</span>
-      </div>
-    </section>
-
-    <section class="spread wrap" id="list">
-      <div class="copy">
-        <span class="pg">p.06 · The list</span>
-        <h2>Wake up to <span class="hl">a list.</span></h2>
-        <p>Not a dashboard. Not 40 alerts. A short list of who needs you today and why, ranked by what they actually did.</p>
-        <p>Pricing visits, tracked clicks, replies and promises you made in meetings count. <b>Email opens don’t.</b> Scanners fake them.</p>
-        <p>Each item comes with the email already drafted. You read it, fix it, send it. Nothing goes out without you.</p>
-        <div class="facts"><span>Signal in under 5 min</span><span>Drafts, not sends</span><span>Do-not-contact respected</span></div>
-      </div>
-      <div class="art">
-        <div class="clip" style="transform:rotate(-1.5deg)">
-          <p class="k">To Priya Raman · Draft</p>
-          <h4>Go-live plan before quarter-end</h4>
-          <p style="color:#444;font-size:14.5px">Hi Priya, you asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec…</p>
-          <span class="sendbtn">Review and send</span>
-        </div>
-        <span class="note" style="left:4%;top:2%">YOU press send.</span>
-        <span class="note" style="right:0;bottom:8%">not the robot
-          <svg width="60" height="50" style="left:-40px;top:-30px" aria-hidden="true"><path d="M50 44 C 34 34, 20 22, 8 6 M6 22 L8 5 L24 10"/></svg></span>
-        <span class="sticker s-yellow" style="width:118px;height:118px;left:-1%;bottom:4%;transform:rotate(-8deg)">Opens don’t count</span>
-      </div>
-    </section>
-
-    <section class="rules wrap" id="rules">
+    <div class="feature flip">
       <div>
-        <span class="pg">p.08 · House rules</span>
-        <h2 style="margin-top:16px">House rules</h2>
-        <p class="dek" style="margin-top:18px">Written in the notebook before the first line of code. We don’t break these to ship faster.</p>
+        <h3>Answers with sources</h3>
+        <p class="lead">Ask anything about any deal in plain English. Every sentence links to the email or note it came from. When the evidence isn’t there, Trellis says so.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Every claim links to its source</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>No guessing when data is missing</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Searches only what you’re allowed to see</li>
+        </ul>
       </div>
-      <div class="notebook">
-        <ol>
-          <li>Events before fields.<small>Raw history is never overwritten.</small></li>
-          <li>Show your receipts.<small>Every summary, score and answer links to its source.</small></li>
-          <li>Know who, or do nothing.<small>No action unless we’re sure who it’s for.</small></li>
-          <li>You press send.<small>Drafts first. Autonomy is a later, explicit setting.</small></li>
-          <li>First-party only.<small>Works without buying data about strangers.</small></li>
-          <li>Your data is yours.<small>Never used to train shared models. Export or delete anytime.</small></li>
-        </ol>
-      </div>
-    </section>
+      <div class="fx"><div class="mock ans">
+        <p class="q">What did Acme say about timing and budget?</p>
+        <p>Acme wants to be live before quarter-end. Priya said so by email and again yesterday.<sup class="c">1</sup><sup class="c">2</sup></p>
+        <p class="gap"><b>Not enough evidence.</b> No one at Acme has stated a budget. The only figure is the $48,000 in your proposal.<sup class="c">3</sup></p>
+        <div class="srcs"><span><b>1</b>Re: pricing for 40 depots · 7 days ago</span><span><b>2</b>Notes: implementation check-in · line 2</span><span><b>3</b>Acme proposal · 6 days ago</span></div>
+      </div></div>
+    </div>
 
-    <section class="notin wrap" id="notin">
-      <span class="pg">p.09 · Not in this issue</span>
-      <h2 style="margin-top:16px">Not in this issue</h2>
-      <div class="notin-grid">
-        <div><h3>Guessing who strangers are</h3><p>We don’t buy data to unmask anonymous visitors. We know a visitor only when they click your link or fill your form.</p><em>maybe never</em></div>
-        <div><h3>Robots sending email</h3><p>Every email waits for you. Auto-send might come later, behind an admin and a tested rule.</p><em>issue 002?</em></div>
-        <div><h3>Meeting bots</h3><p>Paste or upload your notes for now. One notes integration ships in this issue.</p><em>next issue</em></div>
-      </div>
-    </section>
-
-    <section class="crew wrap" id="crew">
+    <div class="feature">
       <div>
-        <span class="pg">p.10 · Join</span>
-        <h2 style="margin-top:16px">Join the <span>crew.</span></h2>
-        <p class="dek" style="margin-top:18px">Issue 001 goes to 20 design partners: founder-led B2B teams with 1 to 20 sellers on Google Workspace. Free while we build it together.</p>
+        <h3>Signals you can trust</h3>
+        <p class="lead">Trellis ranks who’s warming up using things people actually did: pricing visits, link clicks, replies and form fills. Every point is explained.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alerts within 5 minutes of a visit</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email opens never count; scanners fake them</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Identity confidence shown on every signal</li>
+        </ul>
       </div>
-      <div class="coupon" id="coupon">
-        <span class="scissors" aria-hidden="true">✂</span>
-        <h3>Clip &amp; send</h3>
-        <p class="sub">Design partner coupon · Issue 001 · Limit one per team</p>
-        <form id="form" novalidate>
-          <div class="line"><label for="nm">Name</label><input id="nm" autocomplete="name" placeholder="Jordan Ellis"></div>
-          <div class="line"><label for="em">Work email</label><input id="em" type="email" autocomplete="email" placeholder="you@company.com"></div>
-          <p style="font:700 13px/1.2 var(--type);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Team size</p>
-          <div class="boxes" role="radiogroup" aria-label="Team size" id="boxes"></div>
-          <p class="err" id="err" hidden>Need a real work email so we can reach you.</p>
-          <button class="btn" type="submit">Send it</button>
-        </form>
-        <div class="stampd" id="stamp" hidden><div><b>Received</b><span>Mockup · nothing was sent</span></div></div>
-      </div>
-    </section>
-  </main>
+      <div class="fx"><div class="mock">
+        <p class="k">Pricing interest increased · Acme Logistics</p>
+        <div class="score"><span class="l">Two pricing-page views after the proposal</span><span class="p">+34</span></div>
+        <div class="score"><span class="l">Implementation guide click this morning</span><span class="p">+22</span></div>
+        <div class="score"><span class="l">No reply to the proposal in 4 business days</span><span class="p">+18</span></div>
+        <div class="score"><span class="l">Both known stakeholders active</span><span class="p">+8</span></div>
+        <div class="score x"><span class="l">Email opens</span><span class="p">0</span></div>
+        <div class="score-total"><span style="color:var(--ink-3);font-size:14px">Signal strength</span><b>82</b></div>
+      </div></div>
+    </div>
 
-  <footer class="back wrap">
-    <div class="big">Trellis<span>.</span></div>
-    <nav aria-label="More">
-      <a href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the demo ↗</a>
-      <a href="https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga" target="_blank" rel="noopener">Walk the onboarding ↗</a>
-      <span style="font-size:13px;opacity:.7;margin-top:8px">Trellis Zine · Issue 001 · © 2026 · Made from your inbox</span>
-    </nav>
-  </footer>
-</div>
+    <div class="feature flip">
+      <div>
+        <h3>Drafts ready. You press send.</h3>
+        <p class="lead">Each to-do comes with an email written from what the prospect actually said. You edit and send it from your own Gmail. Nothing goes out on its own.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Promises from meetings become to-dos</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent, frequency and do-not-contact checks on every email</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A full log of what was sent and who approved it</li>
+        </ul>
+      </div>
+      <div class="fx"><div class="mock">
+        <p class="k">New email · To Priya Raman</p>
+        <p style="font-weight:600;margin-bottom:8px">Go-live plan before quarter-end</p>
+        <p style="font-size:14.5px;color:var(--ink-2)">Hi Priya, you asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec, two weeks ahead of 31 Dec…</p>
+        <ul class="policy"><li><span class="ok">✓</span><b>Identity</b> · very high confidence</li><li><span class="ok">✓</span><b>Consent</b> · existing relationship</li><li><span class="ok">✓</span><b>Do not contact</b> · not on the list</li></ul>
+        <span class="send" style="margin-top:14px">Send</span>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="section trust" id="privacy">
+    <div class="container">
+      <div class="center">
+        <p class="eyebrow">Privacy and control</p>
+        <h2 class="h2">Built to be trusted with your inbox.</h2>
+        <p class="lead" style="margin-top:16px">Trellis reads a lot, so it’s strict about what it does with it.</p>
+      </div>
+      <div class="trust-grid">
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3 6.5 11 12l8-5.5M4 5h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><h3>Never sends on its own</h3><p>Every email waits for your approval. Automatic sending is off during the beta.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="9.5" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 9.5V7a3.5 3.5 0 0 1 7 0v2.5" stroke="currentColor" stroke-width="1.7"/></svg><h3>Not used for training</h3><p>Your data is never used to train shared AI models.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3 4 6v5c0 4 3 7 7 8 4-1 7-4 7-8V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><h3>Your workspace only</h3><p>Each company’s data is fully separated and encrypted in transit and at rest.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4v10m0 0-4-4m4 4 4-4M4 17h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Export or delete anytime</h3><p>Take a full export whenever you like. Deleting removes data from search and summaries too.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 11h15M11 3.5c2 2 3 4.5 3 7.5s-1 5.5-3 7.5c-2-2-3-4.5-3-7.5s1-5.5 3-7.5Z" stroke="currentColor" stroke-width="1.7"/></svg><h3>Consent built in</h3><p>Website tracking respects consent by region. Visits link to people only through first-party signals.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.7"/><path d="m6 6 10 10" stroke="currentColor" stroke-width="1.7"/></svg><h3>Do-not-contact enforced</h3><p>People who opted out are blocked from outreach, every time, with no override.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="join">
+    <div class="beta">
+      <div>
+        <p class="eyebrow">Design partner program</p>
+        <h2 class="h2">Help us build it. Use it free.</h2>
+        <p class="lead" style="margin-top:16px">We’re working closely with 20 founder-led B2B teams during the beta. You get the product free, a direct line to the team, and a say in what we build next.</p>
+      </div>
+      <div class="plan">
+        <span class="tag">Beta</span>
+        <p class="price">Free <small>during the beta</small></p>
+        <p class="after">Per-seat pricing after beta, announced well before you’re charged.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Teams of 1 to 20 sellers</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Gmail, Calendar, notes and website tracking</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Timeline, answers with sources, daily list and drafts</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Onboarding call and a shared Slack channel</li>
+        </ul>
+        <a class="btn primary" href="#signup">Apply for a spot</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="faq" style="padding-top:0">
+    <div class="center"><p class="eyebrow">FAQ</p><h2 class="h2">Questions, answered.</h2></div>
+    <div class="faq">
+      <details><summary>Will Trellis ever send email without me?</summary><p>No. Trellis writes drafts and you send them. Automatic sending is off for everyone during the beta, and if it ever arrives it will need an admin to turn it on and every safety check to pass.</p></details>
+      <details><summary>What does Trellis read?</summary><p>Your Gmail, Google Calendar, meeting notes you paste or upload, and activity on your own website if you add the snippet. You choose how far back to import, and you can skip colleagues, personal contacts and newsletters.</p></details>
+      <details><summary>Do I have to install anything on my website?</summary><p>It’s optional. The website snippet lets Trellis see when a prospect you emailed visits your pricing or security page. Everything else works without it.</p></details>
+      <details><summary>Does it work with Outlook or HubSpot?</summary><p>Not yet. The beta supports Google Workspace. You can export everything as CSV at any time.</p></details>
+      <details><summary>Is my data used to train AI?</summary><p>No. Your data is used only to serve your workspace and is never used to train shared models.</p></details>
+      <details><summary>Can I leave?</summary><p>Anytime. Disconnect Google in one click, take a full export, and ask us to delete everything.</p></details>
+    </div>
+  </section>
+
+  <section class="container" id="signup" style="padding-bottom:40px">
+    <div class="final">
+      <h2>Stop typing into your CRM.<br>Start following up.</h2>
+      <p>Join the beta and get your first list of follow-ups in about three minutes.</p>
+      <form class="signup" id="form" novalidate>
+        <input id="email" type="email" placeholder="Work email" aria-label="Work email" autocomplete="email">
+        <button class="btn primary" type="submit">Join the beta</button>
+      </form>
+      <p class="form-msg" id="msg" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="container foot">
+  <span>© 2026 Trellis</span>
+  <nav aria-label="Footer"><a href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Live demo</a><a href="https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga" target="_blank" rel="noopener">Onboarding</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a></nav>
+</footer>
 
 <script>
-const SIZES = ['Just me', '2–5', '6–20', '20+'];
-let size = 1;
-function drawBoxes(){
-  document.getElementById('boxes').innerHTML = SIZES.map((s, i) => `<button type="button" role="radio" aria-checked="${i === size}" data-i="${i}"><i aria-hidden="true">${i === size ? '✕' : ''}</i>${s}</button>`).join('');
-}
-document.getElementById('boxes').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  size = +b.dataset.i; drawBoxes();
-});
 document.getElementById('form').addEventListener('submit', e => {
   e.preventDefault();
-  const em = document.getElementById('em').value.trim();
-  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
-  document.getElementById('err').hidden = ok;
-  if (!ok) { document.getElementById('em').focus(); return; }
-  document.getElementById('coupon').classList.add('sent');
-  document.getElementById('stamp').hidden = false;
-  document.querySelectorAll('#form input, #form button').forEach(el => el.disabled = true);
+  const v = document.getElementById('email').value.trim();
+  const msg = document.getElementById('msg');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = 'Enter a work email so we can reach you.'; document.getElementById('email').focus(); return; }
+  msg.textContent = 'Thanks! This page is a mockup, so nothing was sent.';
+  e.target.reset();
 });
-drawBoxes();
 </script>
