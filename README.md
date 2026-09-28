@@ -19,7 +19,7 @@ Product discovery and design-partner validation. No production code yet (only th
 
 [`demo/onboarding.html`](demo/onboarding.html) is a clickable mockup of first-run onboarding (hosted: https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga): connect Google with a plain list of what Trellis can and never does, choose the history window, watch the import, confirm how companies were sorted, add the website snippet and consent mode, and choose how Trellis acts. It ends on the first to-do list and links to the demo.
 
-[`demo/landing.html`](demo/landing.html) is the marketing landing page (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD): hero with a product shot of the Today screen, the problem, how it works, four feature rows with product mockups, privacy and control, the design partner offer, FAQ, and a sign-up form that is a mockup. Earlier streetwear and zine concepts are in git history.
+[`demo/landing.html`](demo/landing.html) is the marketing landing page (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD). It positions Trellis as one platform for email, CRM and pipeline, calendar, meeting notes, website journey and email tracking: a hero shot of an account timeline mixing every channel, the problem, the eight platform capabilities, how it works, feature rows (timeline, self-updating CRM, buyer journey, answers with sources, acting from one place), privacy, the design partner offer, FAQ and a mockup sign-up. Earlier streetwear and zine concepts are in git history.
 
 All demo files have no build step and no backend. They are written as artifact pages with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 
