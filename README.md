@@ -19,7 +19,7 @@ Product discovery and design-partner validation. No production code yet (only th
 
 [`demo/onboarding.html`](demo/onboarding.html) is a clickable mockup of first-run onboarding (hosted: https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga): connect Google with a plain list of what Trellis can and never does, choose the history window, watch the import, confirm how companies were sorted, add the website snippet and consent mode, and choose how Trellis acts. It ends on the first to-do list and links to the demo.
 
-[`demo/drop.html`](demo/drop.html) is a creative landing page that presents Trellis as a streetwear drop (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD). Features are garments in Drop 001, deferred scope is stamped "not in this drop", team size is a size guide, and the product principles are a care label.
+[`demo/landing.html`](demo/landing.html) is a creative landing page that presents Trellis as a photocopied skate zine, Issue 001: The Memory Issue (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD). Product clippings carry handwritten notes, the principles are house rules on notebook paper, deferred scope is struck through under "Not in this issue", and sign-up is a tear-off coupon. It replaces an earlier streetwear-drop concept, which is in git history.
 
 All demo files have no build step and no backend. They are written as artifact pages with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 

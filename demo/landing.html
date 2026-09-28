@@ -1,0 +1,382 @@
+<title>Trellis Zine 001</title>
+<meta name="description" content="Trellis as a photocopied skate zine: The Memory Issue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bowlby+One&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap">
+<style>
+/* One committed look: photocopy paper, toner black, sticker pink and yellow. Not theme-switched on purpose. */
+:root{
+  --paper:#EDEDE8; --paper-2:#E2E2DB; --white:#FBFBF8; --toner:#121212; --pink:#FF3D9A; --yellow:#FFE331; --blue:#2C4BFF; --grey:#6A6A64;
+  --heavy:"Bowlby One","Archivo Black",Impact,"Arial Black",sans-serif;
+  --block:"Archivo Black","Arial Black",Impact,sans-serif;
+  --type:"Courier Prime","Courier New",Courier,monospace;
+  --marker:"Permanent Marker","Comic Sans MS","Chalkboard SE",cursive;
+  --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --gut:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--toner);font:17px/1.55 var(--type)}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:400}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.page{overflow-x:clip;position:relative}
+.wrap{padding-inline:var(--gut)}
+.halftone{background-image:radial-gradient(var(--toner) 1.1px,transparent 1.6px);background-size:7px 7px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Top strip */
+.strip{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;padding-block:12px;border-bottom:3px solid var(--toner);font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.06em}
+.strip nav{display:flex;flex-wrap:wrap;gap:18px}
+.strip a{text-decoration:none}
+.strip a:hover{background:var(--yellow)}
+
+/* Cover */
+.cover{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px var(--gut);padding-block:40px 88px}
+.cover::before{content:"";position:absolute;right:-6%;top:-40px;width:62%;height:120%;opacity:.13;pointer-events:none;-webkit-mask-image:radial-gradient(closest-side,#000 40%,transparent);mask-image:radial-gradient(closest-side,#000 40%,transparent);background-image:radial-gradient(var(--toner) 1.4px,transparent 2px);background-size:9px 9px}
+.issue{display:inline-block;background:var(--toner);color:var(--paper);font:700 13px/1 var(--type);letter-spacing:.12em;text-transform:uppercase;padding:8px 10px;transform:rotate(-2deg)}
+.ransom{display:flex;flex-wrap:nowrap;gap:4px;margin:22px 0 18px;line-height:1}
+.ransom span{display:inline-grid;place-items:center;min-width:.72em;padding:.06em .1em;font-size:clamp(40px,6.6vw,100px);box-shadow:3px 4px 0 rgba(0,0,0,.18)}
+.r1{font-family:var(--heavy);background:var(--toner);color:var(--paper);transform:rotate(-4deg)}
+.r2{font-family:var(--type);font-weight:700;background:var(--white);transform:rotate(3deg)}
+.r3{font-family:var(--block);background:var(--pink);color:var(--white);transform:rotate(-2deg)}
+.r4{font-family:var(--marker);background:var(--yellow);transform:rotate(5deg)}
+.r5{font-family:var(--heavy);background:var(--white);border:3px solid var(--toner);transform:rotate(-3deg)}
+.r6{font-family:var(--block);background:var(--blue);color:var(--white);transform:rotate(2deg)}
+.r7{font-family:var(--type);font-weight:700;font-style:italic;background:var(--paper-2);transform:rotate(-5deg)}
+.coverline{font:400 clamp(34px,4.6vw,64px)/.98 var(--heavy);text-transform:uppercase;letter-spacing:-.01em;max-width:13ch}
+.coverline mark{background:var(--yellow);padding:0 .08em;color:inherit}
+.dek{margin-top:22px;max-width:40ch;font-size:18px}
+.ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;align-items:center}
+.btn{display:inline-block;padding:14px 20px;background:var(--toner);color:var(--paper);font:400 18px/1 var(--heavy);text-transform:uppercase;text-decoration:none;border:3px solid var(--toner);box-shadow:5px 5px 0 var(--pink);transform:rotate(-1deg);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:rotate(0) translate(-2px,-2px);box-shadow:7px 7px 0 var(--pink)}
+.btn.alt{background:var(--white);color:var(--toner);box-shadow:5px 5px 0 var(--toner)}
+.btn.alt:hover{box-shadow:7px 7px 0 var(--toner)}
+
+/* Paper clippings */
+.clip{position:relative;background:var(--white);padding:22px;box-shadow:0 2px 0 rgba(0,0,0,.06),6px 8px 0 rgba(0,0,0,.12);font-family:var(--ui);font-size:14px;line-height:1.45}
+.clip::before{content:"";position:absolute;top:-14px;left:50%;width:110px;height:28px;margin-left:-55px;background:rgba(255,227,49,.72);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.clip.tl::before{left:18px;margin-left:0;transform:rotate(-18deg)}
+.clip .k{font:600 11px/1.2 var(--ui);color:#8A8A92;text-transform:uppercase;letter-spacing:.06em}
+.clip h4{margin:4px 0 12px;font:700 22px/1.15 var(--ui);letter-spacing:-.02em;color:#111}
+.todo{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 0;border-top:1px solid #E7E8EC;color:#111}
+.todo:first-of-type{border-top:0}
+.todo i{width:18px;height:18px;border-radius:50%;border:1.5px solid #9B9CA4;margin-top:1px}
+.todo b{display:block;font-weight:600}
+.todo span{color:#5F6068;font-size:13px}
+.todo em{font-style:normal;font-size:11px;font-weight:600;white-space:nowrap;color:#9B9CA4;margin-top:2px}
+.todo em.w{color:#B86E00}
+.sendbtn{display:inline-block;margin-top:12px;background:#1A5CFF;color:#fff;border-radius:999px;padding:8px 16px;font-weight:600;font-size:13px}
+
+.note{position:absolute;font:400 22px/1.1 var(--marker);color:var(--pink);white-space:nowrap;pointer-events:none}
+.note svg{position:absolute;overflow:visible}
+.note path{fill:none;stroke:var(--pink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.sticker{position:absolute;display:grid;place-items:center;text-align:center;border-radius:50%;font:400 15px/1.05 var(--heavy);text-transform:uppercase;box-shadow:3px 4px 0 rgba(0,0,0,.2);padding:14px}
+.s-yellow{background:var(--yellow);color:var(--toner)}
+.s-pink{background:var(--pink);color:var(--white)}
+.s-black{background:var(--toner);color:var(--paper)}
+.s-blue{background:var(--blue);color:var(--white)}
+
+.cover-art{position:relative;min-height:560px;align-self:start}
+.cover-art .clip{position:absolute;width:min(390px,92%);right:4%;top:24px;transform:rotate(2.5deg)}
+
+/* Contents band */
+.contents{background:var(--toner);color:var(--paper);display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 40px;align-items:start;padding-block:28px}
+.contents h2{font:400 44px/.9 var(--heavy);text-transform:uppercase;color:var(--yellow);transform:rotate(-2deg)}
+.contents ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 28px}
+.contents a{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;text-decoration:none;font-size:16px}
+.contents a:hover span:last-child{background:var(--pink)}
+.contents a span:first-child{color:var(--yellow)}
+
+/* Spreads */
+.spread{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px var(--gut);align-items:center;padding-block:96px;border-bottom:3px dashed var(--toner)}
+.spread.flip .art{order:-1}
+.pg{font:700 13px/1 var(--type);letter-spacing:.12em;text-transform:uppercase;display:flex;gap:10px;align-items:center}
+.pg::after{content:"";flex:1;max-width:120px;border-top:2px solid var(--toner)}
+.spread h2{font:400 clamp(44px,6vw,92px)/.92 var(--heavy);text-transform:uppercase;margin:16px 0 22px;letter-spacing:-.01em}
+.spread h2 .hl{background:var(--pink);color:var(--white);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.spread h2 .ul{text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:.18em;text-underline-offset:.04em}
+.spread .copy p{max-width:44ch;margin-bottom:14px}
+.spread .copy p b{background:var(--yellow);font-weight:700}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.facts span{border:2px solid var(--toner);padding:4px 10px;font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.04em;background:var(--white)}
+.art{position:relative;min-height:440px;display:flex;align-items:center;justify-content:center}
+.art .clip{width:min(430px,94%)}
+
+.tl-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid #E7E8EC;color:#111}
+.tl-row:first-of-type{border-top:0}
+.tl-row .t{color:#9B9CA4;font-size:12px;font-variant-numeric:tabular-nums;padding-top:2px}
+.tl-row b{font-weight:600}
+.tl-row span{display:block;font-size:12.5px;color:#5F6068}
+.ans p{font-size:15.5px;line-height:1.6;color:#111;margin-bottom:10px}
+.ans sup{color:#1A5CFF;font-weight:700;font-size:10px;padding:0 1px}
+.ans .gap{background:#FFF3C4;padding:6px 8px;border-radius:6px;font-size:14px}
+.ans .gap b{color:#B86E00}
+.ans .q{font:700 17px/1.3 var(--ui);color:#111;margin-bottom:12px}
+
+/* House rules */
+.rules{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px var(--gut);padding-block:96px;align-items:start;border-bottom:3px dashed var(--toner)}
+.rules h2{font:400 clamp(52px,7vw,110px)/.9 var(--heavy);text-transform:uppercase}
+.rules .dek{max-width:32ch}
+.notebook{position:relative;background-color:var(--white);background-image:linear-gradient(90deg,transparent 58px,rgba(255,61,154,.5) 58px,rgba(255,61,154,.5) 60px,transparent 60px),repeating-linear-gradient(transparent 0 39px,rgba(44,75,255,.22) 39px 40px);padding:26px 26px 26px 78px;transform:rotate(-1deg);box-shadow:6px 8px 0 rgba(0,0,0,.12)}
+.notebook ol{margin:0;padding:0;list-style:none;counter-reset:r}
+.notebook li{counter-increment:r;font:400 22px/40px var(--marker);position:relative}
+.notebook li::before{content:counter(r) ".";position:absolute;left:-44px;color:var(--pink)}
+.notebook li small{font:400 15px/1.3 var(--type);color:var(--grey);display:block;margin:-6px 0 6px}
+
+/* Not in this issue */
+.notin{padding-block:80px;border-bottom:3px dashed var(--toner)}
+.notin h2{font:400 clamp(40px,5vw,72px)/.95 var(--heavy);text-transform:uppercase;margin-bottom:28px}
+.notin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.notin-grid div{background:var(--paper-2);padding:20px;position:relative}
+.notin-grid h3{font:400 26px/1.05 var(--block);text-transform:uppercase;position:relative;display:inline}
+.notin-grid h3::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:5px;background:var(--pink);transform:rotate(-2deg);border-radius:3px}
+.notin-grid p{margin-top:14px;font-size:15.5px}
+.notin-grid em{display:block;margin-top:12px;font:400 19px/1.1 var(--marker);font-style:normal;color:var(--pink)}
+
+/* Coupon */
+.crew{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px var(--gut);padding-block:96px;align-items:center}
+.crew h2{font:400 clamp(56px,8vw,128px)/.88 var(--heavy);text-transform:uppercase}
+.crew h2 span{color:var(--pink)}
+.crew .dek{max-width:36ch}
+.coupon{position:relative;border:3px dashed var(--toner);padding:30px 26px 26px;background:var(--white)}
+.coupon .scissors{position:absolute;top:-17px;left:22px;background:var(--paper);padding:0 6px;font-size:22px;line-height:1}
+.coupon h3{font:400 30px/1 var(--heavy);text-transform:uppercase}
+.coupon .sub{font-size:14px;color:var(--grey);margin:6px 0 18px}
+.line{display:grid;grid-template-columns:110px minmax(0,1fr);align-items:end;gap:10px;margin-bottom:16px}
+.line label{font:700 13px/1.2 var(--type);text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px}
+.line input{border:0;border-bottom:2px solid var(--toner);background:transparent;padding:6px 2px;font:400 22px/1.2 var(--marker);outline:none;min-width:0;color:var(--blue)}
+.line input:focus{border-bottom-color:var(--pink)}
+.boxes{display:flex;flex-wrap:wrap;gap:10px 18px;margin:4px 0 20px}
+.boxes button{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:0;font:700 15px/1 var(--type);text-transform:uppercase}
+.boxes button i{width:22px;height:22px;border:2.5px solid var(--toner);display:grid;place-items:center;font:400 20px/1 var(--marker);font-style:normal;color:var(--pink)}
+.err{font:400 17px/1.2 var(--marker);color:var(--pink);margin:-6px 0 12px}
+.stampd{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.stampd div{border:5px solid var(--pink);color:var(--pink);padding:10px 18px;transform:rotate(-12deg);text-align:center;background:rgba(251,251,248,.86)}
+.stampd b{display:block;font:400 44px/1 var(--heavy)}
+.stampd span{font:700 13px/1.3 var(--type);text-transform:uppercase;letter-spacing:.08em}
+.coupon.sent{opacity:1}
+.coupon.sent form{opacity:.45}
+
+.back{background:var(--toner);color:var(--paper);padding-block:40px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px}
+.back .big{font:400 clamp(60px,12vw,180px)/.8 var(--heavy);text-transform:uppercase;letter-spacing:-.01em}
+.back .big span{color:var(--pink)}
+.back nav{display:flex;flex-direction:column;gap:6px;font-size:15px}
+.back nav a{text-decoration:none;border-bottom:2px solid var(--yellow);align-self:flex-start}
+
+@media (max-width:980px){
+  .cover,.spread,.rules,.crew{grid-template-columns:1fr}
+  .spread.flip .art{order:0}
+  .cover-art{min-height:540px}
+  .cover-art .clip{right:auto;left:50%;transform:translateX(-50%) rotate(2deg)}
+  .notin-grid{grid-template-columns:1fr}
+  .contents{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .note{font-size:17px}
+  .sticker{transform:scale(.85)}
+  .line{grid-template-columns:1fr}
+  .notebook{padding-left:64px}
+  .notebook{background-image:linear-gradient(90deg,transparent 44px,rgba(255,61,154,.5) 44px,rgba(255,61,154,.5) 46px,transparent 46px),repeating-linear-gradient(transparent 0 39px,rgba(44,75,255,.22) 39px 40px)}
+  .notebook li::before{left:-38px}
+}
+</style>
+
+<div class="page">
+  <header class="strip wrap">
+    <span>Trellis Zine · Issue 001 · Free</span>
+    <nav aria-label="Contents"><a href="#memory">Memory</a><a href="#receipts">Receipts</a><a href="#list">The list</a><a href="#rules">House rules</a><a href="#crew">Join</a></nav>
+  </header>
+
+  <main>
+    <section class="cover wrap">
+      <div>
+        <span class="issue">Issue 001 · The Memory Issue</span>
+        <h1 class="ransom" aria-label="Trellis"><span class="r1">T</span><span class="r2">R</span><span class="r3">E</span><span class="r4">L</span><span class="r5">L</span><span class="r6">I</span><span class="r7">S</span></h1>
+        <p class="coverline">Your inbox remembers <mark>everything.</mark> Now you do too.</p>
+        <p class="dek">A sales tool for people who hate sales tools. It reads your email, calendar and site, remembers every deal, and hands you a short list each morning with the email already written.</p>
+        <div class="ctas"><a class="btn" href="#crew">Join the crew</a><a class="btn alt" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the demo</a></div>
+      </div>
+      <div class="cover-art" aria-label="Clipping of the Trellis to-do list with handwritten notes">
+        <div class="clip">
+          <p class="k">Tuesday, 29 September</p>
+          <h4>Five things to do.</h4>
+          <div class="todo"><i></i><div><b>Send Priya the go-live plan</b><span>Acme Logistics · you promised this yesterday</span></div><em class="w">Promised</em></div>
+          <div class="todo"><i></i><div><b>Send Tomás the MSA in Word</b><span>Brightline Labs · asked 42 min ago</span></div><em>Draft ready</em></div>
+          <div class="todo"><i></i><div><b>Send Marcus the SOC 2 report</b><span>Acme Logistics · he asked in yesterday’s call</span></div><em class="w">Promised</em></div>
+          <span class="sendbtn">Review and send</span>
+        </div>
+        <span class="note" style="left:0;top:-18px">you said you would!
+          <svg width="80" height="60" style="left:150px;top:18px" aria-hidden="true"><path d="M2 4 C 40 6, 62 20, 70 52 M58 44 L70 53 L76 40"/></svg></span>
+        <span class="note" style="left:2%;top:372px">already written ↗</span>
+        <span class="sticker s-pink" style="width:112px;height:112px;right:0;top:360px;transform:rotate(12deg)">No data entry</span>
+        <span class="sticker s-black" style="width:96px;height:96px;left:24%;top:420px;transform:rotate(-10deg)">100% cited</span>
+      </div>
+    </section>
+
+    <section class="contents wrap" aria-label="In this issue">
+      <h2>Inside</h2>
+      <ol>
+        <li><a href="#memory"><span>p.02</span><span>Your inbox already knows</span></a></li>
+        <li><a href="#receipts"><span>p.04</span><span>Ask. Get receipts.</span></a></li>
+        <li><a href="#list"><span>p.06</span><span>Wake up to a list</span></a></li>
+        <li><a href="#rules"><span>p.08</span><span>House rules</span></a></li>
+        <li><a href="#notin"><span>p.09</span><span>Not in this issue</span></a></li>
+        <li><a href="#crew"><span>p.10</span><span>Clip the coupon</span></a></li>
+      </ol>
+    </section>
+
+    <section class="spread wrap" id="memory">
+      <div class="copy">
+        <span class="pg">p.02 · Memory</span>
+        <h2>Your inbox <span class="hl">already knows.</span></h2>
+        <p>Every email, meeting, note and pricing-page visit lands on one timeline, per person and per company. <b>Nobody types anything.</b></p>
+        <p>Your CRM fields fill themselves from what actually happened. If Trellis gets smarter next month, the history gets re-read, not re-entered.</p>
+        <div class="facts"><span>Gmail</span><span>Calendar</span><span>Meeting notes</span><span>Your website</span></div>
+      </div>
+      <div class="art">
+        <div class="clip tl" style="transform:rotate(-2deg)">
+          <p class="k">Acme Logistics · timeline</p>
+          <div class="tl-row"><span class="t">10:42</span><div><b>Viewed /pricing</b><span>Priya Raman · 3 min 12 s</span></div></div>
+          <div class="tl-row"><span class="t">10:37</span><div><b>Clicked “Implementation guide”</b><span>from your proposal email</span></div></div>
+          <div class="tl-row"><span class="t">Yesterday</span><div><b>Notes: implementation check-in</b><span>“Can onboarding finish before quarter-end?”</span></div></div>
+          <div class="tl-row"><span class="t">6 d ago</span><div><b>Sent “Acme proposal”</b><span>to Priya Raman, Marcus Lee</span></div></div>
+        </div>
+        <span class="note" style="right:0;top:6%">nobody typed this
+          <svg width="70" height="70" style="left:-30px;top:26px" aria-hidden="true"><path d="M60 4 C 40 20, 20 34, 6 60 M4 44 L6 61 L22 56"/></svg></span>
+        <span class="sticker s-yellow" style="width:104px;height:104px;left:0;bottom:6%;transform:rotate(-12deg)">Auto magic-ish</span>
+      </div>
+    </section>
+
+    <section class="spread wrap flip" id="receipts">
+      <div class="copy">
+        <span class="pg">p.04 · Receipts</span>
+        <h2>Ask. Get <span class="ul">receipts.</span></h2>
+        <p>Ask anything about any deal in plain English. Every sentence in the answer links to the exact email or note it came from.</p>
+        <p>And when the proof isn’t there, <b>it says so.</b> No guessing, no made-up budgets, no confident nonsense.</p>
+        <div class="facts"><span>Every claim cited</span><span>Admits gaps</span><span>Your data only</span></div>
+      </div>
+      <div class="art">
+        <div class="clip ans" style="transform:rotate(1.8deg)">
+          <p class="q">What did Acme say about timing and budget?</p>
+          <p>Acme wants to be live before quarter-end. Priya said so by email and again yesterday.<sup>1</sup><sup>2</sup></p>
+          <p class="gap"><b>Not enough evidence.</b> No one at Acme has stated a budget. The only figure is the $48,000 in your own proposal.<sup>3</sup></p>
+          <p>Marcus needs the SOC 2 report before the security review starts.<sup>4</sup></p>
+        </div>
+        <span class="note" style="left:0;top:4%">every line → a source
+          <svg width="90" height="60" style="left:170px;top:20px" aria-hidden="true"><path d="M2 6 C 40 4, 70 18, 84 50 M72 44 L84 52 L88 38"/></svg></span>
+        <span class="note" style="right:2%;bottom:4%">it admits it!</span>
+        <span class="sticker s-blue" style="width:100px;height:100px;right:-2%;top:10%;transform:rotate(14deg)">No cap</span>
+      </div>
+    </section>
+
+    <section class="spread wrap" id="list">
+      <div class="copy">
+        <span class="pg">p.06 · The list</span>
+        <h2>Wake up to <span class="hl">a list.</span></h2>
+        <p>Not a dashboard. Not 40 alerts. A short list of who needs you today and why, ranked by what they actually did.</p>
+        <p>Pricing visits, tracked clicks, replies and promises you made in meetings count. <b>Email opens don’t.</b> Scanners fake them.</p>
+        <p>Each item comes with the email already drafted. You read it, fix it, send it. Nothing goes out without you.</p>
+        <div class="facts"><span>Signal in under 5 min</span><span>Drafts, not sends</span><span>Do-not-contact respected</span></div>
+      </div>
+      <div class="art">
+        <div class="clip" style="transform:rotate(-1.5deg)">
+          <p class="k">To Priya Raman · Draft</p>
+          <h4>Go-live plan before quarter-end</h4>
+          <p style="color:#444;font-size:14.5px">Hi Priya, you asked whether onboarding can finish before quarter-end. It can: if we start by 19 Oct, all 40 depots are live by 14 Dec…</p>
+          <span class="sendbtn">Review and send</span>
+        </div>
+        <span class="note" style="left:4%;top:2%">YOU press send.</span>
+        <span class="note" style="right:0;bottom:8%">not the robot
+          <svg width="60" height="50" style="left:-40px;top:-30px" aria-hidden="true"><path d="M50 44 C 34 34, 20 22, 8 6 M6 22 L8 5 L24 10"/></svg></span>
+        <span class="sticker s-yellow" style="width:118px;height:118px;left:-1%;bottom:4%;transform:rotate(-8deg)">Opens don’t count</span>
+      </div>
+    </section>
+
+    <section class="rules wrap" id="rules">
+      <div>
+        <span class="pg">p.08 · House rules</span>
+        <h2 style="margin-top:16px">House rules</h2>
+        <p class="dek" style="margin-top:18px">Written in the notebook before the first line of code. We don’t break these to ship faster.</p>
+      </div>
+      <div class="notebook">
+        <ol>
+          <li>Events before fields.<small>Raw history is never overwritten.</small></li>
+          <li>Show your receipts.<small>Every summary, score and answer links to its source.</small></li>
+          <li>Know who, or do nothing.<small>No action unless we’re sure who it’s for.</small></li>
+          <li>You press send.<small>Drafts first. Autonomy is a later, explicit setting.</small></li>
+          <li>First-party only.<small>Works without buying data about strangers.</small></li>
+          <li>Your data is yours.<small>Never used to train shared models. Export or delete anytime.</small></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="notin wrap" id="notin">
+      <span class="pg">p.09 · Not in this issue</span>
+      <h2 style="margin-top:16px">Not in this issue</h2>
+      <div class="notin-grid">
+        <div><h3>Guessing who strangers are</h3><p>We don’t buy data to unmask anonymous visitors. We know a visitor only when they click your link or fill your form.</p><em>maybe never</em></div>
+        <div><h3>Robots sending email</h3><p>Every email waits for you. Auto-send might come later, behind an admin and a tested rule.</p><em>issue 002?</em></div>
+        <div><h3>Meeting bots</h3><p>Paste or upload your notes for now. One notes integration ships in this issue.</p><em>next issue</em></div>
+      </div>
+    </section>
+
+    <section class="crew wrap" id="crew">
+      <div>
+        <span class="pg">p.10 · Join</span>
+        <h2 style="margin-top:16px">Join the <span>crew.</span></h2>
+        <p class="dek" style="margin-top:18px">Issue 001 goes to 20 design partners: founder-led B2B teams with 1 to 20 sellers on Google Workspace. Free while we build it together.</p>
+      </div>
+      <div class="coupon" id="coupon">
+        <span class="scissors" aria-hidden="true">✂</span>
+        <h3>Clip &amp; send</h3>
+        <p class="sub">Design partner coupon · Issue 001 · Limit one per team</p>
+        <form id="form" novalidate>
+          <div class="line"><label for="nm">Name</label><input id="nm" autocomplete="name" placeholder="Jordan Ellis"></div>
+          <div class="line"><label for="em">Work email</label><input id="em" type="email" autocomplete="email" placeholder="you@company.com"></div>
+          <p style="font:700 13px/1.2 var(--type);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Team size</p>
+          <div class="boxes" role="radiogroup" aria-label="Team size" id="boxes"></div>
+          <p class="err" id="err" hidden>Need a real work email so we can reach you.</p>
+          <button class="btn" type="submit">Send it</button>
+        </form>
+        <div class="stampd" id="stamp" hidden><div><b>Received</b><span>Mockup · nothing was sent</span></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="back wrap">
+    <div class="big">Trellis<span>.</span></div>
+    <nav aria-label="More">
+      <a href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the demo ↗</a>
+      <a href="https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga" target="_blank" rel="noopener">Walk the onboarding ↗</a>
+      <span style="font-size:13px;opacity:.7;margin-top:8px">Trellis Zine · Issue 001 · © 2026 · Made from your inbox</span>
+    </nav>
+  </footer>
+</div>
+
+<script>
+const SIZES = ['Just me', '2–5', '6–20', '20+'];
+let size = 1;
+function drawBoxes(){
+  document.getElementById('boxes').innerHTML = SIZES.map((s, i) => `<button type="button" role="radio" aria-checked="${i === size}" data-i="${i}"><i aria-hidden="true">${i === size ? '✕' : ''}</i>${s}</button>`).join('');
+}
+document.getElementById('boxes').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  size = +b.dataset.i; drawBoxes();
+});
+document.getElementById('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const em = document.getElementById('em').value.trim();
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+  document.getElementById('err').hidden = ok;
+  if (!ok) { document.getElementById('em').focus(); return; }
+  document.getElementById('coupon').classList.add('sent');
+  document.getElementById('stamp').hidden = false;
+  document.querySelectorAll('#form input, #form button').forEach(el => el.disabled = true);
+});
+drawBoxes();
+</script>
