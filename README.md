@@ -19,7 +19,9 @@ Product discovery and design-partner validation. No production code yet (only th
 
 [`demo/onboarding.html`](demo/onboarding.html) is a clickable mockup of first-run onboarding (hosted: https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga): connect Google with a plain list of what Trellis can and never does, choose the history window, watch the import, confirm how companies were sorted, add the website snippet and consent mode, and choose how Trellis acts. It ends on the first to-do list and links to the demo.
 
-Both files have no build step and no backend. They are written as an artifact page with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
+[`demo/drop.html`](demo/drop.html) is a creative landing page that presents Trellis as a streetwear drop (hosted: https://claude.ai/artifact/2vQUMaN8Sa3trggd58toBD). Features are garments in Drop 001, deferred scope is stamped "not in this drop", team size is a size guide, and the product principles are a care label.
+
+All demo files have no build step and no backend. They are written as artifact pages with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 
 ## Documents
 

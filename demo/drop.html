@@ -1,0 +1,408 @@
+<title>Trellis Drop 001</title>
+<meta name="description" content="Trellis presented as a streetwear drop: sales memory that keeps receipts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* One committed look: concrete, ink, bone, cobalt. Not theme-switched on purpose. */
+:root{
+  --concrete:#D8D9D3; --concrete-2:#CACBC4; --ink:#0D0D0B; --bone:#F4F4EE; --cobalt:#1F3DFF; --stamp:#D8321E; --mute:#5B5C57;
+  --display:"Big Shoulders Display","Arial Narrow","Helvetica Neue Condensed",Impact,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gut:clamp(16px,3vw,40px);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--concrete);color:var(--ink);font:16px/1.5 var(--body);font-stretch:100%;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+p{margin:0}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:-.01em}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.wide{font-stretch:125%;text-transform:uppercase;letter-spacing:.02em;font-weight:700}
+.wrap{padding-inline:var(--gut)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Header */
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--concrete);border-bottom:2px solid var(--ink)}
+.head-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;height:60px}
+.logo{font:900 30px/1 var(--display);letter-spacing:.02em;text-decoration:none;display:flex;align-items:baseline;gap:8px}
+.logo small{font:500 10px/1 var(--mono);letter-spacing:.08em}
+.nav{display:flex;gap:26px}
+.nav a{text-decoration:none;font:700 13px/1 var(--body);font-stretch:125%;letter-spacing:.04em;text-transform:uppercase}
+.nav a:hover{color:var(--cobalt)}
+.bag{justify-self:end;background:var(--ink);color:var(--bone);border:0;padding:10px 14px;font:700 12px/1 var(--body);font-stretch:125%;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+.bag b{display:inline-block;min-width:1.4em;text-align:center;background:var(--cobalt);margin-left:6px;padding:2px 4px}
+.bag.bump{animation:bump .4s ease-out}
+@keyframes bump{40%{transform:scale(1.08)}}
+
+/* Tape */
+.tape{background:var(--cobalt);color:var(--bone);overflow:hidden;border-bottom:2px solid var(--ink);white-space:nowrap}
+.tape-track{display:inline-flex;animation:run 38s linear infinite}
+.tape span{font:800 22px/1 var(--display);letter-spacing:.06em;padding:11px 0;text-transform:uppercase}
+.tape i{font-style:normal;padding-inline:22px;opacity:.6}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* Hero */
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px var(--gut);padding-block:40px 64px;border-bottom:2px solid var(--ink);overflow:hidden}
+.hero-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
+.hero h1{grid-column:1/-1;font-size:clamp(72px,17vw,300px);line-height:.8;letter-spacing:-.015em;white-space:nowrap}
+.hero h1 .o{-webkit-text-stroke:2px var(--ink);color:transparent}
+.hero h1 .c{color:var(--cobalt)}
+.hero-copy{display:flex;flex-direction:column;gap:28px;align-self:start;padding-top:12px}
+.hero-copy p{font-size:clamp(20px,2vw,28px);line-height:1.4;max-width:30ch;font-weight:500}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 22px;border:2px solid var(--ink);background:var(--ink);color:var(--bone);font:800 15px/1 var(--body);font-stretch:125%;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:3px 3px 0 var(--cobalt)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{box-shadow:3px 3px 0 var(--ink)}
+.btn.blue{background:var(--cobalt);border-color:var(--cobalt)}
+.btn.blue:hover{box-shadow:3px 3px 0 var(--bone)}
+
+/* Receipt */
+.receipt-stage{display:flex;justify-content:center;align-items:flex-start;margin-top:-40px}
+.receipt{position:relative;width:min(340px,100%);background:#FBFBF7;color:#1A1A18;font:500 12.5px/1.55 var(--mono);padding:22px 22px 30px;transform:rotate(3deg);box-shadow:0 1px 0 rgba(0,0,0,.05),0 22px 40px -18px rgba(0,0,0,.45);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.receipt:hover{transform:rotate(0deg) translateY(-6px)}
+.receipt::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:linear-gradient(-45deg,transparent 7px,#FBFBF7 0),linear-gradient(45deg,transparent 7px,#FBFBF7 0);background-size:14px 14px;background-position:left bottom}
+.r-center{text-align:center}
+.r-logo{font:900 34px/1 var(--display);letter-spacing:.06em}
+.r-rule{border:0;border-top:1.5px dashed #1A1A18;margin:12px 0}
+.r-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+.r-row.x{color:#8A8A84;text-decoration:line-through}
+.r-total{font:800 22px/1.2 var(--mono);display:flex;justify-content:space-between}
+.r-act{background:#1A1A18;color:#FBFBF7;padding:8px 10px;margin:10px 0 4px;font-weight:600}
+.barcode{height:46px;margin:14px 0 6px;background:repeating-linear-gradient(90deg,#1A1A18 0 2px,transparent 2px 4px,#1A1A18 4px 5px,transparent 5px 8px,#1A1A18 8px 11px,transparent 11px 12px,#1A1A18 12px 13px,transparent 13px 17px)}
+.stamp{position:absolute;right:-18px;top:118px;transform:rotate(-14deg);border:3px solid var(--cobalt);color:var(--cobalt);padding:4px 10px;font:900 26px/1 var(--display);letter-spacing:.06em;background:rgba(251,251,247,.7)}
+
+/* Manifesto */
+.manifesto{background:var(--ink);color:var(--bone);padding-block:72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px var(--gut);border-bottom:2px solid var(--ink)}
+.manifesto h2{font-size:clamp(48px,6.5vw,104px)}
+.manifesto h2 span{color:var(--cobalt)}
+.manifesto .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-content:end}
+.manifesto .cols p{font-size:17px;line-height:1.55;color:#C9C9C2}
+.manifesto .cols b{display:block;color:var(--bone);font:800 14px/1.2 var(--body);font-stretch:125%;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+
+/* Collection */
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px;padding-block:56px 24px}
+.sec-head h2{font-size:clamp(56px,8vw,128px)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
+.piece{border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);display:flex;flex-direction:column;background:var(--concrete)}
+.shot{position:relative;aspect-ratio:1/1;max-width:100%;display:grid;place-items:center;overflow:hidden;background:var(--concrete-2)}
+.shot svg{width:78%;height:auto;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.piece:hover .shot svg{transform:scale(1.04) rotate(-1.5deg)}
+.shot .code{position:absolute;left:14px;top:12px}
+.shot .status{position:absolute;right:12px;top:10px;background:var(--ink);color:var(--bone);padding:4px 8px}
+.info{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.info h3{font-size:36px;line-height:.9}
+.info p{font-size:15px;line-height:1.5;color:#2B2B28}
+.info .spec{color:var(--mute)}
+.info .row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:6px}
+.add{border:2px solid var(--ink);background:transparent;padding:9px 12px;font:800 12px/1 var(--body);font-stretch:125%;letter-spacing:.06em;text-transform:uppercase}
+.add:hover{background:var(--ink);color:var(--bone)}
+.add[aria-pressed="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--bone)}
+
+.vault{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-left:2px solid var(--ink);margin-top:40px}
+.vault div{position:relative;border:2px solid var(--ink);border-left:0;padding:22px 18px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;background:repeating-linear-gradient(-45deg,transparent 0 14px,rgba(13,13,11,.05) 14px 16px)}
+.vault h3{font-size:30px;color:var(--mute)}
+.vault p{font-size:14px;color:var(--mute);max-width:32ch}
+.vault .st{position:absolute;right:14px;top:16px;transform:rotate(-8deg);border:2.5px solid var(--stamp);color:var(--stamp);font:900 16px/1 var(--display);letter-spacing:.08em;padding:5px 8px}
+
+/* Size guide */
+.size{padding-block:0 72px}
+.table-wrap{overflow-x:auto;border:2px solid var(--ink);background:var(--bone)}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{text-align:left;padding:16px 18px;border-bottom:1.5px solid var(--ink);vertical-align:top}
+th{font:600 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--bone)}
+td:first-child{font:900 34px/1 var(--display);width:90px}
+tr:last-child td{border-bottom:0}
+tr.off td{color:var(--mute)}
+tr.fit td:first-child{color:var(--cobalt)}
+.fit-tag{display:inline-block;background:var(--cobalt);color:var(--bone);font:600 10px/1 var(--mono);letter-spacing:.08em;padding:4px 6px;margin-left:8px;vertical-align:2px}
+
+/* Care label */
+.care{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px var(--gut);padding-block:72px;border-top:2px solid var(--ink)}
+.care h2{font-size:clamp(56px,8vw,128px)}
+.care .lede{margin-top:20px;font-size:18px;max-width:36ch;line-height:1.5}
+.label{justify-self:center;width:min(420px,100%);background:var(--bone);border:1px solid #BDBDB6;padding:28px 26px;font:500 13px/1.6 var(--mono);text-transform:uppercase;letter-spacing:.05em;position:relative;box-shadow:0 18px 30px -20px rgba(0,0,0,.4)}
+.label::before,.label::after{content:"";position:absolute;left:0;right:0;height:8px;background:repeating-linear-gradient(90deg,#BDBDB6 0 1px,transparent 1px 4px)}
+.label::before{top:0}
+.label::after{bottom:0}
+.label h3{font:900 30px/1 var(--display);letter-spacing:.08em;text-align:center}
+.label hr{border:0;border-top:1px solid #9A9A93;margin:14px 0}
+.label ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.label li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px}
+.label li span:first-child{font-weight:600}
+.symbols{display:flex;justify-content:center;gap:18px;margin:4px 0}
+.symbols svg{width:30px;height:30px}
+.spec-row{display:flex;justify-content:space-between;gap:12px}
+
+/* List */
+.list{background:var(--ink);color:var(--bone);padding-block:80px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px var(--gut)}
+.list h2{font-size:clamp(64px,10vw,160px)}
+.list h2 span{color:var(--cobalt)}
+.list .lede{margin-top:22px;font-size:18px;line-height:1.5;color:#C9C9C2;max-width:40ch}
+.form{display:flex;flex-direction:column;gap:14px;align-self:end}
+.form label{font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#9C9C95}
+.form input,.form select{width:100%;background:transparent;border:0;border-bottom:2px solid var(--bone);color:var(--bone);padding:12px 0;font:600 20px/1.2 var(--body);outline:none;border-radius:0}
+.form select option{color:var(--ink)}
+.form input:focus,.form select:focus{border-color:var(--cobalt)}
+.picked{font:500 13px/1.5 var(--mono);color:#C9C9C2;min-height:1.5em}
+.picked b{color:var(--bone)}
+.done{border:2px solid var(--cobalt);padding:22px;display:flex;flex-direction:column;gap:10px}
+.done h3{font-size:44px}
+.done p{color:#C9C9C2}
+.more{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.more a{color:var(--bone)}
+
+/* Footer */
+.foot{background:var(--concrete);padding-block:28px 0;overflow:hidden}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
+.giant{font:900 clamp(120px,31vw,520px)/.74 var(--display);letter-spacing:-.01em;margin:24px 0 -0.08em;white-space:nowrap;text-align:center}
+
+@media (max-width:960px){
+  .nav{display:none}
+  .head-in{grid-template-columns:1fr auto}
+  .hero{grid-template-columns:1fr}
+  .receipt-stage{margin-top:8px}
+  .manifesto,.care,.list{grid-template-columns:1fr}
+  .grid,.vault{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .grid,.vault{grid-template-columns:1fr}
+  .manifesto .cols{grid-template-columns:1fr}
+  .stamp{right:-6px}
+  .hero h1{font-size:clamp(64px,22vw,120px)}
+}
+</style>
+
+<header class="head wrap">
+  <div class="head-in">
+    <a class="logo" href="#top">TRELLIS <small>SALES DEPT.</small></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#collection">Drop 001</a><a href="#size">Size guide</a><a href="#care">Care</a><a href="#list">The list</a>
+    </nav>
+    <a class="bag" id="bag" href="#list">List<b id="bagN">0</b></a>
+  </div>
+</header>
+
+<div class="tape" aria-hidden="true"><div class="tape-track" id="tape"></div></div>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="hero-meta mono"><span>Drop 001 / Memory</span><span>FW26</span><span>20 design partner spots</span><span>Made from your inbox</span></div>
+    <h1 id="heroH">We keep<br><span class="c">rec</span><span class="o">eipts.</span></h1>
+    <div class="hero-copy">
+      <p>Trellis is a sales memory. It reads your email, calendar and website, then tells you who to hit up today. Every claim comes with proof.</p>
+      <div class="ctas"><a class="btn" href="#list">Get on the list →</a><a class="btn ghost" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">See the demo</a></div>
+    </div>
+    <div class="receipt-stage">
+      <article class="receipt" aria-label="Sample receipt for a sales signal">
+        <div class="r-center"><div class="r-logo">TRELLIS</div><div>SALES DEPT. · DROP 001</div><div>TUE 29 SEP 2026 · 10:45</div></div>
+        <hr class="r-rule">
+        <div class="r-row"><span>ACCT: ACME LOGISTICS</span><span>#0082</span></div>
+        <div class="r-row"><span>WHO: PRIYA RAMAN, VP OPS</span><span></span></div>
+        <hr class="r-rule">
+        <div class="r-row"><span>PRICING PAGE ×2</span><span>+34</span></div>
+        <div class="r-row"><span>IMPL. GUIDE CLICK</span><span>+22</span></div>
+        <div class="r-row"><span>NO REPLY · 4 BUS. DAYS</span><span>+18</span></div>
+        <div class="r-row"><span>BOTH STAKEHOLDERS ACTIVE</span><span>+8</span></div>
+        <div class="r-row x"><span>EMAIL OPENS</span><span>EXCL</span></div>
+        <hr class="r-rule">
+        <div class="r-total"><span>HEAT</span><span>82</span></div>
+        <div class="r-act">ACTION: SEND PRIYA THE GO-LIVE PLAN</div>
+        <div>DRAFT READY · WAITS FOR YOU</div>
+        <div class="barcode" aria-hidden="true"></div>
+        <div class="r-center">EVERY LINE CITED<br>NO REFUNDS ON GUESSES</div>
+        <span class="stamp" aria-hidden="true">CITED</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="manifesto wrap">
+    <h2>Your CRM is a closet of stuff <span>nobody wears.</span></h2>
+    <div class="cols">
+      <p><b>No data entry</b>Emails, meetings, notes and site visits land on one timeline on their own. Fields fill themselves.</p>
+      <p><b>No guessing</b>Ask about any deal. Every answer links to the email or note it came from. No proof, no answer.</p>
+      <p><b>No noise</b>Opens don’t count. Clicks, replies, forms and pricing-page visits do. You get a short list, not a firehose.</p>
+      <p><b>No surprises</b>It writes the email. You hit send. Do-not-contact and consent rules run on every single action.</p>
+    </div>
+  </section>
+
+  <section id="collection" class="wrap">
+    <div class="sec-head"><h2>Drop 001</h2><p class="mono">6 pieces · 1 system · all included</p></div>
+    <div class="grid" id="grid"></div>
+    <div class="vault" aria-label="Not in this drop">
+      <div><span class="st">Not made here</span><h3>Anonymous visitor ID</h3><p>We don’t guess who strangers are. First-party signals only. Company-level match is an optional add-on.</p></div>
+      <div><span class="st">Not in this drop</span><h3>Auto-send</h3><p>Nothing leaves your outbox without you. Maybe later, behind an admin and a tested rule.</p></div>
+      <div><span class="st">Next drop</span><h3>Meeting bot</h3><p>Paste or upload notes for now. One notes integration in this drop.</p></div>
+    </div>
+  </section>
+
+  <section id="size" class="size wrap">
+    <div class="sec-head"><h2>Size guide</h2><p class="mono">Sized by sellers on the team</p></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Size</th><th>Sellers</th><th>Who wears it</th><th>Fit notes</th></tr></thead>
+      <tbody>
+        <tr class="fit"><td>XS</td><td>1</td><td>Solo founder doing every deal <span class="fit-tag">TRUE TO SIZE</span></td><td>Zero upkeep. Your inbox is the CRM.</td></tr>
+        <tr class="fit"><td>S</td><td>2–5</td><td>Founder plus first reps <span class="fit-tag">TRUE TO SIZE</span></td><td>Shared accounts, clean handoffs, no briefing meetings.</td></tr>
+        <tr class="fit"><td>M</td><td>6–12</td><td>Small sales team</td><td>Manager views and rule builder. Google Workspace only.</td></tr>
+        <tr class="fit"><td>L</td><td>13–20</td><td>Team with a RevOps owner</td><td>Rules in test mode, audit log, export everything.</td></tr>
+        <tr class="off"><td>XL</td><td>20+</td><td>Mid-market revenue org</td><td>Runs small. Field-level permissions come later.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="care" class="care wrap">
+    <div>
+      <h2>Care<br>instructions</h2>
+      <p class="lede">How it’s made matters. These are the rules every piece is cut from, plus the targets we hold ourselves to during the design partner run.</p>
+    </div>
+    <div class="label" role="img" aria-label="Care label listing Trellis product principles and targets">
+      <h3>TRELLIS</h3>
+      <div class="r-center" style="font-size:11px">DROP 001 · MADE FROM YOUR INBOX</div>
+      <hr>
+      <div class="symbols" aria-hidden="true">
+        <svg viewBox="0 0 30 30" fill="none"><path d="M4 9h22l-3 15H7L4 9Z" stroke="#1A1A18" stroke-width="1.6"/><path d="M4 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0 4 3 4 0" stroke="#1A1A18" stroke-width="1.4"/><text x="15" y="21" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#1A1A18">0</text></svg>
+        <svg viewBox="0 0 30 30" fill="none"><path d="M15 4 27 25H3L15 4Z" stroke="#1A1A18" stroke-width="1.6"/><path d="m8 10 14 14M22 10 8 24" stroke="#1A1A18" stroke-width="1.6"/></svg>
+        <svg viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="22" height="22" stroke="#1A1A18" stroke-width="1.6"/><circle cx="15" cy="15" r="7" stroke="#1A1A18" stroke-width="1.6"/><path d="m6 6 18 18M24 6 6 24" stroke="#1A1A18" stroke-width="1.6"/></svg>
+        <svg viewBox="0 0 30 30" fill="none"><path d="M5 22h20l-2-9c-1-4-15-4-16 0l-2 9Z" stroke="#1A1A18" stroke-width="1.6"/><circle cx="15" cy="17" r="1.6" fill="#1A1A18"/></svg>
+      </div>
+      <hr>
+      <ol>
+        <li><span>01</span><span>Events before fields. Raw history is never overwritten.</span></li>
+        <li><span>02</span><span>Evidence before confidence. Every claim is cited.</span></li>
+        <li><span>03</span><span>Identity before automation. Unsure who? No action.</span></li>
+        <li><span>04</span><span>Review before autonomy. You press send.</span></li>
+        <li><span>05</span><span>First-party only. No stranger data required.</span></li>
+        <li><span>06</span><span>Do not train on customer data.</span></li>
+      </ol>
+      <hr>
+      <div class="spec-row"><span>Signal to alert</span><span>&lt; 5 min</span></div>
+      <div class="spec-row"><span>Known contact match</span><span>≥ 95%</span></div>
+      <div class="spec-row"><span>Claims cited</span><span>100%</span></div>
+      <div class="r-center" style="font-size:10px;margin-top:8px">TARGETS FOR THE DESIGN PARTNER RUN · DO NOT TUMBLE DRY</div>
+    </div>
+  </section>
+
+  <section id="list" class="list wrap">
+    <div>
+      <h2>Get on<br><span>the list.</span></h2>
+      <p class="lede">Drop 001 is for 20 design partners: founder-led B2B teams with 1 to 20 sellers on Google Workspace. No price tag while we build it with you.</p>
+      <div class="more mono"><a href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Try the demo ↗</a><a href="https://claude.ai/artifact/DYEtLtrytkBQQ86A246iga" target="_blank" rel="noopener">Walk the onboarding ↗</a></div>
+    </div>
+    <div>
+      <form class="form" id="form" novalidate>
+        <label for="email">Work email</label>
+        <input id="email" type="email" placeholder="you@company.com" autocomplete="email" required>
+        <label for="size-sel" style="margin-top:10px">Team size</label>
+        <select id="size-sel"><option>XS · 1 seller</option><option selected>S · 2–5 sellers</option><option>M · 6–12 sellers</option><option>L · 13–20 sellers</option><option>XL · 20+ sellers</option></select>
+        <p class="picked" id="picked"></p>
+        <p class="mono" id="err" style="color:#FF8A7A" hidden>Enter a work email so we know where to send your spot.</p>
+        <button class="btn blue" type="submit" style="align-self:flex-start;margin-top:6px">Claim a spot →</button>
+      </form>
+      <div class="done" id="done" hidden>
+        <p class="mono">Mockup · nothing was sent</p>
+        <h3>You’re on the list.</h3>
+        <p id="doneText"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="foot-row mono"><span>© 2026 Trellis Sales Dept.</span><span>Every email, meeting and click. One memory.</span><a href="#top">Back to top ↑</a></div>
+  <div class="giant" aria-hidden="true">TRELLIS</div>
+</footer>
+
+<script>
+const PIECES = [
+  { code: 'TRL-001', name: 'The Ledger', type: 'hoodie', fill: '#0D0D0B', ink: '#F4F4EE', print: 'LEDGER', status: 'Core',
+    copy: 'Heavyweight memory. Every email, meeting, note and site visit stitched into one timeline. Nothing typed by hand.',
+    spec: 'Gmail · Calendar · notes · web' },
+  { code: 'TRL-002', name: 'Receipts', type: 'tee', fill: '#F4F4EE', ink: '#0D0D0B', print: 'RECEIPTS', status: 'Core',
+    copy: 'Ask anything about any account. Every answer opens the exact email or note it came from.',
+    spec: 'Cited Q&A · keyword + semantic' },
+  { code: 'TRL-003', name: 'Heat Check', type: 'tee', fill: '#1F3DFF', ink: '#F4F4EE', print: 'HEAT CHECK', status: 'Core',
+    copy: 'Know who is warming up. Pricing views, tracked clicks and replies ranked into a short list you can act on.',
+    spec: 'Signal to alert < 5 min' },
+  { code: 'TRL-004', name: 'No Cap', type: 'cap', fill: '#0D0D0B', ink: '#F4F4EE', print: 'NO CAP', status: 'Core',
+    copy: 'When the proof isn’t there, it says “not enough evidence.” It never fills the gap with a guess.',
+    spec: 'Grounded answers only' },
+  { code: 'TRL-005', name: 'Drafts Not Sends', type: 'crew', fill: '#B9BAB3', ink: '#0D0D0B', print: 'YOU PRESS SEND', status: 'Core',
+    copy: 'It writes the follow-up from what they actually said. You read it, tweak it, send it from your own Gmail.',
+    spec: 'Approval on every send' },
+  { code: 'TRL-006', name: 'Do Not Contact', type: 'tee', fill: '#F4F4EE', ink: '#D8321E', print: 'DO NOT CONTACT', status: 'Core',
+    copy: 'Consent, quiet hours, frequency caps and do-not-contact lists checked before anything happens. Every time.',
+    spec: 'Full audit log' }
+];
+const SHAPES = {
+  tee: 'M62 34 L86 24 Q100 38 114 24 L138 34 L176 60 L160 88 L142 78 L142 184 L58 184 L58 78 L40 88 L24 60 Z',
+  crew: 'M62 34 L86 24 Q100 38 114 24 L138 34 L160 52 L186 150 L166 156 L142 84 L142 184 L58 184 L58 84 L34 156 L14 150 L40 52 Z',
+  hoodie: 'M64 40 Q66 12 100 10 Q134 12 136 40 L150 44 L186 150 L166 156 L142 86 L142 186 L58 186 L58 86 L34 156 L14 150 L50 44 Z',
+  cap: 'M44 120 Q44 56 100 52 Q156 56 156 120 Z'
+};
+function garment(p){
+  const fs = p.print.length > 10 ? 13 : p.print.length > 8 ? 15 : p.print.length > 6 ? 17 : 20;
+  let extra = '';
+  if (p.type === 'hoodie') extra = `<path d="M78 40 Q100 62 122 40" stroke="${p.ink}" stroke-opacity=".35" stroke-width="2" fill="none"/><rect x="74" y="140" width="52" height="26" rx="3" fill="none" stroke="${p.ink}" stroke-opacity=".3" stroke-width="2"/><line x1="94" y1="48" x2="92" y2="70" stroke="${p.ink}" stroke-opacity=".5" stroke-width="2"/><line x1="106" y1="48" x2="108" y2="70" stroke="${p.ink}" stroke-opacity=".5" stroke-width="2"/>`;
+  if (p.type === 'crew') extra = `<path d="M84 26 Q100 42 116 26" stroke="${p.ink}" stroke-opacity=".3" stroke-width="3" fill="none"/><rect x="58" y="176" width="84" height="8" fill="${p.ink}" fill-opacity=".12"/>`;
+  if (p.type === 'tee') extra = `<path d="M86 26 Q100 40 114 26" stroke="${p.ink}" stroke-opacity=".25" stroke-width="3" fill="none"/>`;
+  if (p.type === 'cap') {
+    return `<svg viewBox="0 0 200 200" role="img" aria-label="${p.name} cap"><path d="${SHAPES.cap}" fill="${p.fill}"/><path d="M40 118 Q110 104 186 128 Q176 144 124 140 L40 128 Z" fill="${p.fill}"/><path d="M100 54 L100 118" stroke="${p.ink}" stroke-opacity=".2" stroke-width="2"/><circle cx="100" cy="54" r="4" fill="${p.ink}" fill-opacity=".4"/><text x="100" y="98" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="24" letter-spacing="1" fill="${p.ink}">${p.print}</text></svg>`;
+  }
+  const y = p.type === 'hoodie' ? 104 : 88;
+  const words = p.print.split(' ');
+  const lines = p.print.length > 10 && words.length > 1 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [p.print];
+  const txt = lines.map((l, i) => `<text x="100" y="${y + i * (fs + 3)}" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="${lines.length > 1 ? 16 : fs}" letter-spacing="1" fill="${p.ink}">${l}</text>`).join('');
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="${p.name} ${p.type}"><path d="${SHAPES[p.type]}" fill="${p.fill}"/>${extra}${txt}</svg>`;
+}
+const picked = new Set();
+function renderGrid(){
+  document.getElementById('grid').innerHTML = PIECES.map((p, i) => `<article class="piece">
+    <div class="shot"><span class="code mono">${p.code}</span><span class="status mono">${p.status}</span>${garment(p)}</div>
+    <div class="info"><h3>${p.name}</h3><p>${p.copy}</p><p class="mono spec">${p.spec}</p>
+      <div class="row"><span class="mono">Included</span><button class="add" type="button" data-i="${i}" aria-pressed="${picked.has(i)}">${picked.has(i) ? 'On your list ✓' : 'Add to list +'}</button></div></div>
+  </article>`).join('');
+}
+function renderPicked(){
+  document.getElementById('bagN').textContent = picked.size;
+  const names = [...picked].map(i => PIECES[i].name);
+  document.getElementById('picked').innerHTML = names.length ? `Most excited about: <b>${names.join(', ')}</b>` : 'Add pieces from the drop to tell us what you want most.';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.add'); if (!b) return;
+  const i = +b.dataset.i;
+  picked.has(i) ? picked.delete(i) : picked.add(i);
+  renderGrid(); renderPicked();
+  const bag = document.getElementById('bag'); bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+});
+document.getElementById('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  document.getElementById('err').hidden = ok;
+  if (!ok) { document.getElementById('email').focus(); return; }
+  const size = document.getElementById('size-sel').value.split(' · ')[0];
+  const names = [...picked].map(i => PIECES[i].name);
+  document.getElementById('doneText').textContent = `Size ${size}. ${names.length ? 'Noted interest in ' + names.join(', ') + '. ' : ''}In the real drop, we’d email ${email} when your spot opens.`;
+  document.getElementById('form').hidden = true;
+  document.getElementById('done').hidden = false;
+});
+const TAPE = ['Drop 001: Memory', 'We keep receipts', 'No data entry', 'Opens don’t count', 'You press send', '20 design partner spots', 'Made from your inbox'];
+const run = TAPE.map(t => `<span>${t}<i>✕</i></span>`).join('');
+document.getElementById('tape').innerHTML = run + run;
+renderGrid(); renderPicked();
+// Keep the headline inside its column whichever font ends up rendering.
+function fitHero(){
+  const h = document.getElementById('heroH'); h.style.fontSize = '';
+  let size = parseFloat(getComputedStyle(h).fontSize), guard = 0;
+  while (h.scrollWidth > h.clientWidth + 1 && size > 40 && guard++ < 60){ size *= 0.96; h.style.fontSize = size + 'px'; }
+}
+fitHero();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHero);
+addEventListener('resize', fitHero);
+</script>
