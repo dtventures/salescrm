@@ -227,6 +227,20 @@ sup.c + sup.c{margin-left:4px}
 .journey b{font-weight:600;display:block}
 .journey span{font-size:12.5px;color:var(--ink-2)}
 .alert{margin-top:16px;padding:10px 12px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600}
+.risk{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px;align-items:start}
+.risk:first-of-type{border-top:0;padding-top:0}
+.rtag{justify-self:start;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--caution-soft);color:var(--caution)}
+.risk b,.log b{display:block;font-weight:600}
+.risk span:not(.rtag),.log span:not(.t){display:block;color:var(--ink-2);font-size:13px}
+.team{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;margin-top:56px;align-items:stretch}
+.team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.team-grid div{background:var(--bg-2);border-radius:18px;padding:24px}
+.team-grid h3{font-size:17px;margin-bottom:6px}
+.team-grid p{font-size:14.5px;color:var(--ink-2)}
+.log{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}
+.log:first-of-type{border-top:0;padding-top:0}
+.log .t{color:var(--ink-3);font-size:12.5px;font-variant-numeric:tabular-nums;padding-top:1px}
+.log span.bad{color:#C2352B}
 @media (max-width:1100px){
   .app3{grid-template-columns:minmax(0,1fr) 240px}
   .rail{display:none}
@@ -236,7 +250,7 @@ sup.c + sup.c{margin-left:4px}
   .links{display:none}
   .app3{grid-template-columns:1fr}
   .side{display:none}
-  .feature,.beta{grid-template-columns:1fr;gap:36px}
+  .feature,.beta,.team{grid-template-columns:1fr;gap:36px}
   .feature.flip .fx{order:0}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .trust-grid,.problem{grid-template-columns:1fr;gap:16px}
@@ -250,6 +264,7 @@ sup.c + sup.c{margin-left:4px}
   .nav-cta .signin{display:none}
   .steps{grid-template-columns:1fr}
   .modules{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
   .pipe{grid-template-columns:1fr}
   .ev{grid-template-columns:54px minmax(0,1fr)}
   .ev .ch{grid-column:2}
@@ -263,7 +278,7 @@ sup.c + sup.c{margin-left:4px}
 <header class="nav">
   <div class="container nav-in">
     <a class="logo" href="#top"><i></i>Trellis</a>
-    <nav class="links" aria-label="Primary"><a href="#platform">Platform</a><a href="#how">How it works</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a></nav>
+    <nav class="links" aria-label="Primary"><a href="#platform">Platform</a><a href="#intelligence">Intelligence</a><a href="#teams">Teams</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a></nav>
     <div class="nav-cta"><a class="signin" href="https://claude.ai/artifact/YVtzNnKqYT86P5Y8dWdbBj" target="_blank" rel="noopener">Live demo</a><a class="btn primary sm" href="#join">Join the beta</a></div>
   </div>
 </header>
@@ -330,11 +345,11 @@ sup.c + sup.c{margin-left:4px}
       <div><span class="tag" style="color:var(--c-email)">Email</span><h3>Your inbox, connected</h3><p>Gmail history and every new message, matched to the right person and deal. Send from your own address.</p></div>
       <div><span class="tag" style="color:var(--c-crm)">CRM</span><h3>Contacts, companies, pipeline</h3><p>Records and deals created from real activity. Stages, amounts, close dates and custom fields, without manual logging.</p></div>
       <div><span class="tag" style="color:var(--c-meet)">Calendar</span><h3>Meetings in context</h3><p>Every meeting linked to its contacts and deal, with who attended and what happened before and after.</p></div>
-      <div><span class="tag" style="color:var(--c-note)">Meeting notes</span><h3>Notes that do something</h3><p>Paste, upload or connect your notes tool. Trellis pulls out next steps, objections and the promises you made.</p></div>
-      <div><span class="tag" style="color:var(--c-web)">Website journey</span><h3>See what they read</h3><p>One snippet on your site shows which pages a known prospect visited, in order, after they clicked your email.</p></div>
+      <div><span class="tag" style="color:var(--c-note)">Meeting notes</span><h3>Notes that do something</h3><p>Paste, upload or connect your notes tool. Trellis pulls out people, dates, amounts, objections, competitors and the promises you made.</p></div>
+      <div><span class="tag" style="color:var(--c-web)">Website journey</span><h3>See what they read</h3><p>One snippet on your site shows which pages a known prospect visited, in order, with the campaign that brought them.</p></div>
       <div><span class="tag" style="color:var(--c-track)">Email tracking</span><h3>Clicks you can trust</h3><p>Signed tracked links show exactly who clicked what. Opens are optional and flagged as unreliable.</p></div>
       <div><span class="tag" style="color:var(--accent)">Search &amp; answers</span><h3>Ask anything</h3><p>Search every email, note and visit, or ask a question in plain English. Every answer links to its source.</p></div>
-      <div><span class="tag" style="color:var(--caution)">Follow-ups</span><h3>Know what to do next</h3><p>A daily list of who needs you and why, with drafts ready. Rules and alerts run with test mode and approval.</p></div>
+      <div><span class="tag" style="color:var(--caution)">Intelligence</span><h3>Know what to do next</h3><p>Who is warming up, which deals are at risk, and a daily list of follow-ups with drafts ready.</p></div>
     </div>
   </section>
 
@@ -360,6 +375,7 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Gmail, Google Calendar and meeting notes</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Website visits and email clicks on the same timeline</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Filter by channel or jump to the source</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A live account summary that rewrites itself as new emails and notes arrive</li>
         </ul>
       </div>
       <div class="fx"><div class="mock">
@@ -376,7 +392,7 @@ sup.c + sup.c{margin-left:4px}
         <h3>A CRM that keeps itself up to date</h3>
         <p class="lead">Contacts, companies and deals are created from real conversations. When a proposal goes out or a meeting is booked, the pipeline moves with it.</p>
         <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Stages, amounts, owners, close dates and custom fields</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Stages, amounts, probability, owners, close dates and custom fields</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Duplicate detection with reversible merges</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Import and export everything as CSV</li>
         </ul>
@@ -395,6 +411,7 @@ sup.c + sup.c{margin-left:4px}
         <ul class="checks">
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Known visitors only, through clicks, forms and logins</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent mode by region built in</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Campaign source, custom events and pages grouped by buying intent</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Email opens shown, never counted as intent</li>
         </ul>
       </div>
@@ -410,12 +427,61 @@ sup.c + sup.c{margin-left:4px}
       </div></div>
     </div>
 
+  </section>
+
+  <section class="container" id="intelligence">
+    <div class="center" style="padding-top:48px">
+      <p class="eyebrow">Pipeline intelligence</p>
+      <h2 class="h2">See what’s changing before it’s too late.</h2>
+      <p class="lead" style="margin-top:16px">Trellis reads every interaction as it happens, then tells you who is warming up and which deals are slipping, with the evidence for each.</p>
+    </div>
+
+    <div class="feature">
+      <div>
+        <h3>Know who’s warming up, and why</h3>
+        <p class="lead">Accounts and people are ranked by real buying signals. Every score shows its parts, and every part links to the email, visit or note behind it.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A live ranking of accounts and people by intent</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Every point explained and linked to its source</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Identity confidence shown, so you know who really did it</li>
+        </ul>
+      </div>
+      <div class="fx"><div class="mock">
+        <p class="k">Pricing interest increased · Acme Logistics</p>
+        <div class="score"><span class="l">Two pricing-page views after the proposal</span><span class="p">+34</span></div>
+        <div class="score"><span class="l">Implementation guide click this morning</span><span class="p">+22</span></div>
+        <div class="score"><span class="l">No reply to the proposal in 4 business days</span><span class="p">+18</span></div>
+        <div class="score"><span class="l">Both known stakeholders active</span><span class="p">+8</span></div>
+        <div class="score x"><span class="l">Email opens</span><span class="p">0</span></div>
+        <div class="score-total"><span style="color:var(--ink-3);font-size:14px">Signal strength · very high identity confidence</span><b>82</b></div>
+      </div></div>
+    </div>
+
     <div class="feature flip">
+      <div>
+        <h3>Catch deals before they slip</h3>
+        <p class="lead">Trellis flags reply gaps, missing decision-makers, slipping timelines, contradictions between what people said, and deals stuck in one stage too long.</p>
+        <ul class="checks">
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Risk flags on every deal, each with its evidence</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>A weekly risk review for you or your whole team</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Suggested next step for each flag</li>
+        </ul>
+      </div>
+      <div class="fx"><div class="mock">
+        <p class="k">Deals at risk · this week</p>
+        <div class="risk"><span class="rtag">Stalled</span><div><b>Northwind Clinics</b><span>No reply in 8 business days since the recap</span></div></div>
+        <div class="risk"><span class="rtag">Missing</span><div><b>Acme Logistics</b><span>No finance or procurement contact in any thread</span></div></div>
+        <div class="risk"><span class="rtag">Timeline</span><div><b>Brightline Labs</b><span>Closes 15 Oct, but legal review hasn’t started</span></div></div>
+        <div class="risk"><span class="rtag">Conflict</span><div><b>Halden Freight</b><span>Budget “frozen” in August, pricing visit today</span></div></div>
+      </div></div>
+    </div>
+
+    <div class="feature">
       <div>
         <h3>Ask anything. Get answers with sources.</h3>
         <p class="lead">Search across every email, meeting, note and visit, or ask in plain English. Each sentence links to where it came from, and Trellis says so when the evidence isn’t there.</p>
         <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pre-call briefings and handoff summaries</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Saved briefings for pre-call, handoff, risk and weekly review</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Every claim links to its source</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Only searches what you’re allowed to see</li>
         </ul>
@@ -428,13 +494,13 @@ sup.c + sup.c{margin-left:4px}
       </div></div>
     </div>
 
-    <div class="feature">
+    <div class="feature flip">
       <div>
         <h3>Act from the same place</h3>
         <p class="lead">Each morning, Trellis lists who needs you and why, including promises from your meetings. Emails come drafted from what the customer actually said. You review and send.</p>
         <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tasks, alerts, drafts and deal updates</li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Rules with test mode, rate limits and quiet hours</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alerts, email notifications, tasks, drafts, deal updates and webhooks</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Rules with test mode, version history, rate limits and quiet hours</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Consent and do-not-contact checked on every email</li>
         </ul>
       </div>
@@ -449,6 +515,29 @@ sup.c + sup.c{margin-left:4px}
     </div>
   </section>
 
+  <section class="section container" id="teams">
+    <div class="center">
+      <p class="eyebrow">Built for teams</p>
+      <h2 class="h2">From solo founder to a team of twenty.</h2>
+      <p class="lead" style="margin-top:16px">Everyone works from the same memory, managers see the whole pipeline, and every action is on the record.</p>
+    </div>
+    <div class="team">
+      <div class="team-grid">
+        <div><h3>Roles and permissions</h3><p>Members see their accounts and assigned work. Managers see team activity and set up shared views. Admins control connections, rules, retention and exports.</p></div>
+        <div><h3>Manager views</h3><p>The whole pipeline, activity by rep, deals at risk across the team, and shared views everyone can use.</p></div>
+        <div><h3>Activity log</h3><p>Every action is recorded with what triggered it, the checks it passed, who approved it and what happened. Export it anytime.</p></div>
+        <div><h3>Connection health</h3><p>See each connection’s last sync, delay and errors, and reconnect in one click. Nothing is duplicated when data catches up.</p></div>
+      </div>
+      <div class="fx"><div class="mock">
+        <p class="k">Activity log</p>
+        <div class="log"><span class="t">10:46</span><div><b>Email sent to Priya Raman</b><span>Approved by Jordan Ellis · 5 of 5 checks passed</span></div></div>
+        <div class="log"><span class="t">10:44</span><div><b>Task created: Send MSA to Tomás</b><span>From rule “Contract page activity” v1</span></div></div>
+        <div class="log"><span class="t">Yesterday</span><div><b>Draft blocked for Ben Okafor</b><span class="bad">Do-not-contact list · owner notified</span></div></div>
+        <div class="log"><span class="t">Yesterday</span><div><b>Google Calendar reconnected</b><span>3-hour gap caught up · no duplicates</span></div></div>
+      </div></div>
+    </div>
+  </section>
+
   <section class="section trust" id="privacy">
     <div class="container">
       <div class="center">
@@ -459,8 +548,8 @@ sup.c + sup.c{margin-left:4px}
       <div class="trust-grid">
         <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M3 6.5 11 12l8-5.5M4 5h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><h3>Never sends on its own</h3><p>Every email waits for your approval. Automatic sending is off during the beta.</p></div>
         <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="9.5" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 9.5V7a3.5 3.5 0 0 1 7 0v2.5" stroke="currentColor" stroke-width="1.7"/></svg><h3>Not used for training</h3><p>Your data is never used to train shared AI models.</p></div>
-        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3 4 6v5c0 4 3 7 7 8 4-1 7-4 7-8V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><h3>Your workspace only</h3><p>Each company’s data is fully separated and encrypted in transit and at rest.</p></div>
-        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4v10m0 0-4-4m4 4 4-4M4 17h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Export or delete anytime</h3><p>Take a full export whenever you like. Deleting removes data from search and summaries too.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3 4 6v5c0 4 3 7 7 8 4-1 7-4 7-8V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><h3>Your workspace only</h3><p>Each company’s data is fully separated and encrypted. Admins can see every data provider and processing agreement.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 4v10m0 0-4-4m4 4 4-4M4 17h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Your data, your rules</h3><p>Set retention by source, export everything, and handle a person’s access, correction or deletion request in a few clicks.</p></div>
         <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 11h15M11 3.5c2 2 3 4.5 3 7.5s-1 5.5-3 7.5c-2-2-3-4.5-3-7.5s1-5.5 3-7.5Z" stroke="currentColor" stroke-width="1.7"/></svg><h3>Consent built in</h3><p>Website tracking respects consent by region. Visits link to people only through first-party signals like clicks and forms.</p></div>
         <div><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.7"/><path d="m6 6 10 10" stroke="currentColor" stroke-width="1.7"/></svg><h3>Do-not-contact enforced</h3><p>People who opted out are blocked from outreach, every time, with no override.</p></div>
       </div>
@@ -483,6 +572,8 @@ sup.c + sup.c{margin-left:4px}
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>CRM with contacts, companies and pipeline</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Website journey and email click tracking</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Search, answers with sources and daily follow-ups</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Intent ranking, risk alerts and live summaries</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Team roles, manager views and activity log</li>
           <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8.4 3 3L13 4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Teams of 1 to 20 sellers</li>
         </ul>
         <a class="btn primary" href="#signup">Apply for a spot</a>
@@ -497,6 +588,7 @@ sup.c + sup.c{margin-left:4px}
       <details><summary>Do I still use Gmail and Google Calendar?</summary><p>Yes. Trellis connects to them rather than replacing them. Anything you send or schedule shows up in Trellis, and emails you send from Trellis go out from your own Gmail address.</p></details>
       <details><summary>How does website and email tracking work?</summary><p>Add one snippet to your site and send emails with tracked links. When a prospect clicks, Trellis ties that browser to them and shows the pages they visit afterward. It never guesses who anonymous visitors are, and opens are shown but not trusted.</p></details>
       <details><summary>What happens to my meeting notes?</summary><p>Paste them, upload them, or connect a supported notes tool. Trellis links each note to the meeting and deal and pulls out next steps, objections and promises.</p></details>
+      <details><summary>Can my whole team use it?</summary><p>Yes. Teams of up to 20 sellers share one workspace with member, manager and admin roles. Managers see the whole pipeline and deals at risk; admins control connections, rules and data retention.</p></details>
       <details><summary>Will Trellis ever send email without me?</summary><p>No. Automatic sending is off for everyone during the beta. If it ever arrives, it will need an admin to turn it on and every safety check to pass.</p></details>
       <details><summary>Does it work with Outlook?</summary><p>Not yet. The beta supports Google Workspace. You can export everything as CSV at any time.</p></details>
       <details><summary>Is my data used to train AI?</summary><p>No. Your data is used only to serve your workspace and is never used to train shared models.</p></details>
