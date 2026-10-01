@@ -59,6 +59,12 @@ The server connects to your mailbox over IMAP and reads the headers (To, Cc, Bcc
 - Use `IGNORE_DOMAINS` / `IGNORE_EMAILS` for anyone you email who isn't outreach.
 - Company logos are loaded from DuckDuckGo's favicon service, which means it sees those domains. Set `COMPANY_LOGOS=off` to show letters instead.
 
+## Quick start
+
+Double-click **Start CRM.command** (Mac) or **Start CRM.bat** (Windows). It installs what it needs, opens http://localhost:3000, and shows sample data until you add a `.env` with your mailbox. It needs [Node.js](https://nodejs.org) 22 or newer; if Node.js is missing, it opens the download page.
+
+On a Mac, the first time you open it you may need to right-click the file, choose **Open**, then confirm.
+
 ## Setup
 
 Requires Node.js 22 or newer.
