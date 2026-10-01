@@ -3,6 +3,7 @@
 const path = require('node:path');
 const store = require('../lib/store');
 const { loadConfig } = require('../lib/config');
+const flows = require('../lib/flows');
 
 const file = path.join(__dirname, '..', 'data', 'demo.json');
 const { filters } = loadConfig({ IMAP_USER: 'you@yourco.com' });
@@ -48,6 +49,42 @@ sent.push({
 sent.sort((a, b) => a.date - b.date);
 for (const m of sent) store.ingest(data, m, filters, new Date(+m.date + 5 * 60000));
 
-data.sync = { lastSyncAt: new Date().toISOString(), lastError: '' };
+// Some of them wrote back.
+const replies = [
+  ['maya@northwind.io', 1, 'Re: Pilot proposal for Northwind'], ['leo@northwind.io', 3, 'Re: Quick intro'],
+  ['elle@harborlabs.co', 5, 'Re: Worth a call next week?'], ['sam@lumenhq.com', 26, 'Re: Following up'],
+  ['daniel@brightpath.io', 60, 'Re: Quick intro'], ['zara@meridianlabs.com', 85, 'Re: Notes from our chat'],
+  ['jonas@kiteworks.dev', 21, 'Re: Following up'],
+];
+for (const [i, [email, daysAgo, subject]] of replies.entries()) {
+  const contact = data.contacts[email];
+  store.ingestReply(data, { id: `reply-${i}`, date: new Date(now - daysAgo * day), subject, from: { name: contact.name, address: email } }, filters);
+}
+
+// A few flows, set to include leads that already matched so the demo has history.
+const longAgo = new Date(now - 120 * day);
+const make = (input) => flows.createFlow(data, { ...input, includeExisting: true }, longAgo);
+const fReplied = make({ name: 'Replied → Qualified', trigger: 'replied', stage: 'Qualified' });
+const fProposal = make({ name: 'Proposal sent', trigger: 'subject', value: 'proposal, pricing', stage: 'Proposal' });
+make({ name: 'Warm after 4 emails', trigger: 'emailed_n', value: '4', stage: 'Lead' });
+make({ name: 'Gone quiet 30 days', trigger: 'quiet', value: '30', stage: 'Lead' });
+make({ name: 'Target accounts', trigger: 'domain', value: 'quarry.so, verdant.ai, tidewater.co', stage: 'Lead' });
+
+flows.evaluate(data, store.view(data).people, new Date(now));
+
+// Approve the older matches as if they'd been handled at the time; leave recent ones waiting.
+for (const e of [...data.enrollments].sort((a, b) => a.matchedAt.localeCompare(b.matchedAt))) {
+  const age = now - Date.parse(e.matchedAt);
+  if (age > 6 * day && e.flowId !== fProposal.id) flows.decide(data, e.id, age < 70 * day || e.flowId === fReplied.id, new Date(Date.parse(e.matchedAt) + day));
+}
+data.enrollments.forEach((e) => { e.createdAt = new Date(Math.min(Date.parse(e.matchedAt) + 3600000, now)).toISOString(); });
+if (data.deals['harborlabs.co']) flows.updateDeal(data, 'harborlabs.co', { stage: 'Meeting', value: 18000 }, new Date(now - 3 * day));
+if (data.deals['lumenhq.com']) flows.updateDeal(data, 'lumenhq.com', { value: 9500 }, new Date(now - 20 * day));
+if (data.deals['brightpath.io']) flows.updateDeal(data, 'brightpath.io', { stage: 'Won', value: 24000 }, new Date(now - 30 * day));
+if (data.deals['meridianlabs.com']) flows.updateDeal(data, 'meridianlabs.com', { stage: 'Lost', value: 6000 }, new Date(now - 60 * day));
+if (data.deals['kiteworks.dev']) flows.updateDeal(data, 'kiteworks.dev', { value: 12000 }, new Date(now - 18 * day));
+
+data.sync = { boxes: {}, lastSyncAt: new Date().toISOString(), lastError: '' };
 store.save(file, data);
-console.log(`Wrote ${sent.length} demo emails to ${file}`);
+const pending = data.enrollments.filter((e) => e.status === 'pending').length;
+console.log(`Wrote ${sent.length} demo emails, ${replies.length} replies, ${Object.keys(data.deals).length} deals and ${pending} approvals to ${file}`);

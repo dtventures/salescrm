@@ -27,7 +27,7 @@ All demo files have no build step and no backend. They are written as artifact p
 
 ## Outreach CRM
 
-[`crm/`](crm/README.md) is a small working CRM that fills itself in from your Sent folder over IMAP: companies by domain, people by name and email, and for each one when they were added, first and last contact, and how many times they were contacted. Run it with `npm start` after adding your mailbox details to `crm/.env`.
+[`crm/`](crm/README.md) is a small working CRM that fills itself in from your mail over IMAP: companies by domain, people by name and email, with when each was added, first and last contact, emails sent and replies. Flows watch for entry points (a reply, a subject line, N emails, gone quiet, target domains and more) and queue leads for your approval; approving opens or moves the company's deal on a kanban board. Run it with `npm start` after adding your mailbox details to `crm/.env`.
 
 ## Hand-off
 

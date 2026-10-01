@@ -31,6 +31,7 @@ function loadConfig(env = process.env) {
       user,
       pass: (env.IMAP_PASSWORD || '').replace(/\s+/g, ''),
       sentMailbox: env.SENT_MAILBOX || '',
+      inboxMailbox: env.INBOX_MAILBOX || '',
     },
     filters: {
       selfEmails,

@@ -73,7 +73,7 @@
   .topbar h1 { font-size: 14px; font-weight: 500; color: var(--strong); margin: 0; display: flex; align-items: center; gap: 8px; }
   .topbar .total { color: var(--faint); font-weight: 400; }
   .topbar .spacer { flex: 1; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 500; }
+  .btn { white-space: nowrap; flex: none; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 500; }
   .btn:hover { background: var(--hover); border-color: var(--border-strong); }
   .btn:disabled { opacity: .6; cursor: default; }
   .mobile-nav { display: none; }
@@ -173,8 +173,8 @@
   .fields dd { margin: 0; display: flex; align-items: center; min-height: 30px; padding: 0 8px; border-radius: 6px; color: var(--strong); }
   .list-row { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: none; padding: 7px 8px; margin: 0 -8px; border-radius: 6px; text-align: left; width: calc(100% + 16px); }
   .list-row:hover { background: var(--hover); }
-  .list-row .meta { margin-left: auto; color: var(--faint); font-variant-numeric: tabular-nums; }
-  .list-row .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .list-row .meta { margin-left: auto; flex: none; white-space: nowrap; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .list-row .who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .timeline { position: relative; }
   .timeline::before { content: ""; position: absolute; left: 13px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
   .ev { display: flex; gap: 12px; padding: 6px 0; position: relative; }
@@ -188,11 +188,93 @@
   .scrim { position: fixed; inset: 0; z-index: 9; display: none; }
   .scrim.open { display: block; }
 
+  [hidden] { display: none !important; }
+
+  /* Stage tags: one hue per stage, Lead stays neutral */
+  .tag.stage { --h: 0; --s: 0%; background: hsl(var(--h) var(--s) var(--tag-bg-l)); color: hsl(var(--h) var(--s) var(--tag-ink-l)); }
+  :root { --tag-bg-l: 95%; --tag-ink-l: 38%; }
+  @media (prefers-color-scheme: dark) { :root { --tag-bg-l: 17%; --tag-ink-l: 72%; } }
+  .tag.stage.none { background: none; padding-left: 0; color: var(--faint); font-weight: 400; }
+  .tag.stage.none::before { display: none; }
+  .badge { margin-left: auto; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+  .reply-mark { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; }
+  .reply-mark .i { width: 13px; height: 13px; }
+  .btn.primary { background: var(--strong); color: var(--bg); border-color: var(--strong); }
+  .btn.primary:hover { opacity: .88; background: var(--strong); }
+  .btn.danger { color: var(--error); }
+  .content { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+  /* Deals board */
+  .board { flex: 1; min-height: 0; overflow: auto; display: flex; gap: 12px; padding: 12px 16px 16px; align-items: flex-start; }
+  .col { flex: 0 0 264px; background: var(--sidebar); border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; max-height: 100%; }
+  .col.over { border-color: var(--accent); background: var(--accent-soft); }
+  .col-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px 8px; }
+  .col-head .n { color: var(--faint); font-variant-numeric: tabular-nums; }
+  .col-head .sum { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .col-body { padding: 0 8px 8px; overflow: auto; display: flex; flex-direction: column; gap: 6px; min-height: 48px; }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: grab; display: flex; flex-direction: column; gap: 8px; text-align: left; width: 100%; }
+  .card:hover { border-color: var(--border-strong); }
+  .card.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .card.dragging { opacity: .4; }
+  .card-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .card-row .name { flex: 1; }
+  .card-meta { display: flex; align-items: center; gap: 8px; color: var(--faint); font-size: 12px; }
+  .card-meta .value { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .card-meta .stack { margin-left: auto; }
+  .col-empty { color: var(--faint); text-align: center; padding: 16px 0; font-size: 12px; border: 1px dashed var(--border); border-radius: 8px; }
+
+  /* Approvals */
+  .inbox { flex: 1; min-height: 0; overflow: auto; }
+  .inbox-tabs { display: flex; flex-wrap: wrap; gap: 2px; padding: 8px 16px; border-bottom: 1px solid var(--border); align-items: center; }
+  .inbox-tabs .spacer { flex: 1; }
+  .notice { margin: 12px 16px 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; gap: 10px; color: var(--muted); }
+  .notice .i { color: var(--accent); }
+  .notice .btn { margin-left: auto; }
+  .ap { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .ap:hover { background: var(--hover); }
+  .ap-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .ap-line { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+  .ap-line .name { cursor: pointer; }
+  .ap-line .name:hover { text-decoration: underline; }
+  .ap-why { color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .flow-chip { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; height: 22px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--border); color: var(--text); font-weight: 500; background: var(--bg); }
+  .flow-chip .i { width: 12px; height: 12px; color: var(--accent); }
+  .ap-actions { display: flex; gap: 6px; flex: none; }
+  .ap time { color: var(--faint); white-space: nowrap; font-size: 12px; }
+  .status { font-size: 12px; color: var(--faint); }
+  .status.approved { color: var(--green); }
+
+  /* Forms in the panel */
+  .form { display: flex; flex-direction: column; gap: 14px; padding: 16px 20px; }
+  .form label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-weight: 500; }
+  .form .hint { color: var(--faint); font-weight: 400; font-size: 12px; }
+  .input, .select {
+    font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+    height: 32px; padding: 0 10px; width: 100%;
+  }
+  .input:focus, .select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .fields .input, .fields .select { height: 28px; margin-left: -8px; width: calc(100% + 8px); border-color: transparent; background: none; }
+  .fields .input:hover, .fields .select:hover { border-color: var(--border); }
+  .check { flex-direction: row !important; align-items: center; gap: 8px !important; font-weight: 400 !important; color: var(--text) !important; }
+  .form-actions { display: flex; gap: 8px; align-items: center; }
+  .form-actions .spacer { flex: 1; }
+  .switch { position: relative; width: 30px; height: 18px; border-radius: 9px; background: var(--border-strong); border: 0; padding: 0; flex: none; transition: background .15s; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform .15s; box-shadow: 0 1px 2px rgb(0 0 0 / .2); }
+  .switch[aria-checked="true"] { background: var(--green); }
+  .switch[aria-checked="true"]::after { transform: translateX(12px); }
+  .history { display: flex; flex-direction: column; gap: 6px; }
+  .history div { display: flex; gap: 8px; color: var(--muted); }
+  .history time { margin-left: auto; color: var(--faint); white-space: nowrap; }
+  .waiting { color: var(--accent); font-weight: 500; }
+
   @media (max-width: 767px) {
     .app { grid-template-columns: 1fr; }
     .sidebar { display: none; }
-    .mobile-nav { display: inline-flex; gap: 2px; }
+    .mobile-nav { display: flex; gap: 2px; overflow-x: auto; flex: 1; }
+    .mobile-nav .chip { flex: none; }
     .topbar h1 { display: none; }
+    .topbar .spacer { display: none; }
+    .topbar #sync2 span, .topbar .btn .label { display: none; }
     .search { width: 100%; order: 10; }
     .sort-chip { display: none; }
     #filters { display: flex; overflow-x: auto; margin: 0 -16px; padding: 0 16px; }
@@ -200,6 +282,8 @@
     .viewbar .spacer { display: none; }
     .w-name { min-width: 180px; }
     .panel { top: 0; right: 0; bottom: 0; border-radius: 0; max-width: 100vw; width: 100vw; }
+    .ap { flex-wrap: wrap; }
+    .ap-actions { width: 100%; justify-content: flex-end; }
   }
 </style>
 </head>
@@ -210,25 +294,39 @@
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v5"/></symbol>
   <symbol id="i-hash" viewBox="0 0 24 24"><path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/></symbol>
   <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-add" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
   <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
   <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.9-3.5M4 4v4h4M4 13a8 8 0 0 0 14.9 3.5M20 20v-4h-4"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/></symbol>
+  <symbol id="i-deal" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5V12a3 3 0 0 0 3 3h6a3 3 0 0 1 3 3v-2.5"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 5h14l2 8v6H3v-6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 3v18M17 7.5C17 5.5 14.8 5 12 5s-5 1-5 3.5S9 11 12 12s5 1.5 5 3.5-2 3.5-5 3.5-5-.5-5-2.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 21h4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
 </svg>
 
 <div class="app">
   <aside class="sidebar">
     <div class="ws"><span class="ws-mark">O</span>Outreach</div>
     <button class="nav-btn" id="nav-search"><svg class="i"><use href="#i-search"/></svg>Search<kbd>/</kbd></button>
+    <button class="nav-btn" data-view="approvals"><svg class="i"><use href="#i-inbox"/></svg>Approvals<span id="c-approvals"></span></button>
     <div class="nav-label">Records</div>
     <button class="nav-btn" data-view="companies"><svg class="i"><use href="#i-building"/></svg>Companies<span class="count" id="c-companies"></span></button>
     <button class="nav-btn" data-view="people"><svg class="i"><use href="#i-user"/></svg>People<span class="count" id="c-people"></span></button>
+    <button class="nav-btn" data-view="deals"><svg class="i"><use href="#i-deal"/></svg>Deals<span class="count" id="c-deals"></span></button>
+    <div class="nav-label">Automations</div>
+    <button class="nav-btn" data-view="flows"><svg class="i"><use href="#i-flow"/></svg>Flows<span class="count" id="c-flows"></span></button>
     <div class="sidebar-foot">
       <i class="dot" id="dot"></i><span id="status">Loading…</span>
       <button class="icon-btn" id="sync" title="Sync now" aria-label="Sync now"><svg class="i"><use href="#i-refresh"/></svg></button>
@@ -239,30 +337,28 @@
     <header class="topbar">
       <h1 id="title"></h1>
       <div class="mobile-nav">
+        <button class="chip" data-view="approvals">Approvals</button>
         <button class="chip" data-view="companies">Companies</button>
         <button class="chip" data-view="people">People</button>
+        <button class="chip" data-view="deals">Deals</button>
+        <button class="chip" data-view="flows">Flows</button>
       </div>
       <span class="spacer"></span>
+      <span id="actions"></span>
       <button class="btn" id="sync2"><svg class="i"><use href="#i-refresh"/></svg><span>Sync now</span></button>
     </header>
-    <div class="viewbar">
-      <div id="filters" role="group" aria-label="Last contact"></div>
-      <span class="spacer"></span>
-      <button class="chip sort-chip" id="sort-chip"></button>
-      <label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search…" aria-label="Search"></label>
-    </div>
     <div class="banner" id="error" hidden></div>
-    <div class="grid-wrap"><table id="grid"></table></div>
+    <div class="content" id="content"></div>
   </section>
 </div>
 
 <div class="scrim" id="scrim"></div>
-<aside class="panel" id="panel" aria-label="Record details"></aside>
+<aside class="panel" id="panel" aria-label="Details"></aside>
 
 <script>
 const DAY = 86400000;
 const state = {
-  data: null, view: 'companies', q: '', bucket: 'all',
+  data: null, view: 'companies', q: '', bucket: 'all', inboxTab: 'pending',
   sort: { key: 'lastContact', dir: -1 }, record: null,
 };
 
@@ -271,8 +367,10 @@ const COLUMNS = {
   companies: [
     { key: 'domain', label: 'Company', icon: 'building', cls: 'w-name' },
     { key: 'people', label: 'People', icon: 'users' },
+    { key: 'deal', label: 'Deal', icon: 'deal' },
     { key: 'activity', label: 'Activity', icon: 'pulse', sortKey: 'lastContact' },
     { key: 'timesContacted', label: 'Emails sent', icon: 'hash', num: true },
+    { key: 'replies', label: 'Replies', icon: 'reply', num: true },
     { key: 'firstContact', label: 'First contact', icon: 'cal' },
     { key: 'lastContact', label: 'Last contact', icon: 'clock' },
     { key: 'addedAt', label: 'Added', icon: 'plus' },
@@ -281,8 +379,10 @@ const COLUMNS = {
     { key: 'name', label: 'Name', icon: 'user', cls: 'w-name' },
     { key: 'email', label: 'Email', icon: 'mail' },
     { key: 'company', label: 'Company', icon: 'building' },
+    { key: 'deal', label: 'Deal', icon: 'deal' },
     { key: 'activity', label: 'Activity', icon: 'pulse', sortKey: 'lastContact' },
     { key: 'timesContacted', label: 'Emails sent', icon: 'hash', num: true },
+    { key: 'replies', label: 'Replies', icon: 'reply', num: true },
     { key: 'firstContact', label: 'First contact', icon: 'cal' },
     { key: 'lastContact', label: 'Last contact', icon: 'clock' },
     { key: 'addedAt', label: 'Added', icon: 'plus' },
@@ -294,12 +394,22 @@ const BUCKETS = [
   { id: 'month', label: 'This month' },
   { id: 'quiet', label: 'Gone quiet' },
 ];
+const VIEWS = {
+  approvals: { label: 'Approvals', icon: 'inbox' },
+  companies: { label: 'Companies', icon: 'building' },
+  people: { label: 'People', icon: 'user' },
+  deals: { label: 'Deals', icon: 'deal' },
+  flows: { label: 'Flows', icon: 'flow' },
+};
+const STAGE_HUE = { Lead: null, Qualified: 217, Meeting: 265, Proposal: 32, Won: 142, Lost: 0 };
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+const money = (n) => new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n || 0);
 const hue = (s) => [...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7);
 const displayName = (p) => p.name || p.email;
+const plural = (n, w, many = `${w}s`) => `${n} ${n === 1 ? w : many}`;
 
 function ago(iso) {
   if (!iso) return '';
@@ -326,8 +436,20 @@ function logo(domain, size = '') {
   const img = state.data.logos ? `<img alt="" loading="lazy" src="https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico" onerror="this.remove()">` : '';
   return `<span class="logo ${size}" style="--h:${hue(domain)}">${esc(domain[0].toUpperCase())}${img}</span>`;
 }
+const stageTag = (stage) => {
+  if (!stage) return '<span class="tag stage none">No deal</span>';
+  const h = STAGE_HUE[stage];
+  return `<span class="tag stage" style="${h === null ? '' : `--h:${h};--s:70%`}">${esc(stage)}</span>`;
+};
+const stack = (people) => `<span class="stack">${people.slice(0, 3).map((p) => avatar(p, '', true)).join('')}</span>`;
 
+const person = (email) => state.data.people.find((p) => p.email === email);
 const peopleAt = (domain) => state.data.people.filter((p) => p.company === domain);
+const dealFor = (p) => state.data.deals.find((d) => d.key === (p.company || p.email));
+const dealOfRow = (r) => (r.email ? dealFor(r) : dealFor({ company: r.domain }));
+const dealLogo = (d, size = '') => d.key.includes('@') ? avatar(person(d.key) || { email: d.key, name: d.name }, size) : logo(d.key, size);
+
+/* Tables: companies and people */
 
 function cell(col, r) {
   const v = r[col.key];
@@ -338,9 +460,11 @@ function cell(col, r) {
     case 'company': return v ? `<span class="pill">${logo(v)}${esc(v)}</span>` : '<span class="pill plain">Personal</span>';
     case 'people': {
       const ppl = peopleAt(r.domain);
-      return `<div class="cell"><span class="stack">${ppl.slice(0, 3).map((p) => avatar(p, '', true)).join('')}</span><span class="muted">${ppl.length}</span></div>`;
+      return `<div class="cell">${stack(ppl)}<span class="muted">${ppl.length}</span></div>`;
     }
+    case 'deal': return stageTag(dealOfRow(r)?.stage);
     case 'activity': { const b = bucketOf(r.lastContact); return `<span class="tag ${b}">${BUCKET_TAG[b]}</span>`; }
+    case 'replies': return v ? `<span class="reply-mark">${v}</span>` : '<span class="faint">0</span>';
     case 'lastContact': return `${fmtDate(v)}<span class="rel">${ago(v)}</span>`;
     case 'firstContact': case 'addedAt': return fmtDate(v);
     default: return esc(v);
@@ -359,6 +483,11 @@ function sorted(list) {
   return [...list].sort((a, b) => {
     let x = a[key], y = b[key];
     if (key === 'name') { x = displayName(a); y = displayName(b); }
+    if (key === 'deal') {
+      const S = state.data.stages;
+      x = S.indexOf(dealOfRow(a)?.stage);
+      y = S.indexOf(dealOfRow(b)?.stage);
+    }
     if (typeof x === 'number') return (x - y) * dir;
     if (!x) return 1;
     if (!y) return -1;
@@ -366,35 +495,24 @@ function sorted(list) {
   });
 }
 
-function visibleRows() {
-  const base = state.data[state.view].filter(matches);
-  return sorted(state.bucket === 'all' ? base : base.filter((r) => bucketOf(r.lastContact) === state.bucket));
-}
-
-function render() {
+function renderTable() {
   const d = state.data;
   const cols = COLUMNS[state.view];
   const isCo = state.view === 'companies';
-
-  $('c-companies').textContent = d.companies.length;
-  $('c-people').textContent = d.people.length;
-  document.querySelectorAll('[data-view]').forEach((b) => {
-    const on = b.dataset.view === state.view;
-    if (b.classList.contains('chip')) b.setAttribute('aria-pressed', on);
-    else if (on) b.setAttribute('aria-current', 'page');
-    else b.removeAttribute('aria-current');
-  });
-  $('title').innerHTML = `${ICON(isCo ? 'building' : 'user')}${isCo ? 'Companies' : 'People'} <span class="total">${d[state.view].length}</span>`;
-
   const searched = d[state.view].filter(matches);
-  $('filters').innerHTML = BUCKETS.map((b) => {
-    const n = b.id === 'all' ? searched.length : searched.filter((r) => bucketOf(r.lastContact) === b.id).length;
-    return `<button class="chip" data-bucket="${b.id}" aria-pressed="${state.bucket === b.id}">${b.label} <span class="n">${n}</span></button>`;
-  }).join('');
+  const rows = sorted(state.bucket === 'all' ? searched : searched.filter((r) => bucketOf(r.lastContact) === state.bucket));
   const sortCol = cols.find((c) => c.key === state.sort.key);
-  $('sort-chip').innerHTML = `${ICON('sort')}Sorted by ${esc(sortCol?.label || 'Last contact')} ${state.sort.dir > 0 ? '↑' : '↓'}`;
 
-  const rows = visibleRows();
+  const viewbar = `<div class="viewbar">
+    <div id="filters" role="group" aria-label="Last contact">${BUCKETS.map((b) => {
+      const n = b.id === 'all' ? searched.length : searched.filter((r) => bucketOf(r.lastContact) === b.id).length;
+      return `<button class="chip" data-bucket="${b.id}" aria-pressed="${state.bucket === b.id}">${b.label} <span class="n">${n}</span></button>`;
+    }).join('')}</div>
+    <span class="spacer"></span>
+    <button class="chip sort-chip" id="sort-chip">${ICON('sort')}Sorted by ${esc(sortCol?.label || 'Last contact')} ${state.sort.dir > 0 ? '↑' : '↓'}</button>
+    ${searchBox()}
+  </div>`;
+
   const head = `<thead><tr>${cols.map((c) => {
     const key = c.sortKey || c.key;
     const on = state.sort.key === key && !c.sortKey;
@@ -403,7 +521,7 @@ function render() {
 
   let body = rows.map((r) => {
     const id = isCo ? r.domain : r.email;
-    return `<tr data-id="${esc(id)}" tabindex="0" class="${state.record?.id === id ? 'sel' : ''}">${cols.map((c) => `<td class="${c.num ? 'num' : ''} ${c.cls || ''}">${cell(c, r)}</td>`).join('')}<td></td></tr>`;
+    return `<tr data-open="${isCo ? 'company' : 'person'}" data-id="${esc(id)}" tabindex="0" class="${state.record?.id === id ? 'sel' : ''}">${cols.map((c) => `<td class="${c.num ? 'num' : ''} ${c.cls || ''}">${cell(c, r)}</td>`).join('')}<td></td></tr>`;
   }).join('');
   if (!rows.length) {
     const [t, m] = state.q || state.bucket !== 'all'
@@ -412,15 +530,148 @@ function render() {
     body = `<tr class="empty-row"><td colspan="${cols.length + 1}" class="empty"><b>${t}</b>${m}</td></tr>`;
   }
 
-  const sum = rows.reduce((n, r) => n + r.timesContacted, 0);
+  const sum = (k) => rows.reduce((n, r) => n + r[k], 0);
   const foot = `<tfoot><tr>${cols.map((c) => {
     if (c.cls === 'w-name') return `<td class="w-name"><b>${rows.length}</b> ${isCo ? (rows.length === 1 ? 'company' : 'companies') : (rows.length === 1 ? 'person' : 'people')}</td>`;
-    if (c.key === 'timesContacted') return `<td class="num">Sum <b>${sum}</b></td>`;
-    if (c.key === 'people') return `<td><b>${rows.reduce((n, r) => n + r.people, 0)}</b> total</td>`;
+    if (c.key === 'timesContacted' || c.key === 'replies') return `<td class="num">Sum <b>${sum(c.key)}</b></td>`;
+    if (c.key === 'people') return `<td><b>${sum('people')}</b> total</td>`;
     return '<td></td>';
   }).join('')}<td></td></tr></tfoot>`;
 
-  $('grid').innerHTML = head + `<tbody>${body}</tbody>` + foot;
+  return `${viewbar}<div class="grid-wrap"><table>${head}<tbody>${body}</tbody>${foot}</table></div>`;
+}
+
+const searchBox = () => `<label class="search">${ICON('search')}<input id="q" type="search" placeholder="Search…" aria-label="Search" value="${esc(state.q)}"></label>`;
+
+/* Deals board */
+
+function renderDeals() {
+  const q = state.q.trim().toLowerCase();
+  const deals = state.data.deals.filter((d) => !q || d.name.toLowerCase().includes(q) || d.key.includes(q)
+    || d.contacts.some((e) => `${person(e)?.name || ''} ${e}`.toLowerCase().includes(q)));
+  const open = deals.filter((d) => !['Won', 'Lost'].includes(d.stage));
+  const viewbar = `<div class="viewbar">
+    <span class="muted">${plural(open.length, 'open deal')} · <b style="color:var(--strong);font-weight:500">${money(open.reduce((n, d) => n + d.value, 0))}</b> in pipeline</span>
+    <span class="spacer"></span>${searchBox()}</div>`;
+
+  const cols = state.data.stages.map((stage) => {
+    const list = deals.filter((d) => d.stage === stage).sort((a, b) => String(b.lastContact).localeCompare(String(a.lastContact)));
+    const total = list.reduce((n, d) => n + d.value, 0);
+    return `<section class="col" data-stage="${stage}">
+      <div class="col-head">${stageTag(stage)}<span class="n">${list.length}</span><span class="sum">${total ? money(total) : ''}</span></div>
+      <div class="col-body">${list.map(dealCard).join('') || '<div class="col-empty">Drop a deal here</div>'}</div>
+    </section>`;
+  }).join('');
+
+  const empty = !state.data.deals.length
+    ? `<div class="empty"><b>No deals yet</b>Deals are opened when you approve a lead from a flow.<br><br><button class="btn" data-view="flows">${ICON('flow')}Set up a flow</button></div>`
+    : '';
+  return `${viewbar}${empty || `<div class="board">${cols}</div>`}`;
+}
+
+function dealCard(d) {
+  const ppl = d.contacts.map(person).filter(Boolean);
+  return `<button class="card ${state.record?.id === d.key ? 'sel' : ''}" draggable="true" data-open="deal" data-id="${esc(d.key)}">
+    <div class="card-row">${dealLogo(d)}<span class="name">${esc(d.name)}</span>${d.lastReply ? `<span class="reply-mark" title="Replied ${ago(d.lastReply)}">${ICON('reply')}</span>` : ''}</div>
+    <div class="card-meta"><span class="value">${d.value ? money(d.value) : '<span class="faint">No value</span>'}</span><span>${ago(d.lastContact) || ''}</span>${stack(ppl)}</div>
+  </button>`;
+}
+
+/* Flows */
+
+function renderFlows() {
+  const flows = state.data.flows;
+  if (!flows.length) {
+    return `<div class="empty"><b>No flows yet</b>A flow watches for an entry point, like a reply or a subject line,<br>and queues matching leads for you to approve.<br><br><button class="btn primary" data-new-flow>${ICON('add')}New flow</button></div>`;
+  }
+  const rows = flows.map((f) => `<tr data-open="flow" data-id="${f.id}" tabindex="0" class="${state.record?.id === f.id ? 'sel' : ''}">
+    <td class="w-name"><div class="cell"><span class="logo" style="--h:${hue(f.id)}">${ICON('flow')}</span><span class="name">${esc(f.name)}</span></div></td>
+    <td><span class="muted">${esc(f.description)}</span></td>
+    <td>${stageTag(f.stage)}</td>
+    <td class="num">${f.pending ? `<span class="waiting">${f.pending}</span>` : '<span class="faint">0</span>'}</td>
+    <td class="num">${f.approved}</td>
+    <td><button class="switch" role="switch" aria-checked="${f.enabled}" data-toggle-flow="${f.id}" aria-label="Turn ${esc(f.name)} ${f.enabled ? 'off' : 'on'}"></button></td>
+    <td>${fmtDate(f.createdAt)}</td><td></td></tr>`).join('');
+  return `<div class="grid-wrap"><table>
+    <thead><tr>
+      <th class="w-name"><button>${ICON('flow')}Flow</button></th><th><button>${ICON('bolt')}Entry point</button></th>
+      <th><button>${ICON('deal')}Deal stage</button></th><th class="num"><button>${ICON('inbox')}Waiting</button></th>
+      <th class="num"><button>${ICON('check')}Approved</button></th><th><button>${ICON('pulse')}On</button></th>
+      <th><button>${ICON('plus')}Created</button></th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr><td class="w-name"><b>${flows.length}</b> ${flows.length === 1 ? 'flow' : 'flows'}</td><td></td><td></td>
+      <td class="num">Sum <b>${flows.reduce((n, f) => n + f.pending, 0)}</b></td><td class="num">Sum <b>${flows.reduce((n, f) => n + f.approved, 0)}</b></td><td></td><td></td><td></td></tr></tfoot>
+  </table></div>`;
+}
+
+/* Approvals */
+
+const pending = () => state.data.enrollments.filter((e) => e.status === 'pending');
+
+function approvalRow(e) {
+  const p = person(e.email) || { email: e.email, name: '' };
+  const isPending = e.status === 'pending';
+  return `<div class="ap">
+    ${avatar(p, '')}
+    <div class="ap-main">
+      <div class="ap-line"><span class="name" data-open="person" data-id="${esc(p.email)}">${esc(displayName(p))}</span>
+        ${p.name ? `<span class="faint">${esc(p.email)}</span>` : ''}
+        ${p.company ? `<button class="pill" data-open="company" data-id="${esc(p.company)}">${logo(p.company)}${esc(p.company)}</button>` : ''}</div>
+      <div class="ap-why"><span class="flow-chip">${ICON('flow')}${esc(e.flowName)}</span>${esc(e.reason)}</div>
+    </div>
+    <time title="${esc(new Date(e.matchedAt).toLocaleString())}">${ago(e.matchedAt)}</time>
+    <div class="ap-actions">${isPending
+      ? `<button class="btn" data-decide="dismiss" data-id="${e.id}">Dismiss</button><button class="btn primary" data-decide="approve" data-id="${e.id}">${ICON('check')}Approve</button>`
+      : `<span class="status ${e.status}">${e.status === 'approved' ? 'Approved' : 'Dismissed'} ${ago(e.decidedAt)}</span>`}</div>
+  </div>`;
+}
+
+function renderApprovals() {
+  const all = state.data.enrollments;
+  const tabs = [['pending', 'Waiting'], ['approved', 'Approved'], ['dismissed', 'Dismissed']];
+  const list = all.filter((e) => e.status === state.inboxTab);
+  const notice = 'Notification' in window && Notification.permission === 'default'
+    ? `<div class="notice">${ICON('bell')}Get a desktop notification when new leads are waiting for approval.<button class="btn" id="notify-on">Turn on</button></div>` : '';
+  const empty = state.inboxTab === 'pending'
+    ? `<div class="empty"><b>You're all caught up</b>${state.data.flows.length ? 'New matches from your flows will show up here.' : 'Create a flow to start enrolling leads.'}</div>`
+    : '<div class="empty"><b>Nothing here yet</b></div>';
+  return `<div class="inbox-tabs">${tabs.map(([id, label]) => `<button class="chip" data-inbox="${id}" aria-pressed="${state.inboxTab === id}">${label} <span class="n">${all.filter((e) => e.status === id).length}</span></button>`).join('')}
+    <span class="spacer"></span>
+    ${state.inboxTab === 'pending' && list.length ? '<button class="btn" data-decide-all="dismiss">Dismiss all</button><button class="btn primary" data-decide-all="approve">' + ICON('check') + 'Approve all</button>' : ''}</div>
+    ${notice}
+    <div class="inbox">${list.map(approvalRow).join('') || empty}</div>`;
+}
+
+/* Shell */
+
+function render() {
+  const d = state.data;
+  const waiting = pending().length;
+  $('c-companies').textContent = d.companies.length;
+  $('c-people').textContent = d.people.length;
+  $('c-deals').textContent = d.deals.length;
+  $('c-flows').textContent = d.flows.length;
+  $('c-approvals').className = waiting ? 'badge' : 'count';
+  $('c-approvals').textContent = waiting || '';
+  document.title = waiting ? `(${waiting}) Outreach CRM` : 'Outreach CRM';
+  document.querySelectorAll('[data-view]').forEach((b) => {
+    const on = b.dataset.view === state.view;
+    if (b.classList.contains('chip')) b.setAttribute('aria-pressed', on);
+    else if (b.classList.contains('nav-btn')) on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current');
+  });
+
+  const v = VIEWS[state.view];
+  const total = { approvals: waiting, companies: d.companies.length, people: d.people.length, deals: d.deals.length, flows: d.flows.length }[state.view];
+  $('title').innerHTML = `${ICON(v.icon)}${v.label} <span class="total">${total}</span>`;
+  $('actions').innerHTML = state.view === 'flows' ? `<button class="btn primary" data-new-flow>${ICON('add')}<span class="label">New flow</span></button>` : '';
+
+  const focused = document.activeElement?.id === 'q';
+  const caret = focused ? document.activeElement.selectionStart : null;
+  $('content').innerHTML = {
+    companies: renderTable, people: renderTable, deals: renderDeals, flows: renderFlows, approvals: renderApprovals,
+  }[state.view]();
+  if (focused && $('q')) { $('q').focus(); $('q').setSelectionRange(caret, caret); }
+
   renderStatus();
   if (state.record) renderPanel();
 }
@@ -429,7 +680,7 @@ function renderStatus() {
   const d = state.data, s = d.sync || {};
   const busy = d.syncing;
   $('dot').className = `dot ${busy ? 'busy' : s.lastError ? 'err' : ''}`;
-  $('status').textContent = busy ? 'Syncing sent mail…' : s.lastSyncAt ? `Synced ${ago(s.lastSyncAt)}` : 'Not synced yet';
+  $('status').textContent = busy ? 'Syncing mail…' : s.lastSyncAt ? `Synced ${ago(s.lastSyncAt)}` : 'Not synced yet';
   for (const b of [$('sync'), $('sync2')]) { b.disabled = busy; b.classList.toggle('spin', busy); }
   $('error').hidden = !s.lastError;
   $('error').textContent = s.lastError ? `Last sync failed: ${s.lastError}` : '';
@@ -442,7 +693,8 @@ function openRecord(type, id) {
   renderPanel();
   $('panel').classList.add('open');
   $('scrim').classList.add('open');
-  document.querySelectorAll('tbody tr').forEach((tr) => tr.classList.toggle('sel', tr.dataset.id === id));
+  document.querySelectorAll('[data-open].sel').forEach((el) => el.classList.remove('sel'));
+  document.querySelectorAll(`#content [data-open][data-id="${CSS.escape(id || '')}"]`).forEach((el) => el.classList.add('sel'));
 }
 
 function closeRecord() {
@@ -450,115 +702,225 @@ function closeRecord() {
   state.record = null;
   $('panel').classList.remove('open');
   $('scrim').classList.remove('open');
-  document.querySelectorAll('tbody tr.sel').forEach((tr) => tr.classList.remove('sel'));
-  document.querySelector(`tbody tr[data-id="${CSS.escape(id || '')}"]`)?.focus();
+  document.querySelectorAll('.sel').forEach((el) => el.classList.remove('sel'));
+  if (id) document.querySelector(`#content [data-open][data-id="${CSS.escape(id)}"]`)?.focus();
 }
 
 const field = (icon, label, value) => `<dt>${ICON(icon)}${label}</dt><dd>${value || '<span class="faint">—</span>'}</dd>`;
 const dateVal = (iso, rel) => iso ? `${fmtDate(iso)}${rel ? `<span class="rel">${ago(iso)}</span>` : ''}` : '';
+const panelTop = (icon, label) => `<div class="panel-top"><span class="crumb">${ICON(icon)}${label}</span><button class="icon-btn" data-close aria-label="Close">${ICON('x')}</button></div>`;
 
 function timeline(events) {
   if (!events.length) return '<p class="faint">No emails yet.</p>';
   return `<div class="timeline">${events.map((e) => `<div class="ev">
-    <span class="ev-icon">${ICON('send')}</span>
+    <span class="ev-icon" ${e.dir === 'in' ? 'style="color:var(--green)"' : ''}>${ICON(e.dir === 'in' ? 'reply' : 'send')}</span>
     <div class="ev-body">
-      <div class="ev-line"><span>You emailed <b>${esc(e.to)}</b></span><time title="${esc(new Date(e.date).toLocaleString())}">${fmtDate(e.date)}</time></div>
+      <div class="ev-line"><span>${e.dir === 'in' ? `<b>${esc(e.who)}</b> replied` : `You emailed <b>${esc(e.who)}</b>`}</span><time title="${esc(new Date(e.date).toLocaleString())}">${fmtDate(e.date)}</time></div>
       ${e.subject ? `<div class="ev-subject">${esc(e.subject)}</div>` : ''}
     </div></div>`).join('')}</div>`;
+}
+
+// Merge several people's activity; one email to several people shows once.
+function mergedActivity(ppl) {
+  const merged = new Map();
+  for (const p of ppl) for (const e of p.activity) {
+    const k = `${e.dir}|${e.date}|${e.subject}`;
+    const m = merged.get(k) || { ...e, names: [] };
+    m.names.push(displayName(p));
+    merged.set(k, m);
+  }
+  return [...merged.values()].sort((a, b) => b.date.localeCompare(a.date))
+    .map((e) => ({ ...e, who: e.names.length > 2 ? `${e.names[0]} and ${e.names.length - 1} others` : e.names.join(' and ') }));
+}
+
+const peopleList = (ppl) => ppl.map((p) => `<button class="list-row" data-open="person" data-id="${esc(p.email)}">${avatar(p)}<span class="who"><span class="name">${esc(displayName(p))}</span> <span class="faint">${p.name ? esc(p.email) : ''}</span></span><span class="meta">${p.timesContacted} sent${p.replies ? ` · ${p.replies} replied` : ''} · ${ago(p.lastContact)}</span></button>`).join('');
+
+function enrollmentList(list) {
+  if (!list.length) return '<p class="faint">Not in any flows.</p>';
+  return list.map((e) => `<div class="list-row" style="cursor:default"><span class="flow-chip">${ICON('flow')}${esc(e.flowName)}</span>
+    <span class="who faint">${esc(e.reason)}</span>
+    <span class="meta">${e.status === 'pending' ? `<button class="btn primary" data-decide="approve" data-id="${e.id}">Approve</button>` : `<span class="status ${e.status}">${e.status === 'approved' ? 'Approved' : 'Dismissed'}</span>`}</span></div>`).join('');
 }
 
 function renderPanel() {
   const { type, id } = state.record;
   const d = state.data;
-  let html;
-
-  if (type === 'company') {
-    const c = d.companies.find((x) => x.domain === id);
-    if (!c) return closeRecord();
-    const ppl = peopleAt(id).sort((a, b) => String(b.lastContact).localeCompare(String(a.lastContact)));
-    // Merge each person's emails; one email to several people here shows once.
-    const merged = new Map();
-    for (const p of ppl) for (const e of p.emails) {
-      const k = `${e.date}|${e.subject}`;
-      const m = merged.get(k) || { ...e, names: [] };
-      m.names.push(p.name || p.email);
-      merged.set(k, m);
-    }
-    const events = [...merged.values()].sort((a, b) => b.date.localeCompare(a.date))
-      .map((e) => ({ ...e, to: e.names.length > 2 ? `${e.names[0]} and ${e.names.length - 1} others` : e.names.join(' and ') }));
-    const b = bucketOf(c.lastContact);
-    html = `
-      <div class="panel-top"><span class="crumb">${ICON('building')}Companies</span>
-        <button class="icon-btn" data-close aria-label="Close">${ICON('x')}</button></div>
-      <div class="panel-body">
+  const html = {
+    company: () => {
+      const c = d.companies.find((x) => x.domain === id);
+      if (!c) return null;
+      const ppl = peopleAt(id).sort((a, b) => String(b.lastContact).localeCompare(String(a.lastContact)));
+      const deal = dealFor({ company: id });
+      const b = bucketOf(c.lastContact);
+      return `${panelTop('building', 'Companies')}<div class="panel-body">
         <div class="rec-head">${logo(c.domain, 'lg')}<div><h2>${esc(c.domain)}</h2><p><span class="tag ${b}">${BUCKET_TAG[b]}</span></p></div></div>
         <div class="rec-stats">
           <div><b>${c.timesContacted}</b><span>Emails sent</span></div>
-          <div><b>${c.people}</b><span>People</span></div>
+          <div><b>${c.replies}</b><span>Replies</span></div>
           <div><b>${ago(c.lastContact) || '—'}</b><span>Last contact</span></div>
         </div>
         <div class="section"><h3>Details</h3><dl class="fields">
           ${field('globe', 'Domain', esc(c.domain))}
+          ${field('deal', 'Deal', deal ? `<button class="pill plain" data-open="deal" data-id="${esc(deal.key)}">${stageTag(deal.stage)}${deal.value ? money(deal.value) : ''}</button>` : '')}
           ${field('cal', 'First contact', dateVal(c.firstContact))}
           ${field('clock', 'Last contact', dateVal(c.lastContact, true))}
+          ${field('reply', 'Last reply', dateVal(c.lastReply, true))}
           ${field('plus', 'Added', dateVal(c.addedAt))}
         </dl></div>
-        <div class="section"><h3>${ICON('users')}People<span class="n">${ppl.length}</span></h3>
-          ${ppl.map((p) => `<button class="list-row" data-open-person="${esc(p.email)}">${avatar(p)}<span class="who"><span class="name">${esc(displayName(p))}</span> <span class="faint">${p.name ? esc(p.email) : ''}</span></span><span class="meta">${p.timesContacted} sent · ${ago(p.lastContact)}</span></button>`).join('')}
-        </div>
-        <div class="section"><h3>${ICON('mail')}Activity<span class="n">${events.length}</span></h3>${timeline(events)}</div>
+        <div class="section"><h3>${ICON('users')}People<span class="n">${ppl.length}</span></h3>${peopleList(ppl)}</div>
+        <div class="section"><h3>${ICON('mail')}Activity</h3>${timeline(mergedActivity(ppl))}</div>
       </div>`;
-  } else {
-    const p = d.people.find((x) => x.email === id);
-    if (!p) return closeRecord();
-    const b = bucketOf(p.lastContact);
-    html = `
-      <div class="panel-top"><span class="crumb">${ICON('user')}People</span>
-        <button class="icon-btn" data-close aria-label="Close">${ICON('x')}</button></div>
-      <div class="panel-body">
+    },
+    person: () => {
+      const p = person(id);
+      if (!p) return null;
+      const b = bucketOf(p.lastContact);
+      const deal = dealFor(p);
+      return `${panelTop('user', 'People')}<div class="panel-body">
         <div class="rec-head">${avatar(p, 'lg')}<div><h2>${esc(displayName(p))}</h2><p>${p.name ? esc(p.email) : ''}</p></div></div>
         <div class="rec-stats">
           <div><b>${p.timesContacted}</b><span>Emails sent</span></div>
-          <div><b>${ago(p.firstContact) || '—'}</b><span>First contact</span></div>
+          <div><b>${p.replies}</b><span>Replies</span></div>
           <div><b>${ago(p.lastContact) || '—'}</b><span>Last contact</span></div>
         </div>
         <div class="section"><h3>Details</h3><dl class="fields">
           ${field('mail', 'Email', `<a href="mailto:${esc(p.email)}" style="color:inherit">${esc(p.email)}</a>`)}
-          ${field('building', 'Company', p.company ? `<button class="pill" data-open-company="${esc(p.company)}">${logo(p.company)}${esc(p.company)}</button>` : '<span class="pill plain">Personal</span>')}
+          ${field('building', 'Company', p.company ? `<button class="pill" data-open="company" data-id="${esc(p.company)}">${logo(p.company)}${esc(p.company)}</button>` : '<span class="pill plain">Personal</span>')}
+          ${field('deal', 'Deal', deal ? `<button class="pill plain" data-open="deal" data-id="${esc(deal.key)}">${stageTag(deal.stage)}${deal.value ? money(deal.value) : ''}</button>` : '')}
           ${field('pulse', 'Activity', `<span class="tag ${b}">${BUCKET_TAG[b]}</span>`)}
           ${field('cal', 'First contact', dateVal(p.firstContact))}
           ${field('clock', 'Last contact', dateVal(p.lastContact, true))}
+          ${field('reply', 'Last reply', dateVal(p.lastReply, true))}
           ${field('plus', 'Added', dateVal(p.addedAt))}
         </dl></div>
-        <div class="section"><h3>${ICON('mail')}Activity<span class="n">${p.emails.length}</span></h3>
-          ${timeline(p.emails.map((e) => ({ ...e, to: displayName(p) })))}</div>
+        <div class="section"><h3>${ICON('flow')}Flows</h3>${enrollmentList(d.enrollments.filter((e) => e.email === p.email))}</div>
+        <div class="section"><h3>${ICON('mail')}Activity<span class="n">${p.activity.length}</span></h3>
+          ${timeline(p.activity.map((e) => ({ ...e, who: displayName(p) })))}</div>
       </div>`;
-  }
+    },
+    deal: () => {
+      const deal = d.deals.find((x) => x.key === id);
+      if (!deal) return null;
+      const ppl = deal.contacts.map(person).filter(Boolean);
+      const everyone = deal.key.includes('@') ? ppl : peopleAt(deal.key);
+      return `${panelTop('deal', 'Deals')}<div class="panel-body">
+        <div class="rec-head">${dealLogo(deal, 'lg')}<div><h2>${esc(deal.name)}</h2><p>${stageTag(deal.stage)}</p></div></div>
+        <div class="rec-stats">
+          <div><b>${deal.value ? money(deal.value) : '—'}</b><span>Value</span></div>
+          <div><b>${deal.contacts.length}</b><span>Contacts</span></div>
+          <div><b>${ago(deal.lastContact) || '—'}</b><span>Last contact</span></div>
+        </div>
+        <div class="section"><h3>Details</h3><dl class="fields">
+          ${field('deal', 'Stage', `<select class="select" data-deal-field="stage" data-id="${esc(deal.key)}" aria-label="Stage">${d.stages.map((s) => `<option ${s === deal.stage ? 'selected' : ''}>${s}</option>`).join('')}</select>`)}
+          ${field('dollar', 'Value', `<input class="input" type="number" min="0" step="100" inputmode="numeric" placeholder="Add a value" value="${deal.value || ''}" data-deal-field="value" data-id="${esc(deal.key)}" aria-label="Value">`)}
+          ${deal.key.includes('@') ? '' : field('building', 'Company', `<button class="pill" data-open="company" data-id="${esc(deal.key)}">${logo(deal.key)}${esc(deal.key)}</button>`)}
+          ${field('plus', 'Created', dateVal(deal.createdAt))}
+          ${field('clock', 'Last contact', dateVal(deal.lastContact, true))}
+          ${field('reply', 'Last reply', dateVal(deal.lastReply, true))}
+        </dl></div>
+        <div class="section"><h3>${ICON('users')}Contacts<span class="n">${ppl.length}</span></h3>${peopleList(ppl)}</div>
+        <div class="section"><h3>${ICON('clock')}History</h3><div class="history">${[...deal.history].reverse().map((h) => `<div><span>${esc(h.text)}</span><time>${fmtDate(h.date)}</time></div>`).join('')}</div></div>
+        <div class="section"><h3>${ICON('mail')}Activity</h3>${timeline(mergedActivity(everyone))}</div>
+      </div>`;
+    },
+    flow: () => {
+      const f = d.flows.find((x) => x.id === id);
+      if (!f) return null;
+      const list = d.enrollments.filter((e) => e.flowId === f.id);
+      return `${panelTop('flow', 'Flows')}<div class="panel-body">
+        <div class="rec-head"><span class="logo lg" style="--h:${hue(f.id)}">${ICON('flow')}</span><div><h2>${esc(f.name)}</h2><p>${esc(f.description)}</p></div></div>
+        <div class="rec-stats">
+          <div><b>${f.pending}</b><span>Waiting</span></div>
+          <div><b>${f.approved}</b><span>Approved</span></div>
+          <div><b>${list.filter((e) => e.status === 'dismissed').length}</b><span>Dismissed</span></div>
+        </div>
+        ${flowForm(f)}
+        <div class="section"><h3>${ICON('users')}Leads<span class="n">${list.length}</span></h3>
+          ${list.map((e) => { const p = person(e.email) || { email: e.email, name: '' }; return `<div class="list-row" style="cursor:default">${avatar(p)}
+            <span class="who"><span class="name" data-open="person" data-id="${esc(p.email)}" style="cursor:pointer">${esc(displayName(p))}</span> <span class="faint">${esc(e.reason)}</span></span>
+            <span class="meta">${e.status === 'pending' ? `<button class="btn primary" data-decide="approve" data-id="${e.id}">Approve</button>` : `<span class="status ${e.status}">${e.status === 'approved' ? 'Approved' : 'Dismissed'}</span>`}</span></div>`; }).join('') || '<p class="faint">No leads have matched yet.</p>'}
+        </div>
+      </div>`;
+    },
+    newFlow: () => `${panelTop('flow', 'New flow')}<div class="panel-body">${flowForm(null)}</div>`,
+  }[type]();
+  if (html === null) return closeRecord();
   $('panel').innerHTML = html;
+}
+
+function flowForm(f) {
+  const d = state.data;
+  const trig = f?.trigger || 'first_email';
+  const param = d.triggers.find((t) => t.key === trig)?.param;
+  return `<form class="form" id="flow-form" data-id="${f?.id || ''}">
+    <label>Name<input class="input" name="name" value="${esc(f?.name || '')}" placeholder="e.g. Replied → Qualified" autocomplete="off"></label>
+    <label>Entry point<span class="hint">When a lead matches, they're added to this flow and wait for your approval.</span>
+      <select class="select" name="trigger">${d.triggers.map((t) => `<option value="${t.key}" ${t.key === trig ? 'selected' : ''}>${esc(t.label)}</option>`).join('')}</select></label>
+    <label id="param-field" ${param ? '' : 'hidden'}><span id="param-label">${esc(param || '')}</span>
+      <input class="input" name="value" value="${esc(f?.value || '')}" autocomplete="off"></label>
+    <label>When you approve, put the deal in<span class="hint">One deal per company. Approving another contact adds them to it, and only ever moves the deal forward.</span>
+      <select class="select" name="stage">${d.stages.filter((s) => s !== 'Lost').map((s) => `<option ${s === (f?.stage || 'Lead') ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
+    ${f ? '' : '<label class="check"><input type="checkbox" name="includeExisting"> Also add leads who already match</label>'}
+    <div class="form-actions">
+      ${f ? `<button type="button" class="btn danger" data-delete-flow="${f.id}">${ICON('trash')}Delete</button>` : ''}
+      <span class="spacer"></span>
+      <button type="submit" class="btn primary">${f ? 'Save changes' : 'Create flow'}</button>
+    </div>
+  </form>`;
 }
 
 /* Data */
 
-async function load() {
-  state.data = await (await fetch('/api/data')).json();
+async function api(method, url, body) {
+  const res = await fetch(url, { method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(body || {}) });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText);
+  setData(await res.json());
+}
+
+function setData(next) {
+  notifyNew(next);
+  state.data = next;
   render();
+}
+
+// Desktop notification for leads that started waiting since the page last looked.
+function notifyNew(next) {
+  const ids = next.enrollments.filter((e) => e.status === 'pending').map((e) => e.id);
+  let seen = null;
+  try { seen = JSON.parse(localStorage.getItem('seenApprovals')); } catch {}
+  try { localStorage.setItem('seenApprovals', JSON.stringify(ids)); } catch {}
+  if (!seen || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const fresh = next.enrollments.filter((e) => e.status === 'pending' && !seen.includes(e.id));
+  if (!fresh.length) return;
+  const names = fresh.slice(0, 3).map((e) => next.people.find((p) => p.email === e.email)?.name || e.email);
+  const n = new Notification(`${plural(fresh.length, 'lead')} waiting for approval`, {
+    body: `${names.join(', ')}${fresh.length > 3 ? '…' : ''} · ${fresh[0].flowName}`, tag: 'approvals',
+  });
+  n.onclick = () => { window.focus(); state.view = 'approvals'; state.inboxTab = 'pending'; render(); };
+}
+
+async function load() {
+  setData(await (await fetch('/api/data')).json());
 }
 
 async function sync() {
   state.data.syncing = true;
   renderStatus();
-  state.data = await (await fetch('/api/sync', { method: 'POST' })).json();
-  render();
+  await api('POST', '/api/sync');
 }
 
 /* Events */
 
-document.addEventListener('click', (e) => {
+let dragKey = null;
+
+document.addEventListener('click', async (e) => {
   const t = e.target;
   const view = t.closest('[data-view]');
-  if (view) { state.view = view.dataset.view; state.bucket = 'all'; return render(); }
+  if (view) { state.view = view.dataset.view; state.bucket = 'all'; state.q = ''; if (state.record?.type === 'newFlow') closeRecord(); return render(); }
   const bucket = t.closest('[data-bucket]');
   if (bucket) { state.bucket = bucket.dataset.bucket; return render(); }
+  const inbox = t.closest('[data-inbox]');
+  if (inbox) { state.inboxTab = inbox.dataset.inbox; return render(); }
   const sort = t.closest('[data-sort]');
   if (sort) {
     const key = sort.dataset.sort;
@@ -566,33 +928,109 @@ document.addEventListener('click', (e) => {
     return render();
   }
   if (t.closest('#sort-chip')) { state.sort = { key: 'lastContact', dir: -1 }; return render(); }
-  const row = t.closest('tbody tr[data-id]');
-  if (row) return openRecord(state.view === 'companies' ? 'company' : 'person', row.dataset.id);
-  const person = t.closest('[data-open-person]');
-  if (person) return openRecord('person', person.dataset.openPerson);
-  const company = t.closest('[data-open-company]');
-  if (company) return openRecord('company', company.dataset.openCompany);
+  if (t.closest('#notify-on')) { await Notification.requestPermission(); return render(); }
+
+  const decideBtn = t.closest('[data-decide]');
+  if (decideBtn) { decideBtn.disabled = true; return api('POST', `/api/enrollments/${decideBtn.dataset.id}/${decideBtn.dataset.decide}`); }
+  const all = t.closest('[data-decide-all]');
+  if (all) {
+    const verb = all.dataset.decideAll;
+    const ids = pending().map((x) => x.id);
+    if (verb === 'dismiss' && !confirm(`Dismiss ${plural(ids.length, 'lead')}?`)) return;
+    return api('POST', `/api/enrollments/${verb}-all`, { ids });
+  }
+  const toggle = t.closest('[data-toggle-flow]');
+  if (toggle) return api('PUT', `/api/flows/${toggle.dataset.toggleFlow}`, { enabled: toggle.getAttribute('aria-checked') !== 'true' });
+  const del = t.closest('[data-delete-flow]');
+  if (del) {
+    if (!confirm('Delete this flow? Leads waiting for approval are removed; deals you already approved stay.')) return;
+    await api('DELETE', `/api/flows/${del.dataset.deleteFlow}`);
+    return closeRecord();
+  }
+  if (t.closest('[data-new-flow]')) return openRecord('newFlow', null);
+
+  const open = t.closest('[data-open]');
+  if (open && !t.closest('select, input')) return openRecord(open.dataset.open, open.dataset.id);
   if (t.closest('[data-close]') || t === $('scrim')) return closeRecord();
+});
+
+document.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'flow-form') return;
+  e.preventDefault();
+  const form = new FormData(e.target);
+  const body = Object.fromEntries(form);
+  body.includeExisting = form.has('includeExisting');
+  const id = e.target.dataset.id;
+  if (id) return api('PUT', `/api/flows/${id}`, body);
+  const before = new Set(state.data.flows.map((f) => f.id));
+  await api('POST', '/api/flows', body);
+  const created = state.data.flows.find((f) => !before.has(f.id));
+  state.view = 'flows';
+  render();
+  if (created) openRecord('flow', created.id);
+});
+
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.name === 'trigger' && t.form?.id === 'flow-form') {
+    const param = state.data.triggers.find((x) => x.key === t.value)?.param;
+    $('param-field').hidden = !param;
+    $('param-label').textContent = param || '';
+  }
+  if (t.dataset.dealField) api('PATCH', `/api/deals/${encodeURIComponent(t.dataset.id)}`, { [t.dataset.dealField]: t.value });
+});
+
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'q') { state.q = e.target.value; render(); }
 });
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && state.record) return closeRecord();
-  if (e.key === '/' && document.activeElement !== $('q')) { e.preventDefault(); $('q').focus(); return; }
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tbody tr[data-id]')) { e.preventDefault(); e.target.click(); }
-  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && e.target.matches('tbody tr[data-id]')) {
+  const typing = e.target.matches('input, select, textarea');
+  if (e.key === '/' && !typing) { e.preventDefault(); $('q')?.focus(); return; }
+  if (e.key === 'Enter' && e.target.dataset.dealField === 'value') { e.target.blur(); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-open]')) { e.preventDefault(); e.target.click(); }
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && e.target.matches('tbody tr[data-open]')) {
     e.preventDefault();
     (e.key === 'ArrowDown' ? e.target.nextElementSibling : e.target.previousElementSibling)?.focus();
   }
 });
 
-$('q').addEventListener('input', (e) => { state.q = e.target.value; render(); });
-$('nav-search').addEventListener('click', () => $('q').focus());
+// Drag deals between stages.
+document.addEventListener('dragstart', (e) => {
+  const card = e.target.closest?.('.card');
+  if (!card) return;
+  dragKey = card.dataset.id;
+  card.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', dragKey);
+});
+document.addEventListener('dragend', () => {
+  dragKey = null;
+  document.querySelectorAll('.dragging, .col.over').forEach((el) => el.classList.remove('dragging', 'over'));
+});
+document.addEventListener('dragover', (e) => {
+  const col = e.target.closest?.('.col');
+  if (!col || !dragKey) return;
+  e.preventDefault();
+  document.querySelectorAll('.col.over').forEach((el) => el !== col && el.classList.remove('over'));
+  col.classList.add('over');
+});
+document.addEventListener('drop', (e) => {
+  const col = e.target.closest?.('.col');
+  if (!col || !dragKey) return;
+  e.preventDefault();
+  const deal = state.data.deals.find((d) => d.key === dragKey);
+  if (deal && deal.stage !== col.dataset.stage) api('PATCH', `/api/deals/${encodeURIComponent(dragKey)}`, { stage: col.dataset.stage });
+});
+
+$('nav-search').addEventListener('click', () => $('q')?.focus());
 $('sync').addEventListener('click', sync);
 $('sync2').addEventListener('click', sync);
 
 load();
-// The server syncs on its own; refresh every minute to pick that up.
-setInterval(() => { if (!state.data?.syncing) load(); }, 60000);
+// The server syncs and checks flows on its own; refresh every minute to pick that up.
+setInterval(() => { if (!state.data?.syncing && !document.activeElement?.matches('input, select')) load(); }, 60000);
 </script>
 </body>
 </html>
