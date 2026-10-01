@@ -23,6 +23,8 @@ function loadConfig(env = process.env) {
     dataFile: path.resolve(env.DATA_FILE || path.join(__dirname, '..', 'data', 'crm.json')),
     syncIntervalMinutes: Number(env.SYNC_INTERVAL_MINUTES) || 5,
     syncSinceDays: Number(env.SYNC_SINCE_DAYS) || 365,
+    // Logos are fetched from DuckDuckGo's favicon service, which sees the domains.
+    companyLogos: env.COMPANY_LOGOS !== 'off',
     imap: {
       host: env.IMAP_HOST || 'imap.gmail.com',
       port: Number(env.IMAP_PORT) || 993,

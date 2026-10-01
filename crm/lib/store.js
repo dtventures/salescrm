@@ -6,7 +6,7 @@ const { domainOf, isPersonalDomain, isNonPerson } = require('./domains');
 // every count and date from them, so a re-sync can never double count.
 //
 // {
-//   messages:  { [messageId]: { date, to: [email] } },
+//   messages:  { [messageId]: { date, subject, to: [email] } },
 //   contacts:  { [email]: { name, nameDate, addedAt } },
 //   companies: { [domain]: { addedAt } },
 //   sync:      { uidValidity, lastUid, lastSyncAt, lastError }
@@ -43,7 +43,7 @@ function isLead(email, filters) {
 }
 
 // Record one sent email. Returns true when it was new.
-// `msg` is { id, date: Date|string, recipients: [{ name, address }] }.
+// `msg` is { id, date: Date|string, subject, recipients: [{ name, address }] }.
 function ingest(store, msg, filters, now = new Date()) {
   if (!msg.id || store.messages[msg.id]) return false;
   const date = new Date(msg.date).toISOString();
@@ -66,7 +66,7 @@ function ingest(store, msg, filters, now = new Date()) {
     if (!isPersonalDomain(domain)) store.companies[domain] ??= { addedAt };
   }
 
-  store.messages[msg.id] = { date, to };
+  store.messages[msg.id] = { date, subject: String(msg.subject || '').trim(), to };
   return true;
 }
 
@@ -91,6 +91,7 @@ function view(store) {
       firstContact: null,
       lastContact: null,
       timesContacted: 0,
+      emails: [],
     };
   }
 
@@ -100,6 +101,7 @@ function view(store) {
       const p = people[email];
       if (!p) continue;
       touch(p, m.date);
+      p.emails.push({ date: m.date, subject: m.subject || '' });
       if (p.company) domainsHit.add(p.company);
     }
     // One email to three people at a company is one touch for that company.
@@ -120,6 +122,7 @@ function view(store) {
   });
 
   const byRecent = (a, b) => String(b.lastContact).localeCompare(String(a.lastContact));
+  for (const p of Object.values(people)) p.emails.sort((a, b) => b.date.localeCompare(a.date));
   return {
     companies: companies.sort(byRecent),
     people: Object.values(people).sort(byRecent),

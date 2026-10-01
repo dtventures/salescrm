@@ -39,7 +39,7 @@ function sendJson(res, body) {
 }
 
 function currentView() {
-  return { ...store.view(store.load(config.dataFile)), syncing: Boolean(syncing) };
+  return { ...store.view(store.load(config.dataFile)), syncing: Boolean(syncing), logos: config.companyLogos };
 }
 
 const server = http.createServer(async (req, res) => {

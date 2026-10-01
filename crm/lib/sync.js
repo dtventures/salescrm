@@ -48,6 +48,7 @@ async function syncSent(store, config, log = () => {}) {
           const isNew = ingest(store, {
             id: env.messageId || `uid:${uidValidity}:${msg.uid}`,
             date: env.date || msg.internalDate,
+            subject: env.subject,
             recipients,
           }, filters);
           if (isNew) added += 1;

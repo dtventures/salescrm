@@ -11,17 +11,23 @@ For each **company** (grouped by email domain) and each **person** (name and ema
 | Added | When the CRM first picked them up |
 | First contact | The date of the first email you sent them |
 | Last contact | The date of the most recent email you sent them |
-| Times contacted | How many emails you sent them. For a company, one email to three people there counts once |
+| Emails sent | How many times you contacted them. For a company, one email to three people there counts once |
+| Activity | This week, This month, or Quiet (no email in over 30 days). The filters at the top use the same groups |
+
+Click any row to open a side panel with its details, the people at that company, and a timeline of every email you sent with its subject line. Press `/` to search and `Esc` to close the panel.
+
+The layout follows Attio and Twenty: a sidebar, a dense table with grid lines, and a side panel for each record. It follows your system's light or dark mode.
 
 ## How it works
 
-The server connects to your mailbox over IMAP, reads the headers (To, Cc, Bcc, Date) of your **Sent** folder and stores who each email went to in `data/crm.json`. Message bodies are never downloaded and nothing is ever sent or changed in your mailbox (the folder is opened read-only).
+The server connects to your mailbox over IMAP, reads the headers (To, Cc, Bcc, Date, Subject) of your **Sent** folder and stores who each email went to in `data/crm.json`. Message bodies are never downloaded and nothing is ever sent or changed in your mailbox (the folder is opened read-only).
 
 - The first sync looks back `SYNC_SINCE_DAYS` (default 365). After that it checks for new sent mail every `SYNC_INTERVAL_MINUTES` (default 5), and **Sync now** checks straight away.
 - Re-syncing never double counts: each email is stored once by its Message-ID.
 - Skipped automatically: you, your other addresses, colleagues on your own work domain, and robot addresses (`noreply@`, `notifications@` …).
 - People on personal domains (gmail.com, outlook.com …) are tracked as people, marked **Personal**, and not grouped into a company.
 - Use `IGNORE_DOMAINS` / `IGNORE_EMAILS` for anyone you email who isn't outreach.
+- Company logos are loaded from DuckDuckGo's favicon service, which means it sees those domains. Set `COMPANY_LOGOS=off` to show letters instead.
 
 ## Setup
 
