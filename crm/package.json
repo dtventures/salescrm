@@ -1,0 +1,17 @@
+{
+  "name": "outreach-crm",
+  "description": "Minimal CRM that fills itself from your sent mail",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "demo": "node scripts/demo.js && NO_SYNC=1 DATA_FILE=data/demo.json node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "imapflow": "^2.1.2"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}

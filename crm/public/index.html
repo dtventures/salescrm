@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outreach CRM</title>
+<style>
+  :root {
+    --bg: #FAFAFA; --surface: #FFFFFF; --text: #111827; --muted: #6B7280; --faint: #9CA3AF;
+    --border: #E5E7EB; --border-strong: #D1D5DB; --hover: #F3F4F6;
+    --accent: #93C5FD; --accent-hover: #BFDBFE; --accent-ink: #1F2937; --accent-soft: rgba(147,197,253,.18);
+    --error-bg: #FEF2F2; --error: #B91C1C;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111318; --surface: #181B21; --text: #F3F4F6; --muted: #9CA3AF; --faint: #6B7280;
+      --border: #262A33; --border-strong: #353A45; --hover: #1F232B;
+      --accent-soft: rgba(147,197,253,.12); --error-bg: #2A1517; --error: #FCA5A5;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1120px; margin: 0 auto; padding: 48px 16px 96px; }
+  @media (min-width: 768px) { main { padding: 64px 32px 96px; } }
+
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+  h1 { font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .status { color: var(--muted); font-size: 14px; margin: 0; }
+  .status .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #6EE7B7; margin-right: 8px; vertical-align: 1px; }
+  .status .dot.busy { background: var(--accent); animation: pulse 1s infinite alternate; }
+  .status .dot.err { background: #FCA5A5; }
+  @keyframes pulse { to { opacity: .3; } }
+
+  button {
+    font: inherit; font-size: 15px; font-weight: 500; cursor: pointer; border-radius: 8px;
+    padding: 10px 18px; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    transition: background .15s, border-color .15s;
+  }
+  button:hover { border-color: var(--border-strong); background: var(--hover); }
+  button:focus-visible, input:focus-visible, .tab:focus-visible, th button:focus-visible, tr:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+
+  .error { background: var(--error-bg); color: var(--error); border-radius: 8px; padding: 12px 16px; font-size: 14px; margin-bottom: 24px; }
+  .error[hidden] { display: none; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+  @media (min-width: 768px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; }
+  .stat b { display: block; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: 14px; }
+
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .tabs { display: inline-flex; background: var(--hover); border-radius: 10px; padding: 4px; }
+  .tab { border: 0; background: transparent; padding: 8px 16px; border-radius: 8px; color: var(--muted); }
+  .tab:hover { background: transparent; color: var(--text); }
+  .tab[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgb(0 0 0 / .06); }
+  .tab small { color: var(--faint); font-size: 14px; margin-left: 4px; font-variant-numeric: tabular-nums; }
+  input[type="search"] {
+    font: inherit; width: 100%; max-width: 320px; padding: 10px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  }
+  input[type="search"]:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 720px; }
+  th, td { text-align: left; padding: 14px 20px; white-space: nowrap; }
+  th { font-size: 13px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); padding-top: 12px; padding-bottom: 12px; }
+  th button { all: unset; cursor: pointer; border-radius: 4px; }
+  th button:hover { color: var(--text); }
+  th .arrow { display: inline-block; width: 12px; color: var(--text); }
+  th.num, td.num { text-align: right; }
+  td { border-bottom: 1px solid var(--border); font-size: 15px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr.row { cursor: pointer; }
+  tbody tr.row:hover td { background: var(--hover); }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 500; }
+  .primary { font-weight: 500; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .date { font-variant-numeric: tabular-nums; }
+  .ago { color: var(--faint); font-size: 13px; margin-left: 6px; }
+  .pill { display: inline-block; font-size: 13px; padding: 2px 8px; border-radius: 6px; background: var(--hover); color: var(--muted); }
+  tr.detail td { background: var(--bg); font-size: 14px; padding-top: 10px; padding-bottom: 10px; }
+  tr.detail td:first-child { padding-left: 48px; }
+  tr.detail .primary { font-weight: 400; }
+  .chev { display: inline-block; width: 16px; color: var(--faint); transition: transform .15s; }
+  tr.open .chev { transform: rotate(90deg); }
+  .empty { padding: 64px 24px; text-align: center; color: var(--muted); }
+  .empty b { display: block; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Outreach</h1>
+      <p class="status" id="status"><span class="dot"></span>Loading…</p>
+    </div>
+    <button id="sync">Sync now</button>
+  </header>
+
+  <div class="error" id="error" hidden></div>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="toolbar">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="companies" aria-selected="true">Companies <small id="n-companies">0</small></button>
+      <button class="tab" role="tab" data-tab="people" aria-selected="false">People <small id="n-people">0</small></button>
+    </div>
+    <input type="search" id="q" placeholder="Search name, email or domain" aria-label="Search">
+  </div>
+
+  <div class="table-wrap"><table id="table"></table></div>
+</main>
+
+<script>
+const state = { data: null, tab: 'companies', q: '', sort: { key: 'lastContact', dir: -1 }, open: new Set() };
+
+const COLUMNS = {
+  companies: [
+    { key: 'domain', label: 'Company' },
+    { key: 'people', label: 'People', num: true },
+    { key: 'timesContacted', label: 'Times contacted', num: true },
+    { key: 'firstContact', label: 'First contact' },
+    { key: 'lastContact', label: 'Last contact' },
+    { key: 'addedAt', label: 'Added' },
+  ],
+  people: [
+    { key: 'name', label: 'Name' },
+    { key: 'company', label: 'Company' },
+    { key: 'timesContacted', label: 'Times contacted', num: true },
+    { key: 'firstContact', label: 'First contact' },
+    { key: 'lastContact', label: 'Last contact' },
+    { key: 'addedAt', label: 'Added' },
+  ],
+};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtDate = (iso) => iso ? new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+
+function ago(iso) {
+  if (!iso) return '';
+  const s = (Date.now() - new Date(iso)) / 1000;
+  if (s < 60) return 'just now';
+  const units = [[86400 * 365, 'y'], [86400 * 30, 'mo'], [86400 * 7, 'w'], [86400, 'd'], [3600, 'h'], [60, 'm']];
+  for (const [secs, u] of units) if (s >= secs) return `${Math.floor(s / secs)}${u} ago`;
+}
+
+function cell(col, row) {
+  const v = row[col.key];
+  if (col.key === 'domain') return `<span class="chev">›</span> <span class="primary">${esc(v)}</span>`;
+  if (col.key === 'name') return `<div class="primary">${esc(v || row.email)}</div>${v ? `<div class="sub">${esc(row.email)}</div>` : ''}`;
+  if (col.key === 'company') return v ? esc(v) : '<span class="pill">Personal</span>';
+  if (col.key === 'lastContact') return `<span class="date">${fmtDate(v)}</span><span class="ago">${ago(v)}</span>`;
+  if (col.key.endsWith('Contact') || col.key === 'addedAt') return `<span class="date">${fmtDate(v)}</span>`;
+  return esc(v);
+}
+
+function rows() {
+  const q = state.q.trim().toLowerCase();
+  const list = state.data[state.tab].filter((r) => {
+    if (!q) return true;
+    if (state.tab === 'people') return `${r.name} ${r.email}`.toLowerCase().includes(q);
+    return r.domain.includes(q) || peopleAt(r.domain).some((p) => `${p.name} ${p.email}`.toLowerCase().includes(q));
+  });
+  const { key, dir } = state.sort;
+  return list.sort((a, b) => {
+    const x = a[key] ?? '', y = b[key] ?? '';
+    return (typeof x === 'number' ? x - y : String(x || a.email || '').localeCompare(String(y || b.email || ''))) * dir;
+  });
+}
+
+const peopleAt = (domain) => state.data.people.filter((p) => p.company === domain);
+
+function render() {
+  const d = state.data;
+  $('n-companies').textContent = d.companies.length;
+  $('n-people').textContent = d.people.length;
+  const touches = d.people.reduce((n, p) => n + p.timesContacted, 0);
+  const week = Date.now() - 7 * 86400000;
+  const recent = d.people.filter((p) => p.lastContact && new Date(p.lastContact) > week).length;
+  $('stats').innerHTML = [
+    [d.companies.length, 'Companies'], [d.people.length, 'People'],
+    [touches, 'Emails to leads'], [recent, 'Contacted this week'],
+  ].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
+
+  const cols = COLUMNS[state.tab];
+  const head = `<thead><tr>${cols.map((c) => {
+    const on = state.sort.key === c.key;
+    return `<th class="${c.num ? 'num' : ''}" aria-sort="${on ? (state.sort.dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-sort="${c.key}">${c.label}<span class="arrow">${on ? (state.sort.dir > 0 ? '↑' : '↓') : ''}</span></button></th>`;
+  }).join('')}</tr></thead>`;
+
+  const list = rows();
+  let body = '';
+  for (const r of list) {
+    const isCo = state.tab === 'companies';
+    const open = isCo && state.open.has(r.domain);
+    body += `<tr class="${isCo ? 'row' : ''} ${open ? 'open' : ''}" ${isCo ? `tabindex="0" data-domain="${esc(r.domain)}" aria-expanded="${open}"` : ''}>${cols.map((c) => `<td class="${c.num ? 'num' : ''}">${cell(c, r)}</td>`).join('')}</tr>`;
+    if (open) {
+      const ppl = peopleAt(r.domain).sort((a, b) => String(b.lastContact).localeCompare(String(a.lastContact)));
+      body += ppl.map((p) => `<tr class="detail">${cols.map((c) =>
+        c.key === 'domain' ? `<td><div class="primary">${esc(p.name || p.email)}</div>${p.name ? `<div class="sub">${esc(p.email)}</div>` : ''}</td>`
+        : c.key === 'people' ? '<td></td>'
+        : `<td class="${c.num ? 'num' : ''}">${cell(c, p)}</td>`).join('')}</tr>`).join('');
+    }
+  }
+  if (!list.length) {
+    const msg = state.q ? ['No matches', 'Try a different name, email or domain.']
+      : ['Nothing here yet', 'Emails you send will show up here after the next sync.'];
+    body = `<tr><td colspan="${cols.length}" class="empty"><b>${msg[0]}</b>${msg[1]}</td></tr>`;
+  }
+  $('table').innerHTML = head + `<tbody>${body}</tbody>`;
+  renderStatus();
+}
+
+function renderStatus() {
+  const d = state.data, s = d.sync || {};
+  const busy = d.syncing;
+  $('sync').disabled = busy;
+  $('sync').textContent = busy ? 'Syncing…' : 'Sync now';
+  const text = busy ? 'Syncing your sent mail…'
+    : s.lastSyncAt ? `Synced ${ago(s.lastSyncAt)} from your sent mail` : 'Not synced yet';
+  $('status').innerHTML = `<span class="dot ${busy ? 'busy' : s.lastError ? 'err' : ''}"></span>${esc(text)}`;
+  $('error').hidden = !s.lastError;
+  $('error').textContent = s.lastError ? `Last sync failed: ${s.lastError}` : '';
+}
+
+async function load() {
+  state.data = await (await fetch('/api/data')).json();
+  render();
+}
+
+async function sync() {
+  state.data.syncing = true;
+  renderStatus();
+  state.data = await (await fetch('/api/sync', { method: 'POST' })).json();
+  render();
+}
+
+document.querySelector('.tabs').addEventListener('click', (e) => {
+  const t = e.target.closest('.tab');
+  if (!t) return;
+  state.tab = t.dataset.tab;
+  document.querySelectorAll('.tab').forEach((b) => b.setAttribute('aria-selected', b === t));
+  render();
+});
+$('table').addEventListener('click', (e) => {
+  const s = e.target.closest('[data-sort]');
+  if (s) {
+    const key = s.dataset.sort;
+    state.sort = { key, dir: state.sort.key === key ? -state.sort.dir : (['domain', 'name', 'company'].includes(key) ? 1 : -1) };
+    return render();
+  }
+  const row = e.target.closest('tr[data-domain]');
+  if (row) {
+    const d = row.dataset.domain;
+    state.open.has(d) ? state.open.delete(d) : state.open.add(d);
+    render();
+    $('table').querySelector(`tr[data-domain="${CSS.escape(d)}"]`)?.focus();
+  }
+});
+$('table').addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr[data-domain]')) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
+$('q').addEventListener('input', (e) => { state.q = e.target.value; render(); });
+$('sync').addEventListener('click', sync);
+
+load();
+// The server syncs on its own; refresh the view every minute to pick that up.
+setInterval(load, 60000);
+</script>
+</body>
+</html>

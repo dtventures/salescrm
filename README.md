@@ -25,6 +25,10 @@ Product discovery and design-partner validation. No production code yet (only th
 
 All demo files have no build step and no backend. They are written as artifact pages with no `<!doctype>` or `<html>` wrapper, so opened locally it renders in quirks mode.
 
+## Outreach CRM
+
+[`crm/`](crm/README.md) is a small working CRM that fills itself in from your Sent folder over IMAP: companies by domain, people by name and email, and for each one when they were added, first and last contact, and how many times they were contacted. Run it with `npm start` after adding your mailbox details to `crm/.env`.
+
 ## Hand-off
 
 - [Action patterns: inline actions and focus sessions](handoff/action-patterns/README.md): spec, acceptance criteria and dependency-free reference implementations, ready to port into another project.
